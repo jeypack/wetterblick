@@ -1,0 +1,97 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  scroll-behavior: smooth;
+}
+body::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+body::-webkit-scrollbar-thumb {
+  background-color: hsl(210, 11%, 20%);
+  border-radius: 3px;
+}
+body::-webkit-scrollbar-track {
+  background: hsl(210, 11%, 15%);
+  color: rgb(245, 245, 245);
+}
+/* 
+input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  textarea:-webkit-autofill,
+  textarea:-webkit-autofill:hover,
+  textarea:-webkit-autofill:focus {
+   -webkit-box-shadow: 0 0 0 1000px hsl(210, 11%, 15%) inset;
+    -webkit-text-fill-color: hsl(210, 11%, 85%);
+
+    -webkit-box-shadow: 0 0 0 1000px transparent inset;
+    box-shadow: 0 0 0 1000px transparent inset;
+
+    transition: background-color 5000s ease-in-out 0s;
+  }
+*/
+@layer base {
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  textarea:-webkit-autofill,
+  textarea:-webkit-autofill:hover,
+  textarea:-webkit-autofill:focus {
+    -webkit-box-shadow: 0 0 0 1000px rgb(245, 245, 245) inset;
+    -webkit-text-fill-color: rgb(150, 150, 150);
+
+    /* überschreibt den weißen/blauen Hintergrund */
+    -webkit-box-shadow: 0 0 0 1000px transparent inset;
+    box-shadow: 0 0 0 1000px transparent inset;
+
+    /* verhindert das "Aufblitzen" der Browserfarbe */
+    transition: background-color 5000s ease-in-out 0s;
+  }
+  svg:focus,svg path:focus,svg g:focus {
+    outline: none;
+    border: none;
+  }
+  h1 {
+    @apply text-6xl md:text-7xl;
+  }
+  h2 {
+    @apply text-5xl md:text-6xl;
+  }
+  h3 {
+    @apply text-4xl md:text-5xl;
+  }
+  h4 {
+    @apply text-3xl md:text-4xl;
+  }
+  h5 {
+    @apply text-2xl md:text-3xl;
+  }
+  h6 {
+    @apply text-xl md:text-2xl;
+  }
+  p {
+    @apply text-base;
+  }
+}
+
+#search-spinner {
+  width: 1rem;
+  height: 1rem;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24'%3E%3Cpath stroke='%23000' strokeLinecap='round' strokeLinejoin='round' strokeWidth='2' d='M20 4v5h-.582m0 0a8.001 8.001 0 00-15.356 2m15.356-2H15M4 20v-5h.581m0 0a8.003 8.003 0 0015.357-2M4.581 15H9' /%3E%3C/svg%3E");
+  animation: spin 1s infinite linear;
+  position: absolute;
+  left: 0.625rem;
+  top: 0.75rem;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
