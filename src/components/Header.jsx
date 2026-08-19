@@ -1,60 +1,40 @@
 import { Link, NavLink } from "react-router-dom";
 import styles from "../Styles";
-import { Menu, MenuButton, MenuItems, MenuItem, MenuSeparator } from "@headlessui/react";
-import { ChartArea } from "lucide-react";
+import { Menu, MenuButton, MenuItems, MenuItem, MenuSeparator, Button } from "@headlessui/react";
+import { ChartArea, Moon, Sun, Eclipse } from "lucide-react";
 import { Bars3Icon } from "@heroicons/react/24/outline";
 import React from "react";
-import { useUser } from "../hooks/useUser";
 import { useTheme } from "../hooks/useTheme";
 import ThemeButton from "./ui/ThemeButton";
+import ThemeMenu from "./ThemeMenu";
 
 const navData = [
-  { name: "Home", path: "/" },
-  { name: "Dashboard", path: "/dashboard" },
+  { id: 1, name: "Home", path: "/" },
+  { id: 2, name: "Dashboard", path: "/dashboard" },
   /* {name: "Projects", path: "/projects"},
   {name: "FAQ", path: "/faq"},
   {name: "Contact", path: "/contact"}, */
 ];
 
 export default function Header() {
-  const { user } = useUser();
   const { theme, setTheme, updateTheme } = useTheme();
 
   return (
     <header className="sticky top-0 bg-neutral-50 border-b-12 border-neutral-400 dark:bg-neutral-800 dark:border-olive-600 flex flex-row gap-2 justify-start items-center h-16 mb-4 p-4 w-full z-40">
-      <Link to="/" className="text-md font-bold text-gray-400 hover:text-gray-300">
-        {user?.name}
-      </Link>
       <div className="flex flex-row justify-start items-center gap-2 text-neutral-500 dark:text-olive-400">
-        <ChartArea className="block size-6" />
-        <h1 className="text-xl font-bold uppercase truncate w-40 sm:w-full">
-          Climate Analytics Dashboard
-        </h1>
+        {/* <ChartArea className="block size-6" /> */}
+        <ThemeMenu />
+        <h1 className="text-xl font-bold uppercase truncate w-40 sm:w-full">Climate Analytics Dashboard</h1>
         {/* <p className="text-neutral-400 text-xs self-baseline-last text-nowrap">v0.0.1</p> */}
       </div>
-      <div className="flex flex-row justify-start items-center gap-2 ml-auto">
-          <div className="flex flex-row justify-center items-start gap-2">
-            <ThemeButton
-              onClick={() => updateTheme({ mode: "light" })}
-              active={theme.mode === "light"}
-              size={"xs"}
-            >
-              Light
-            </ThemeButton>
-            <ThemeButton
-              onClick={() => updateTheme({ mode: "dark" })}
-              active={theme.mode === "dark"}
-              size={"xs"}
-            >
-              Dark
-            </ThemeButton>
-          </div>
-        </div>
+      {/* <div className="flex flex-row justify-start items-center gap-2 ml-auto">
+        <ThemeMenu />
+      </div> */}
       <nav className="flex flex-row justify-center items-center gap-4 w-full">
         <div className="hidden md:flex md:justify-end w-full">
           {navData.map((navItem) => (
             <NavLink
-              key={navItem.path}
+              key={navItem.id}
               to={navItem.path}
               className={({ isActive, isPending }) =>
                 isPending ? "pending " + styles.navlink : isActive ? styles.navlinkActive : styles.navlink
@@ -64,8 +44,45 @@ export default function Header() {
             </NavLink>
           ))}
         </div>
-
-        
+        {/* <Link to="/" className="text-md font-bold text-gray-400 hover:text-gray-300">
+          {"User"}
+        </Link> */}
+        <div className="flex flex-row justify-center items-start gap-2">
+          <Link to="/" className={styles.btn + " text-xs"}>
+            Login{" "}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="relative inline-block size-4 ml-1"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="m12.75 15 3-3m0 0-3-3m3 3h-7.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+              />
+            </svg>
+          </Link>
+          <Link to="/" className={styles.btnActive + " text-xs"}>
+            Register{" "}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="relative inline-block size-4 ml-1"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="m12.75 15 3-3m0 0-3-3m3 3h-7.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+              />
+            </svg>
+          </Link>
+        </div>
         {/* Mobile Menu */}
         <Menu as="div" className="relative md:hidden pr-2 z-50">
           <MenuButton role="nav-opener" className="inline-flex justify-center focus:outline-none">

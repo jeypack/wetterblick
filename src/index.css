@@ -50,10 +50,14 @@ input:-webkit-autofill,
     /* verhindert das "Aufblitzen" der Browserfarbe */
     transition: background-color 5000s ease-in-out 0s;
   }
-  svg:focus,svg path:focus,svg g:focus {
+  svg:focus,
+  svg path:focus,
+  svg g:focus {
     outline: none;
     border: none;
   }
+  /* input:data-autocomplete-off {
+  } */
   h1 {
     @apply text-6xl md:text-7xl;
   }
