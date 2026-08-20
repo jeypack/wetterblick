@@ -1,9 +1,35 @@
-import {createContext, useState} from "react";
+// src/context/AuthContext.jsx
+import { createContext, useContext, useEffect, useState } from "react";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "../firebase/config";
 
-export const AuthContext = createContext();
+const AuthContext = createContext();
+
+export function AuthProvider({ children }) {
+  const [user, setUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, maybeFirebaseUser => {
+      setUser(maybeFirebaseUser);
+      setIsLoading(false);
+    });
+    return unsubscribe;
+  }, []);
+
+  return (
+    <AuthContext.Provider value={{ user, isLoading }}>
+      {!isLoading && children}
+    </AuthContext.Provider>
+  );
+}
+// Custom hook to use the AuthContext
+export const useAuth = () => useContext(AuthContext);
+
+// export const AuthContext = createContext();
 
 // Hardcoded user credentials for demonstration purposes
-const users = [
+/* const users = [
   {id: 1, email: "jeypack2014@gmail.com", password: "undWiedaEinPasswort123%", name: "Jörg Pfeifer"},
   {id: 2, email: "john-doe@gmail.com", password: "undEins23%", name: "John Doe"},
 ];
@@ -35,4 +61,4 @@ const AuthProvider = ({children}) => {
     </AuthContext.Provider>
   );
 };
-export default AuthProvider;
+export default AuthProvider; */
