@@ -42,21 +42,6 @@ export function useWeatherData(initialLocation = "") {
 
     update(modelToUse, weatherData);
   };
-  /* const getCity = async (location, modelParam) => {
-    const modelToUse = modelParam || model;
-    
-    const weatherData = await getWeatherForecast(location, modelToUse);
-    // The update function already handles setting the model, selected cities, results, and preview city ID.
-    update(modelToUse, weatherData);
-  }; */
-
-  const getLocation = async (location, modelParam) => {
-    const modelToUse = modelParam || model;
-    console.log("location", location);
-    const weatherData = await getWeather(location, modelToUse);
-    // The update function already handles setting the model, selected cities, results, and preview city ID.
-    update(modelToUse, weatherData);
-  };
 
   const removeCity = (id) => {
     setResults((prev) => prev.filter((city) => city.id !== id));
@@ -101,7 +86,6 @@ export function useWeatherData(initialLocation = "") {
 
   return {
     getCity,
-    getLocation,
     model,
     results,
     removeCity,

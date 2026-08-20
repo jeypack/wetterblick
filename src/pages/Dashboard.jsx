@@ -13,7 +13,6 @@ const DAYS_OF_WEEK = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 export default function Dashboard() {
   const {
     getCity,
-    getLocation,
     model,
     results,
     removeCity,

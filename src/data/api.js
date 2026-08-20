@@ -3,35 +3,15 @@
 const GEOCODING_URL = "https://geocoding-api.open-meteo.com/v1/search";
 const OPEN_METEO_URL = "https://api.open-meteo.com/v1/forecast";
 
-async function getWeatherData(latitude, longitude, model) {
-  const url = new URL(OPEN_METEO_URL);
-  url.searchParams.append("latitude", latitude);
-  url.searchParams.append("longitude", longitude);
-  url.searchParams.append(
-    "current",
-    "apparent_temperature,temperature_2m,relative_humidity_2m,weather_code,rain,snowfall,cloudcover,surface_pressure,windspeed_10m,winddirection_10m",
-  );
-  url.searchParams.append(
-    "daily",
-    "weather_code,temperature_2m_max,temperature_2m_min,apparent_temperature_max,apparent_temperature_min",
-  );
-  url.searchParams.append("forecast_days", "15");
-  //url.searchParams.append("current_weather", "true");
-  //url.searchParams.append("hourly", "temperature_2m,relative_humidity_2m,weather_code");
-  url.searchParams.append("timezone", "auto");
-  url.searchParams.append("models", model);
-  try {
-    const response = await fetch(url.toString());
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error("Error fetching weather data:", error);
-    return {};
-  }
-}
+export const weatherModels = [
+  { name: "ECMWF IFS", model: "ecmwf_ifs" },
+  { name: "UKMO Seamless", model: "ukmo_seamless" },
+  { name: "DWD ICON", model: "dwd_icon_seamless" },
+  { name: "CMC Gem", model: "cmc_gem_seamless" },
+  { name: "MeteoSwiss ICON", model: "meteoswiss_icon_seamless" },
+  { name: "Météo-France", model: "meteofrance_seamless" },
+  { name: "KNMI Forecast", model: "knmi_seamless" },
+];
 
 async function getGeocoding(location) {
   const url = new URL(GEOCODING_URL);
@@ -49,76 +29,16 @@ async function getGeocoding(location) {
   }
 }
 
-export async function getGeocodingData(location) {
-  const geocodingResults = await getGeocoding(location);
-  console.log("getGeocodingData: geocodingResults", geocodingResults);
-  if (!geocodingResults || geocodingResults.length === 0) {
-    return [];
-  }
-  const mappedResults = geocodingResults.map((item) => ({
-    id: item.id,
-    name: item.name,
-    state: item.admin1 || "",
-    country: item.country,
-    latitude: item.latitude,
-    longitude: item.longitude,
-  }));
-  return mappedResults;
-}
-
-export const weatherModels = [
-  { name: "ECMWF IFS", model: "ecmwf_ifs" },
-  { name: "UKMO Seamless", model: "ukmo_seamless" },
-  { name: "DWD ICON", model: "dwd_icon_seamless" },
-  { name: "CMC Gem", model: "cmc_gem_seamless" },
-  { name: "MeteoSwiss ICON", model: "meteoswiss_icon_seamless" },
-  { name: "Météo-France", model: "meteofrance_seamless" },
-  { name: "KNMI Forecast", model: "knmi_seamless" },
-];
-
-export async function getWeather(geoCoding, model = "knmi_seamless") {
-  const { latitude, longitude } = geoCoding;
-  const weatherData = await getWeatherData(latitude, longitude, model);
-  const mappedWeatherData = getMappedWeatherData(geoCoding.name, weatherData, model);
-  console.log("Weather mappedWeatherData:", mappedWeatherData);
-  return mappedWeatherData;
-}
-
-export async function getWeatherForecast(location, model = "knmi_seamless") {
-  const geocodingResults = await getGeocoding(location);
-  if (geocodingResults.length === 0) {
-    return null;
-  }
-  const geoCoding = geocodingResults[0];
-  const { latitude, longitude } = geoCoding;
-  /* console.log(
-    "Geocoding Results:",
-    geocodingResults,
-    "Latitude:",
-    latitude,
-    "Longitude:",
-    longitude,
-    "Model:",
-    model,
-  ); */
-  const weatherData = await getWeatherData(latitude, longitude, model);
-  //console.log("Weather Data:", weatherData);
-  const mappedWeatherData = getMappedWeatherData(geoCoding.name, weatherData, model);
-  //console.log("Weather mappedWeatherData:", mappedWeatherData);
-  return mappedWeatherData;
-  // return weatherData;
-}
-
 function getMappedWeatherData(location, weatherData, model) {
   if (!weatherData) {
     return null;
   }
   const mappedWeatherData = {
     //id: uuidv4(),
-    id: `${weatherData.latitude}-${weatherData.longitude}`,
+    id: `${location.latitude}-${location.longitude}`,
     location: location,
-    latitude: weatherData.latitude,
-    longitude: weatherData.longitude,
+    //latitude: weatherData.latitude,
+    //longitude: weatherData.longitude,
     model: model,
     current: {
       temperature: weatherData.current.temperature_2m,
@@ -158,6 +78,86 @@ function getMappedWeatherData(location, weatherData, model) {
   };
   //console.log("Weather mappedWeatherData:", mappedWeatherData);
   return mappedWeatherData;
+}
+
+async function getWeatherData(latitude, longitude, model) {
+  const url = new URL(OPEN_METEO_URL);
+  url.searchParams.append("latitude", latitude);
+  url.searchParams.append("longitude", longitude);
+  url.searchParams.append(
+    "current",
+    "apparent_temperature,temperature_2m,relative_humidity_2m,weather_code,rain,snowfall,cloudcover,surface_pressure,windspeed_10m,winddirection_10m",
+  );
+  url.searchParams.append(
+    "daily",
+    "weather_code,temperature_2m_max,temperature_2m_min,apparent_temperature_max,apparent_temperature_min",
+  );
+  url.searchParams.append("forecast_days", "15");
+  //url.searchParams.append("current_weather", "true");
+  //url.searchParams.append("hourly", "temperature_2m,relative_humidity_2m,weather_code");
+  url.searchParams.append("timezone", "auto");
+  url.searchParams.append("models", model);
+  try {
+    const response = await fetch(url.toString());
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching weather data:", error);
+    return {};
+  }
+}
+
+export async function getGeocodingData(location) {
+  const geocodingResults = await getGeocoding(location);
+  console.log("getGeocodingData: geocodingResults", geocodingResults);
+  if (!geocodingResults || geocodingResults.length === 0) {
+    return [];
+  }
+  const mappedResults = geocodingResults.map((item) => ({
+    id: item.id,
+    name: item.name,
+    state: item.admin1 || "",
+    country: item.country,
+    latitude: item.latitude,
+    longitude: item.longitude,
+  }));
+  return mappedResults;
+}
+
+export async function getWeather(geoCoding, model = "knmi_seamless") {
+  const { latitude, longitude } = geoCoding;
+  const weatherData = await getWeatherData(latitude, longitude, model);
+  const mappedWeatherData = getMappedWeatherData(geoCoding, weatherData, model);
+  console.log("Weather mappedWeatherData:", mappedWeatherData);
+  return mappedWeatherData;
+}
+
+export async function getWeatherForecast(location, model = "knmi_seamless") {
+  const geocodingResults = await getGeocoding(location);
+  if (geocodingResults.length === 0) {
+    return null;
+  }
+  const geoCoding = geocodingResults[0];
+  const { latitude, longitude } = geoCoding;
+  /* console.log(
+    "Geocoding Results:",
+    geocodingResults,
+    "Latitude:",
+    latitude,
+    "Longitude:",
+    longitude,
+    "Model:",
+    model,
+  ); */
+  const weatherData = await getWeatherData(latitude, longitude, model);
+  //console.log("Weather Data:", weatherData);
+  const mappedWeatherData = getMappedWeatherData(geoCoding, weatherData, model);
+  //console.log("Weather mappedWeatherData:", mappedWeatherData);
+  return mappedWeatherData;
+  // return weatherData;
 }
 
 /* 

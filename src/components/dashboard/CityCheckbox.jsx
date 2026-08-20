@@ -33,7 +33,7 @@ export default function CityCheckbox({id, location, selectedCities, onChange}) {
           </svg>
         </Checkbox>
         <Label className={"text-neutral-500 dark:text-neutral-300 grow"}>
-          {location}
+          {location.name}
         </Label>
         <Button
           type="button"

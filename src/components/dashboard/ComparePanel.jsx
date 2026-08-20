@@ -73,7 +73,7 @@ const ComparePanel = ({
         <h6 className="text-neutral-400 dark:text-neutral-300 font-bold pl-1">
           {dailyDataForPreviewCity && (
             <>
-              Vorschau für {dailyDataForPreviewCity?.location}{" "}
+              Vorschau für {dailyDataForPreviewCity?.location.name}{" "}
               <span className="text-neutral-400 dark:text-neutral-400 text-xs ml-4">
                 {lastCityData?.model}
               </span>
@@ -210,7 +210,7 @@ const CompareBar = ({
         className={selected ? percentClassNameSelected : percentClassName}
         style={{width: `${percent}%`}}
       ></span>
-      <span className="z-10">{location}</span>
+      <span className="z-10">{location.name}</span>
       <span className="z-10">
         {value || "N/A"} {unit || ""}
       </span>

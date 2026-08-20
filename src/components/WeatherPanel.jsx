@@ -96,7 +96,7 @@ const WeatherPanel = ({previewCityId, results, setPreviewCityId}) => {
       <p className="p-2 text-neutral-400">
         {currentWeather.location && `Letzte Suchergebnisse für: `}
         <span className="font-bold text-neutral-300">
-          {currentWeather.location}
+          {currentWeather.location.name}
         </span>
       </p>
       <div className="flex flex-wrap justify-center items-center gap-4">
@@ -159,7 +159,7 @@ const CityWeather = ({previewCityId, weather, setPreviewCityId}) => {
       <div className="w-full">
         <div className={"flex justify-between items-start w-full text-neutral-500 dark:text-olive-300"}>
           <h3 className={`content-center font-semibold max-w-32 text-xl truncate uppercase ${classNameLocation}`}>
-            {weather.location}
+            {weather.location.name}
           </h3>
           <svg
             xmlns="http://www.w3.org/2000/svg"

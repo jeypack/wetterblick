@@ -48,15 +48,8 @@ export default function CitySearch({ getCity, model, searchLocations }) {
     <form
       className="flex flex-col justify-center items-center gap-2 px-2 pb-2 w-full"
       onSubmit={handleSubmit}
+      autoComplete="off"
     >
-      {/* <Input
-        className="border bg-neutral-100 border-neutral-300 text-neutral-600 dark:bg-neutral-700 dark:border-neutral-400 dark:text-neutral-400 w-full px-3 py-1 rounded-md focus:outline-none dark:focus:text-neutral-50 focus:ring-2 focus:ring-neutral-300 placeholder-neutral-400"
-        type="text"
-        value={inputValue}
-        onChange={handleChange}
-        onFocus={handleFocus}
-        placeholder="Suche Standort..."
-      /> */}
       <AutofillCombo options={locations} onInput={handleInput} onChange={handleChange} />
 
       <Button
@@ -65,6 +58,7 @@ export default function CitySearch({ getCity, model, searchLocations }) {
       >
         <RippleFX className="w-full px-3 py-1 rounded-2xl">Wetter suchen</RippleFX>
       </Button>
+
       <ListBox
         label="Wettermodelle"
         className="w-full"
