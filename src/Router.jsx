@@ -2,7 +2,6 @@ import {Routes, Route} from "react-router-dom";
 //import Home from "./pages/Home";
 import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
-import Contact from "./pages/Contact";
 import Login from "./pages/Login";
 
 export default function Router() {

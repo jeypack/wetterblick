@@ -1,8 +1,8 @@
-import {useMemo, useState} from "react";
-import {Checkbox} from "@headlessui/react";
+import { useMemo, useState } from "react";
+import { Checkbox } from "@headlessui/react";
 import PageTitle from "../components/PageTitle";
 import WeatherPanel from "../components/WeatherPanel";
-import {useWeatherData} from "../hooks/useWeatherData";
+import { useWeatherData } from "../hooks/useWeatherData";
 import CitySearch from "../components/dashboard/CitySearch";
 import CityList from "../components/dashboard/CityList";
 import Sidebar from "../components/dashboard/Sidebar";
@@ -28,9 +28,7 @@ export default function Dashboard() {
 
   const getSelectedCitiesData = useMemo(() => {
     return (selectedCities, results) => {
-      const compareCities = results.filter((city) =>
-        selectedCities.has(city.id),
-      );
+      const compareCities = results.filter((city) => selectedCities.has(city.id));
       const selectedCitiesData = compareCities.map((city) => {
         return {
           id: city.id,
@@ -50,9 +48,7 @@ export default function Dashboard() {
 
   const getHourlyData = useMemo(() => {
     return (selectedCities, results) => {
-      const compareCities = results.filter((city) =>
-        selectedCities.has(city.id),
-      );
+      const compareCities = results.filter((city) => selectedCities.has(city.id));
       const selectedCitiesData = compareCities.map((city) => {
         const hourlyData = city.hourly?.time.map((t, index) => {
           return {
@@ -76,20 +72,13 @@ export default function Dashboard() {
 
   const getDaylyData = useMemo(() => {
     return (selectedCities, results) => {
-      const compareCities = results.filter((city) =>
-        selectedCities.has(city.id),
-      );
+      const compareCities = results.filter((city) => selectedCities.has(city.id));
       const selectedCitiesData = compareCities.map((city) => {
         const daylyData = city.daily?.time.map((t, index) => {
           const date = new Date(t);
           const day = date.getDay();
           return {
-            date:
-              DAYS_OF_WEEK[day] +
-              " " +
-              date.getDate() +
-              "." +
-              (date.getMonth() + 1),
+            date: DAYS_OF_WEEK[day] + " " + date.getDate() + "." + (date.getMonth() + 1),
             temperatureMax: city.daily?.temperature[index],
             temperatureMin: city.daily?.temperatureMin[index],
             temperature: [
@@ -113,7 +102,7 @@ export default function Dashboard() {
     };
   }, [selectedCities, results]);
 
-  const handleCityChange = ({id, type, checked}) => {
+  const handleCityChange = ({ id, type, checked }) => {
     console.log("id", id, "type", type, "checked", checked);
     // Handle the change in city selection here
     if (type === "toggle") {
@@ -151,12 +140,12 @@ export default function Dashboard() {
           />
           <div className="flex flex-row justify-start items-end gap-4 text-neutral-500 dark:text-neutral-300 text-sm text-left mx-auto p-4 container w-full">
             <p className={pClassName}>
-              Bekommen Sie Echtzeit-Wetterdaten und Vorhersagen für jeden
-              Standort weltweit. Unser Dashboard liefert genaue und aktuelle
-              Informationen, die Ihnen helfen, Ihren Tag, Ihre Woche oder Ihren
-              Monat zu planen. Geben Sie einfach einen Standort ein und erhalten
-              Sie detaillierte Wetterinformationen, einschließlich Temperatur,
-              Luftfeuchtigkeit, Windgeschwindigkeit und mehr.
+              Bekommen Sie Echtzeit-Wetterdaten und Vorhersagen für jeden Standort
+              weltweit. Unser Dashboard liefert genaue und aktuelle Informationen, die
+              Ihnen helfen, Ihren Tag, Ihre Woche oder Ihren Monat zu planen. Geben Sie
+              einfach einen Standort ein und erhalten Sie detaillierte
+              Wetterinformationen, einschließlich Temperatur, Luftfeuchtigkeit,
+              Windgeschwindigkeit und mehr.
             </p>
             <button
               className="cursor-pointer text-neutral-400 dark:text-neutral-400 italic hover:underline"

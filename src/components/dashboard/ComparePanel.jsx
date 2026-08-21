@@ -1,16 +1,16 @@
-import {Button} from "@headlessui/react";
-import {CheckIcon} from "@heroicons/react/20/solid";
-import {useState, useMemo, memo} from "react";
+import { Button } from "@headlessui/react";
+import { CheckIcon } from "@heroicons/react/20/solid";
+import { useState, useMemo, memo } from "react";
 import RippleFX from "../ui/RippleFX";
 import ChartDaysForecast from "./ChartDaysForecast";
 import ChartDaysArea from "./ChartDaysArea";
 import DailyChart from "./DailyChart";
 
 const metrics = [
-  {id: 1, name: "Temperatur", filter: "temperature"},
-  {id: 2, name: "Luftfeuchtigkeit", filter: "relativeHumidity"},
-  {id: 3, name: "Windgeschwindigkeit", filter: "windSpeed"},
-  {id: 4, name: "Luftdruck", filter: "pressure"},
+  { id: 1, name: "Temperatur", filter: "temperature" },
+  { id: 2, name: "Luftfeuchtigkeit", filter: "relativeHumidity" },
+  { id: 3, name: "Windgeschwindigkeit", filter: "windSpeed" },
+  { id: 4, name: "Luftdruck", filter: "pressure" },
   //{id: 5, name: "Wetter", filter: "weatherCode"},
 ];
 
@@ -73,7 +73,9 @@ const ComparePanel = ({
         <h6 className="text-neutral-400 dark:text-neutral-300 font-bold pl-1">
           {dailyDataForPreviewCity && (
             <>
-              Vorschau für {dailyDataForPreviewCity?.location.name}{" "}
+              Vorschau für {dailyDataForPreviewCity?.location.name}
+              {", "}
+              {dailyDataForPreviewCity?.location.country}{" "}
               <span className="text-neutral-400 dark:text-neutral-400 text-xs ml-4">
                 {lastCityData?.model}
               </span>
@@ -87,7 +89,7 @@ const ComparePanel = ({
 };
 export default memo(ComparePanel);
 
-function CompareFilter({options, selectedProp, setSelectedProp}) {
+function CompareFilter({ options, selectedProp, setSelectedProp }) {
   const baseClassName =
     "w-auto text-nowrap rounded-2xl border cursor-pointer focus:ring-neutral-500 focus:outline-none focus-visible:outline-none text-sm overflow-hidden whitespace-nowrap";
   const className =
@@ -175,15 +177,7 @@ const CompareBarContainer = ({
   );
 };
 
-const CompareBar = ({
-  id,
-  location,
-  value,
-  unit,
-  percent,
-  selected,
-  onClick,
-}) => {
+const CompareBar = ({ id, location, value, unit, percent, selected, onClick }) => {
   // console.log("CompareBar: location", location, "value", value, "unit", unit, "percent", percent);
   const handleClick = () => {
     if (typeof onClick === "function") {
@@ -197,18 +191,14 @@ const CompareBar = ({
     ? "text-neutral-500 bg-neutral-100 border-neutral-400 dark:bg-neutral-900 dark:border-neutral-300 dark:text-neutral-100 font-bold"
     : "text-neutral-500 bg-neutral-50 border-neutral-400 dark:bg-neutral-900 dark:border-neutral-500 dark:text-neutral-300 hover:border-neutral-400";
   const basePercentClassName = `absolute left-0 top-0 h-full w-0 z-0 transition-all transition-duration-500`;
-  const percentClassName =
-    basePercentClassName + " bg-neutral-200 dark:bg-olive-700";
+  const percentClassName = basePercentClassName + " bg-neutral-200 dark:bg-olive-700";
   const percentClassNameSelected =
     basePercentClassName + " bg-neutral-300 dark:bg-olive-700";
   return (
-    <div
-      className={`${baseClassName} ${selectedClassName}`}
-      onClick={handleClick}
-    >
+    <div className={`${baseClassName} ${selectedClassName}`} onClick={handleClick}>
       <span
         className={selected ? percentClassNameSelected : percentClassName}
-        style={{width: `${percent}%`}}
+        style={{ width: `${percent}%` }}
       ></span>
       <span className="z-10">{location.name}</span>
       <span className="z-10">

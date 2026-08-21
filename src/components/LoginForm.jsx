@@ -55,11 +55,18 @@ export default function LoginForm({ onSwitch }) {
       className="flex flex-col justify-center items-center gap-4 w-sm  border-2 border-olive-600 p-4 rounded-md"
       onSubmit={handleSubmit(onSubmit)}
     >
-      <p className="text-md font-bold text-olive-300">Anmeldung</p>
+      <p className="text-md font-bold text-neutral-500 dark:text-olive-300">Anmeldung</p>
       <InputField label="" registration={register("email")} placeholder="User Email*" />
-      <InputField label="" registration={register("password")} type="password" placeholder="User Password*" />
+      <InputField
+        label=""
+        registration={register("password")}
+        type="password"
+        placeholder="User Password*"
+      />
       {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
-      {errors.password && <p className="text-red-500 text-sm">{errors.password.message}</p>}
+      {errors.password && (
+        <p className="text-red-500 text-sm">{errors.password.message}</p>
+      )}
       <Button
         type="submit"
         className={styles.btn + " focus:outline-none overflow-hidden rounded-full"}
@@ -69,12 +76,12 @@ export default function LoginForm({ onSwitch }) {
       >
         Anmelden
       </Button>
-      <p className="text-sm text-neutral-400 dark:text-neutral-300">Noch kein Konto? </p>
+      <p className="mt-2 text-sm text-neutral-400 dark:text-neutral-300">
+        Noch kein Konto?{" "}
+      </p>
       <Button
-        className={styles.btn + " focus:outline-none overflow-hidden rounded-full"}
-        ffx="ripple"
-        ffxMs={500}
-        ffxClass="bg-olive-200"
+        type="button"
+        className={styles.navlink + " focus:outline-none overflow-hidden"}
         onClick={onSwitch}
       >
         Registrieren

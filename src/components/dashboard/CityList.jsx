@@ -1,4 +1,4 @@
-import {useState} from "react";
+import { useState } from "react";
 import {
   Checkbox,
   Field,
@@ -23,14 +23,14 @@ const dialogData = {
   cancelText: "Abbrechen",
 };
 
-export default function CityList({cities, selectedCities, onChange}) {
+export default function CityList({ cities, selectedCities, onChange }) {
   const [isOpen, setIsOpen] = useState(false);
   const [idToRemove, setIdToRemove] = useState(null);
   //console.log("cityList: cities", cities);
   const handleChange = (id, type) => {
     //console.log("id", id, "type", type);
     if (type === "toggle" && typeof onChange === "function") {
-      onChange({id, type});
+      onChange({ id, type });
     }
     if (type === "remove") {
       //onChange({id, type});
@@ -73,7 +73,7 @@ export default function CityList({cities, selectedCities, onChange}) {
         setIsOpen={setIsOpen}
         onConfirm={() => {
           //console.log("RemoveCityDialog: onConfirm");
-          onChange({id: idToRemove, type: "remove"});
+          onChange({ id: idToRemove, type: "remove" });
           setIsOpen(false);
         }}
       />

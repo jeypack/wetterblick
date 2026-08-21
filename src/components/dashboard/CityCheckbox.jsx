@@ -1,7 +1,7 @@
-import {Checkbox, Field, Label, Button} from "@headlessui/react";
+import { Checkbox, Field, Label, Button } from "@headlessui/react";
 import RippleFX from "../ui/RippleFX";
 
-export default function CityCheckbox({id, location, selectedCities, onChange}) {
+export default function CityCheckbox({ id, location, selectedCities, onChange }) {
   const handleChange = (checked, type) => {
     //console.log("CityCheckbox: id", id, "checked", checked, "type", type);
     if (typeof onChange === "function") {

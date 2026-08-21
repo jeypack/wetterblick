@@ -1,6 +1,6 @@
 import React from "react";
-import {Popover, PopoverButton, PopoverPanel} from "@headlessui/react";
-import {ChevronDownIcon} from "@heroicons/react/24/solid";
+import { Popover, PopoverButton, PopoverPanel } from "@headlessui/react";
+import { ChevronDownIcon } from "@heroicons/react/24/solid";
 import InputField from "./InputField";
 import {
   WiDaySunny,
@@ -18,9 +18,9 @@ import {
   WiFog,
   WiWindDeg,
 } from "react-icons/wi";
-import {Gauge, Droplets, Eye, MapPin, Wind, Thermometer} from "lucide-react";
+import { Gauge, Droplets, Eye, MapPin, Wind, Thermometer } from "lucide-react";
 import WindDirection from "./dashboard/WindDirection";
-import {weatherModels} from "../data/api";
+import { weatherModels } from "../data/api";
 
 export const directionsFull = [
   "North",
@@ -52,9 +52,13 @@ const getWeatherIcon = (code) => {
       return <WiDayFog className="text-5xl text-neutral-400 dark:text-neutral-200" />;
     case 51:
     case 53:
-      return <WiDaySprinkle className="text-5xl text-neutral-400 dark:text-neutral-200" />;
+      return (
+        <WiDaySprinkle className="text-5xl text-neutral-400 dark:text-neutral-200" />
+      );
     case 55:
-      return <WiDaySprinkle className="text-5xl text-neutral-400 dark:text-neutral-200" />;
+      return (
+        <WiDaySprinkle className="text-5xl text-neutral-400 dark:text-neutral-200" />
+      );
     case 56:
     case 57:
       return <WiDayRainMix className="text-5xl text-neutral-400 dark:text-neutral-200" />;
@@ -72,7 +76,9 @@ const getWeatherIcon = (code) => {
     case 73:
       return <WiDaySnow className="text-5xl text-neutral-400 dark:text-neutral-200" />;
     case 75:
-      return <WiDaySnowWind className="text-5xl text-neutral-400 dark:text-neutral-200" />;
+      return (
+        <WiDaySnowWind className="text-5xl text-neutral-400 dark:text-neutral-200" />
+      );
     case 77:
       return <WiDaySnow className="text-5xl text-neutral-400 dark:text-neutral-200" />;
     case 73:
@@ -80,13 +86,15 @@ const getWeatherIcon = (code) => {
     case 95:
     case 96:
     case 99:
-      return <WiDayThunderstorm className="text-5xl text-neutral-400 dark:text-neutral-200" />;
+      return (
+        <WiDayThunderstorm className="text-5xl text-neutral-400 dark:text-neutral-200" />
+      );
     default:
       return <WiDaySunny className="text-5xl text-neutral-400 dark:text-neutral-200" />;
   }
 };
 
-const WeatherPanel = ({previewCityId, results, setPreviewCityId}) => {
+const WeatherPanel = ({ previewCityId, results, setPreviewCityId }) => {
   const currentWeather = results.at(-1);
   if (!currentWeather) {
     return null;
@@ -95,9 +103,7 @@ const WeatherPanel = ({previewCityId, results, setPreviewCityId}) => {
     <section className="flex flex-col justify-center items-center gap-4 mx-auto p-4 container w-full">
       <p className="p-2 text-neutral-400">
         {currentWeather.location && `Letzte Suchergebnisse für: `}
-        <span className="font-bold text-neutral-300">
-          {currentWeather.location.name}
-        </span>
+        <span className="font-bold text-neutral-300">{currentWeather.location.name}</span>
       </p>
       <div className="flex flex-wrap justify-center items-center gap-4">
         {results.map((result) => (
@@ -115,7 +121,7 @@ const WeatherPanel = ({previewCityId, results, setPreviewCityId}) => {
 
 export default React.memo(WeatherPanel);
 
-const CityWeather = ({previewCityId, weather, setPreviewCityId}) => {
+const CityWeather = ({ previewCityId, weather, setPreviewCityId }) => {
   const {
     time,
     temperature,
@@ -131,7 +137,7 @@ const CityWeather = ({previewCityId, weather, setPreviewCityId}) => {
   const model = getWeatherModel(weather.model);
 
   const direction = directions[Math.round(angle / 45) % 8];
-  const startPos = {x: 30, y: 30, dif: 16};
+  const startPos = { x: 30, y: 30, dif: 16 };
 
   const containerClassName =
     "cursor-pointer flex flex-col justify-center items-start gap-2 border-2 p-4 rounded-md w-auto min-w-50 hover:-translate-y-1 transition-transform duration-200 ease-in-out hover:shadow-lg";
@@ -157,8 +163,14 @@ const CityWeather = ({previewCityId, weather, setPreviewCityId}) => {
       onClick={() => setPreviewCityId(weather.id)}
     >
       <div className="w-full">
-        <div className={"flex justify-between items-start w-full text-neutral-500 dark:text-olive-300"}>
-          <h3 className={`content-center font-semibold max-w-32 text-xl truncate uppercase ${classNameLocation}`}>
+        <div
+          className={
+            "flex justify-between items-start w-full text-neutral-500 dark:text-olive-300"
+          }
+        >
+          <h3
+            className={`content-center font-semibold max-w-32 text-xl truncate uppercase ${classNameLocation}`}
+          >
             {weather.location.name}
           </h3>
           <svg
@@ -172,7 +184,11 @@ const CityWeather = ({previewCityId, weather, setPreviewCityId}) => {
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
-              fill={weather.id === previewCityId ? "var(--color-neutral-600)" : "var(--color-neutral-50)"}
+              fill={
+                weather.id === previewCityId
+                  ? "var(--color-neutral-600)"
+                  : "var(--color-neutral-50)"
+              }
               d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
             />
             <path

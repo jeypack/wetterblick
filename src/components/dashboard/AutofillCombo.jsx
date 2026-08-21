@@ -1,4 +1,9 @@
-import { Combobox, ComboboxInput, ComboboxOption, ComboboxOptions } from "@headlessui/react";
+import {
+  Combobox,
+  ComboboxInput,
+  ComboboxOption,
+  ComboboxOptions,
+} from "@headlessui/react";
 import { useState } from "react";
 
 const AutofillCombo = ({ options, onInput, onChange }) => {
@@ -29,7 +34,11 @@ const AutofillCombo = ({ options, onInput, onChange }) => {
   };
 
   return (
-    <Combobox value={selectedLocation} onChange={handleChange} onClose={() => setQuery("")}>
+    <Combobox
+      value={selectedLocation}
+      onChange={handleChange}
+      onClose={() => setQuery("")}
+    >
       <ComboboxInput
         aria-label="Assignee"
         displayValue={(option) => option?.name}
@@ -40,18 +49,19 @@ const AutofillCombo = ({ options, onInput, onChange }) => {
       />
       <ComboboxOptions
         anchor="bottom start"
-        className="mt-1 w-72 border bg-neutral-100 border-neutral-300 text-neutral-600 dark:bg-neutral-900 dark:border-neutral-400 dark:text-neutral-400 p-2 rounded-lg empty:invisible"
+        className="mt-1 w-80 border bg-neutral-100 border-neutral-300 text-neutral-600 dark:bg-neutral-900 dark:border-neutral-400 dark:text-neutral-400 rounded-lg empty:invisible"
       >
         {filteredOptions.map((option) => (
           <ComboboxOption
             key={option.id}
-            className="cursor-pointer data-focus:font-semibold data-focus:bg-neutral-400 data-focus:text-neutral-900"
+            className="flex cursor-pointer data-focus:font-semibold data-focus:bg-neutral-400 data-focus:text-neutral-900 px-2.5 py-0.5"
             value={option}
           >
             <>
               {option.name}
               <br />
-              {(option?.state ? option.state : "") + (option?.country ? ", " + option.country : "")}
+              {(option?.state ? option.state : "") +
+                (option?.country ? ", " + option.country : "")}
             </>
           </ComboboxOption>
         ))}
