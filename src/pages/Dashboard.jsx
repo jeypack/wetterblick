@@ -1,12 +1,14 @@
 import { useMemo, useState } from "react";
+import { useModal } from "../hooks/useModal";
 import { Checkbox } from "@headlessui/react";
 import PageTitle from "../components/PageTitle";
 import WeatherPanel from "../components/WeatherPanel";
-import { useWeatherData } from "../hooks/useWeatherData";
+import { useWeather } from "../hooks/useWeather";
 import CitySearch from "../components/dashboard/CitySearch";
 import CityList from "../components/dashboard/CityList";
 import Sidebar from "../components/dashboard/Sidebar";
 import ComparePanel from "../components/dashboard/ComparePanel";
+import Toast from "../components/ui/Toast";
 
 const DAYS_OF_WEEK = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
@@ -22,7 +24,8 @@ export default function Dashboard() {
     setPreviewCityId,
     toggleCity,
     toggleCities,
-  } = useWeatherData();
+  } = useWeather();
+  const { message } = useModal();
 
   const [textOpen, setTextOpen] = useState(true);
 
@@ -161,6 +164,7 @@ export default function Dashboard() {
           />
         </section>
       </main>
+      <Toast message={message} />
     </>
   );
 }

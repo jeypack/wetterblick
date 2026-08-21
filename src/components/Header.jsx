@@ -14,6 +14,7 @@ import {
 import { ChartArea, Moon, Sun, Eclipse, UserShield, ChevronDownIcon } from "lucide-react";
 import { Bars3Icon } from "@heroicons/react/24/outline";
 import React from "react";
+import { useModal } from "../hooks/useModal";
 import { useTheme } from "../hooks/useTheme";
 import ThemeButton from "./ui/ThemeButton";
 import ThemeMenu from "./ThemeMenu";
@@ -32,12 +33,16 @@ const navData = [
 export default function Header() {
   const { theme, setTheme, updateTheme } = useTheme();
   const { user } = useAuth();
+  const { setMessage } = useModal();
+  // console.log("Header: user", user);
 
   const handleLogout = async () => {
     const auth = getAuth();
+
     try {
       await signOut(auth);
       console.log("User logged out successfully");
+      setMessage("Erfolgreich abgemeldet");
     } catch (error) {
       console.error("Error logging out:", error);
     }
@@ -76,42 +81,53 @@ export default function Header() {
           <Menu>
             <MenuButton
               className={
-                styles.icon + " cursor-pointer text-xs focus-visible:outline-none"
+                styles.icon +
+                " cursor-pointer text-xs focus-visible:outline-none hover:data-open"
               }
             >
-              <UserShield className="mr-1" />
+              <UserShield className="mr-2" />
               <p className="text-md font-bold text-neutral-500 dark:text-olive-400">
-                {user ? user.email : "Guest"}
+                {user ? user.displayName : "Guest"}
               </p>
             </MenuButton>
             <MenuItems
               anchor="bottom end"
-              className="border border-neutral-400 bg-neutral-100 dark:border-olive-500 dark:bg-olive-800 focus-visible:outline-none mt-2 rounded-xl z-50"
+              className="border border-neutral-400 bg-neutral-100 dark:border-olive-500 dark:bg-olive-800 focus-visible:outline-none mt-2 rounded-md w-fit min-w-30 z-50"
             >
-              <MenuItem>
-                <Link
-                  className="block px-2 py-1 bg-neutral-50 border-neutral-500 dark:border-neutral-500 dark:bg-neutral-900 dark:text-neutral-400 data-focus:text-neutral-900 data-focus:bg-neutral-200 dark:data-focus:text-neutral-200 dark:data-focus:bg-neutral-700"
-                  to="/settings"
-                >
-                  Settings
-                </Link>
+              <MenuItem disabled>
+                <p className="block px-2 py-1 bg-neutral-50 border-neutral-500 dark:border-neutral-500 dark:bg-neutral-900 dark:text-neutral-400 data-disabled:bg-neutral-400 dark:data-disabled:bg-neutral-700">
+                  {user ? user?.email : "Nicht angemeldet"}
+                </p>
               </MenuItem>
+              <MenuSeparator className="h-px bg-neutral-700 dark:bg-neutral-400" />
               <MenuItem>
-                <Link
-                  className="block px-2 py-1 bg-neutral-50 border-neutral-500 dark:border-neutral-500 dark:bg-neutral-900 dark:text-neutral-400 data-focus:text-neutral-900 data-focus:bg-neutral-200 dark:data-focus:text-neutral-200 dark:data-focus:bg-neutral-700"
-                  to="/login"
-                >
-                  Login
-                </Link>
+                {user ? (
+                  <button
+                    onClick={handleLogout}
+                    className={
+                      "block cursor-pointer w-full px-2 py-1 text-left bg-neutral-50 border-neutral-500 dark:border-neutral-500 dark:bg-neutral-900 dark:text-neutral-400 data-focus:text-neutral-900 data-focus:bg-neutral-200 dark:data-focus:text-neutral-200 dark:data-focus:bg-neutral-700"
+                    }
+                  >
+                    Abmelden
+                  </button>
+                ) : (
+                  <Link
+                    className="block px-2 py-1 bg-neutral-50 border-neutral-500 dark:border-neutral-500 dark:bg-neutral-900 dark:text-neutral-400 data-focus:text-neutral-900 data-focus:bg-neutral-200 dark:data-focus:text-neutral-200 dark:data-focus:bg-neutral-700"
+                    to="/login"
+                  >
+                    Anmelden
+                  </Link>
+                )}
               </MenuItem>
-              <MenuItem>
+
+              {/* <MenuItem>
                 <Link
                   className="block px-2 py-1 bg-neutral-50 border-neutral-500 dark:border-neutral-500 dark:bg-neutral-900 dark:text-neutral-400 data-focus:text-neutral-900 data-focus:bg-neutral-200 dark:data-focus:text-neutral-200 dark:data-focus:bg-neutral-700"
                   to="/license"
                 >
                   Registrieren
                 </Link>
-              </MenuItem>
+              </MenuItem> */}
             </MenuItems>
           </Menu>
           {/* {user ? (
