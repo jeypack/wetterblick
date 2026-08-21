@@ -20,7 +20,7 @@ const btnClassNameActive =
   " bg-neutral-400 text-neutral-50 border-neutral-500 hover:border-neutral-500 hover:text-neutral-50 dark:hover:border-neutral-500 dark:bg-olive-500 outline-2 outline-offset-2 outline-neutral-600 dark:outline-olive-600 dark:bg-olive-700 text-white";
 
 const iconClassName =
-  "w-6 h-6 text-neutral-500 dark:text-olive-400 hover:text-neutral-400 dark:hover:text-olive-300";
+  "flex justify-center items-center text-neutral-500 dark:text-olive-400 hover:text-neutral-400 dark:hover:text-olive-300";
 
 const styles = {
   input: inputClassName,

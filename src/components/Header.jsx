@@ -53,9 +53,6 @@ export default function Header() {
         </h1>
         {/* <p className="text-neutral-400 text-xs self-baseline-last text-nowrap">v0.0.1</p> */}
       </div>
-      {/* <div className="flex flex-row justify-start items-center gap-2 ml-auto">
-        <ThemeMenu />
-      </div> */}
       <nav className="flex flex-row justify-end items-center gap-4 w-full">
         <div className="hidden md:flex md:justify-end w-full">
           {navData.map((navItem) => (
@@ -74,29 +71,46 @@ export default function Header() {
             </NavLink>
           ))}
         </div>
-        {/* <Link to="/" className="text-md font-bold text-gray-400 hover:text-gray-300">
-          {"User"}
-        </Link> */}
+
         <div className="flex flex-col justify-center items-start gap-2">
           <Menu>
-            <MenuButton className={styles.icon + " text-xs"}>
-              <UserShield />
+            <MenuButton
+              className={
+                styles.icon + " cursor-pointer text-xs focus-visible:outline-none"
+              }
+            >
+              <UserShield className="mr-1" />
+              <p className="text-md font-bold text-neutral-500 dark:text-olive-400">
+                {user ? user.email : "Guest"}
+              </p>
             </MenuButton>
-            <MenuItems anchor="bottom">
+            <MenuItems
+              anchor="bottom end"
+              className="border border-neutral-400 bg-neutral-100 dark:border-olive-500 dark:bg-olive-800 focus-visible:outline-none mt-2 rounded-xl z-50"
+            >
               <MenuItem>
-                <a className="block data-focus:bg-neutral-200" href="/settings">
+                <Link
+                  className="block px-2 py-1 bg-neutral-50 border-neutral-500 dark:border-neutral-500 dark:bg-neutral-900 dark:text-neutral-400 data-focus:text-neutral-900 data-focus:bg-neutral-200 dark:data-focus:text-neutral-200 dark:data-focus:bg-neutral-700"
+                  to="/settings"
+                >
                   Settings
-                </a>
+                </Link>
               </MenuItem>
               <MenuItem>
-                <a className="block data-focus:bg-neutral-200" href="/login">
+                <Link
+                  className="block px-2 py-1 bg-neutral-50 border-neutral-500 dark:border-neutral-500 dark:bg-neutral-900 dark:text-neutral-400 data-focus:text-neutral-900 data-focus:bg-neutral-200 dark:data-focus:text-neutral-200 dark:data-focus:bg-neutral-700"
+                  to="/login"
+                >
                   Login
-                </a>
+                </Link>
               </MenuItem>
               <MenuItem>
-                <a className="block data-focus:bg-neutral-200" href="/license">
+                <Link
+                  className="block px-2 py-1 bg-neutral-50 border-neutral-500 dark:border-neutral-500 dark:bg-neutral-900 dark:text-neutral-400 data-focus:text-neutral-900 data-focus:bg-neutral-200 dark:data-focus:text-neutral-200 dark:data-focus:bg-neutral-700"
+                  to="/license"
+                >
                   Registrieren
-                </a>
+                </Link>
               </MenuItem>
             </MenuItems>
           </Menu>
@@ -129,33 +143,17 @@ export default function Header() {
             </Link> */}
         </div>
 
-        <Popover className="group relative z-50">
-          <PopoverButton className="flex items-center text-sm text-neutral-500">
-            More...
-            <ChevronDownIcon className="size-5 text-neutral-500 group-data-open:rotate-180" />
-          </PopoverButton>
-          <PopoverPanel
-            anchor="bottom"
-            className="flex flex-col justify-between items-start border border-neutral-400 bg-neutral-900 p-4 rounded-md gap-1 w-fit-content max-w-58"
-          >
-            <div className="flex flex-row justify-center items-center gap-3">
-              <p className="text-xs text-center"></p>
-              <p className="text-xs text-center"></p>
-              <p className="text-xs text-center"></p>
-            </div>
-          </PopoverPanel>
-        </Popover>
         {/* Mobile Menu */}
         <Menu as="div" className="relative md:hidden z-50">
           <MenuButton
             role="nav-opener"
-            className="inline-flex justify-center focus:outline-none"
+            className="inline-flex justify-center data-focus:outline-none"
           >
             <Bars3Icon className="h-6 w-6 text-gray-100" />
           </MenuButton>
           <MenuItems
             anchor={{ to: "bottom end", gap: "4px" }}
-            className="mt-6 border border-slate-600 rounded-md shadow-lg focus:outline-none"
+            className="mt-6 border border-slate-600 rounded-md shadow-lg data-focus:outline-none"
             transition
           >
             {navData.map((value, index) => {
