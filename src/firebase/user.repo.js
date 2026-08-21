@@ -57,12 +57,28 @@ export async function getUserData(uid) {
 
   return snapshot.data();
 }
+/* 
+export async function getUserName(uid) {
+  const data = getUserData(uid);
+  return data ? data.username || "" : "";
+}
+
+export async function getUserFavorites(uid) {
+  const data = await getUserData(uid);
+  return data ? data.favorites || [] : [];
+}
+ */
+export async function getUserRecentLocations(uid) {
+  const data = await getUserData(uid);
+  return data ? data.recentLocations || [] : [];
+}
 
 // User-Daten initial anlegen
 export function createUserData(uid) {
   return setDoc(getUserDocument(uid), {
     favorites: [],
     recentLocations: [],
+    currentLocation: null,
   });
 }
 

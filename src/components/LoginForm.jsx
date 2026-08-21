@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase/config";
 import { useForm } from "react-hook-form";
@@ -8,6 +8,7 @@ import schema from "../schemas/user";
 import styles from "../Styles";
 import InputField from "./InputField";
 import Button from "./ui/Button";
+import { getUserData } from "../firebase/user.repo";
 
 /**
  * Controlled component for a sign-in form.
@@ -16,12 +17,7 @@ import Button from "./ui/Button";
  * @returns JSX.Element
  */
 export default function LoginForm({ onSwitch }) {
-  //const [email, setEmail] = useState("");
-  //const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  //const [email, setEmail] = useState("");
-  //const [password, setPassword] = useState("");
-  //const [isLoggedIn, setIsLoggedIn] = useState(false);
   const {
     register,
     handleSubmit,
@@ -33,10 +29,10 @@ export default function LoginForm({ onSwitch }) {
     resolver: yupResolver(schema),
   });
 
-  /*  useEffect(() => {
+  useEffect(() => {
     // Autofocus on the first input field when the component mounts
     setFocus("email");
-  }, []); */
+  }, []);
 
   async function onSubmit(data) {
     const { email, password } = data;
@@ -45,6 +41,9 @@ export default function LoginForm({ onSwitch }) {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       console.log("Login erfolgreich!");
+      const userData = await getUserData(auth.currentUser.uid);
+      const userName = userData?.username;
+      console.log("User data userName:", userName);
     } catch (err) {
       setError("Login fehlgeschlagen");
     }

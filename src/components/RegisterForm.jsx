@@ -1,10 +1,11 @@
-import React, { useRef, useEffect, useState } from "react";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import React, { useEffect, useState } from "react";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { createUserData } from "../firebase/user.repo";
 import { auth } from "../firebase/config";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import schema from "../schemas/user";
+import { schemaRegister } from "../schemas/user";
 import styles from "../Styles";
 import InputField from "./InputField";
 import Button from "./ui/Button";
@@ -14,12 +15,7 @@ import Button from "./ui/Button";
  * @returns JSX.Element
  */
 export default function RegisterForm({ onSwitch }) {
-  //const [email, setEmail] = useState("");
-  //const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  //const [email, setEmail] = useState("");
-  //const [password, setPassword] = useState("");
-  //const [isLoggedIn, setIsLoggedIn] = useState(false);
   const {
     register,
     handleSubmit,
@@ -28,21 +24,25 @@ export default function RegisterForm({ onSwitch }) {
     formState: { errors, isSubmitting },
   } = useForm({
     mode: "onSubmit",
-    resolver: yupResolver(schema),
+    resolver: yupResolver(schemaRegister),
   });
 
-  /*  useEffect(() => {
+  useEffect(() => {
     // Autofocus on the first input field when the component mounts
     setFocus("email");
-  }, []); */
+  }, []);
 
   async function onSubmit(data) {
-    const { email, password } = data;
+    const { email, password, username } = data;
     console.log("email:", email);
     console.log("password:", password);
+    console.log("username:", username);
     try {
       await createUserWithEmailAndPassword(auth, email, password);
       console.log("Registrierung erfolgreich!");
+      await updateProfile(auth.currentUser, { displayName: username });
+      // Create user data in Firestore without username, since it's already set in the auth profile
+      await createUserData(auth.currentUser.uid);
     } catch (err) {
       setError("Registrierung fehlgeschlagen");
     }
@@ -56,6 +56,7 @@ export default function RegisterForm({ onSwitch }) {
       <p className="text-md font-bold text-neutral-500 dark:text-olive-300">
         Registrierung
       </p>
+      <InputField label="" registration={register("username")} placeholder="User Name*" />
       <InputField label="" registration={register("email")} placeholder="User Email*" />
       <InputField
         label=""
@@ -64,6 +65,9 @@ export default function RegisterForm({ onSwitch }) {
         placeholder="User Password*"
       />
       {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
+      {errors.username && (
+        <p className="text-red-500 text-sm">{errors.username.message}</p>
+      )}
       {errors.password && (
         <p className="text-red-500 text-sm">{errors.password.message}</p>
       )}
@@ -86,29 +90,3 @@ export default function RegisterForm({ onSwitch }) {
     </form>
   );
 }
-
-// src/components/Login.jsx
-/* 
-export default function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-
-  async function handleSubmit(e) {
-    e.preventDefault();
-    setError("");
-
-    try {
-      await signInWithEmailAndPassword(auth, email, password);
-      console.log("Login erfolgreich!")
-    } catch (err) {
-      setError("Login fehlgeschlagen");
-    }
-  }
-
-  return (
-    <form onSubmit={handleSubmit}>
-      // ...
-    </form>
-  );
-} */

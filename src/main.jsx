@@ -4,13 +4,19 @@ import "./index.css";
 import App from "./App";
 import { BrowserRouter } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
+import { WeatherDataProvider } from "./context/WeatherDataContext";
+import { UserDataProvider } from "./context/UserDataContext";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <AuthProvider>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
+      <UserDataProvider>
+        <WeatherDataProvider>
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
+        </WeatherDataProvider>
+      </UserDataProvider>
     </AuthProvider>
   </StrictMode>,
 );
