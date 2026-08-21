@@ -1,0 +1,38 @@
+import { createContext } from "react";
+import { useWeatherData } from "../hooks/useWeatherData";
+
+export const WeatherDataContext = createContext();
+
+export const WeatherDataProvider = ({ children }) => {
+  const {
+    getCity,
+    model,
+    results,
+    removeCity,
+    previewCityId,
+    selectedCities,
+    searchLocations,
+    setPreviewCityId,
+    toggleCity,
+    toggleCities,
+  } = useWeatherData();
+
+  return (
+    <WeatherDataContext.Provider
+      value={{
+        getCity,
+        model,
+        results,
+        removeCity,
+        previewCityId,
+        selectedCities,
+        searchLocations,
+        setPreviewCityId,
+        toggleCity,
+        toggleCities,
+      }}
+    >
+      {children}
+    </WeatherDataContext.Provider>
+  );
+};
