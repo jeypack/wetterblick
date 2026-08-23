@@ -1,7 +1,7 @@
-import {useModal} from "../hooks/useModal";
+import {useOverlay} from "../hooks/useOverlay";
 
 export default function ImageModal({src, alt, description}) {
-  const {closeModal} = useModal();
+  const {closeModal} = useOverlay();
 
   return (
     <div className="fixed inset-0 flex items-center justify-center w-full h-screen z-50">

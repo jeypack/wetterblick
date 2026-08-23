@@ -1,17 +1,19 @@
 import Layout from "./Layout";
 import Router from "./Router";
-import { ModalProvider } from "./context/ModalContext";
+import { OverlayProvider } from "./context/OverlayContext";
 import { ThemeProvider } from "./context/ThemeContext";
+import Toast from "./components/ui/Toast";
 
 function App() {
   return (
     <>
       <ThemeProvider>
-        <ModalProvider>
+        <OverlayProvider>
           <Layout>
             <Router />
           </Layout>
-        </ModalProvider>
+          <Toast />
+        </OverlayProvider>
       </ThemeProvider>
     </>
   );

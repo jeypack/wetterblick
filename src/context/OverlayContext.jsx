@@ -1,6 +1,6 @@
 import {createContext, useState} from "react";
 
-export const ModalContext = createContext();
+export const OverlayContext = createContext();
 
 /* export const MODALS = {
     project: ProjectModal,
@@ -8,24 +8,24 @@ export const ModalContext = createContext();
     confirm: ConfirmModal,
 }; */
 
-export const ModalProvider = ({children}) => {
+export const OverlayProvider = ({children}) => {
   const [modal, setModal] = useState({type: null, props: {}});
-  const [message, setMessage] = useState(null);
+  const [toastMessage, setToastMessage] = useState(null);
 
   const openModal = (type, props = {}) => setModal({type, props});
   const closeModal = () => setModal({type: null, props: {}});
 
   return (
-    <ModalContext.Provider
+    <OverlayContext.Provider
       value={{
         modal,
         openModal,
         closeModal,
-        message,
-        setMessage,
+        toastMessage,
+        setToastMessage,
       }}
     >
       {children}
-    </ModalContext.Provider>
+    </OverlayContext.Provider>
   );
 };

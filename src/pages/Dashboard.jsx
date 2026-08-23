@@ -1,5 +1,4 @@
 import { useMemo, useState } from "react";
-import { useModal } from "../hooks/useModal";
 import { Checkbox } from "@headlessui/react";
 import PageTitle from "../components/PageTitle";
 import WeatherPanel from "../components/WeatherPanel";
@@ -25,7 +24,6 @@ export default function Dashboard() {
     toggleCity,
     toggleCities,
   } = useWeather();
-  const { message } = useModal();
 
   const [textOpen, setTextOpen] = useState(true);
 
@@ -164,7 +162,6 @@ export default function Dashboard() {
           />
         </section>
       </main>
-      <Toast message={message} />
     </>
   );
 }

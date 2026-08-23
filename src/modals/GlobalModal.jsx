@@ -1,4 +1,4 @@
-import {useModal} from "../hooks/useModal";
+import {useOverlay} from "../hooks/useOverlay";
 import ImageModal from "./ImageModal";
 import ProjectModal from "./ProjectModal";
 
@@ -7,7 +7,7 @@ import ProjectModal from "./ProjectModal";
  * @returns {JSX.Element|null} The modal component or null if no modal is open.
  */
 export default function GlobalModal() {
-  const {modal, closeModal} = useModal();
+  const {modal, closeModal} = useOverlay();
 
   if (!modal || !modal.type) return null;
 
