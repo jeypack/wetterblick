@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 import { getGeocodingData, getWeatherForecast, getWeather } from "../data/api";
+import { useUserData } from "../hooks/useUserData";
 
 export function useWeatherData(initialLocation = "") {
   const [model, setModel] = useState("knmi_seamless");
   const [previewCityId, setPreviewCityId] = useState(null);
   const [results, setResults] = useState([]);
   const [selectedCities, setSelectedCities] = useState(new Set());
+  const { updateRecentLocations } = useUserData();
 
   const update = (modelToUse, weatherData) => {
     setModel(modelToUse);
@@ -41,6 +43,7 @@ export function useWeatherData(initialLocation = "") {
         : await getWeather(location, modelToUse);
 
     update(modelToUse, weatherData);
+    await updateRecentLocations(location);
   };
 
   const removeCity = (id) => {

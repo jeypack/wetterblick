@@ -41,21 +41,24 @@ export default function CityList({ cities, selectedCities, onChange }) {
 
   return (
     <div className="flex flex-row gap-4 px-2 w-full md:flex-col md:justify-start md:items-start md:gap-2">
-      <ThemeButton
-        onClick={(checked) => {
-          //console.log("SelectAllButton: checked", checked);
-          if (typeof onChange === "function") {
-            onChange({
-              type: "all",
-              checked: selectedCities.size !== cities.length,
-            });
-          }
-        }}
-        active={selectedCities.size === cities.length}
-        size="xs"
-      >
-        Toggle All
-      </ThemeButton>
+      {cities.length > 0 && (
+        <ThemeButton
+          onClick={(checked) => {
+            //console.log("SelectAllButton: checked", checked);
+            if (typeof onChange === "function") {
+              onChange({
+                type: "all",
+                checked: selectedCities.size !== cities.length,
+              });
+            }
+          }}
+          active={selectedCities.size === cities.length}
+          size="xs"
+        >
+          Toggle All
+        </ThemeButton>
+      )}
+
       <div className="mt-4 flex flex-row flex-wrap justify-start items-start gap-1 w-full md:flex-col md:justify-start md:items-start">
         {cities.map((item) => (
           <CityCheckbox

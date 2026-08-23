@@ -14,7 +14,7 @@ import {
 import { ChartArea, Moon, Sun, Eclipse, UserShield, ChevronDownIcon } from "lucide-react";
 import { Bars3Icon } from "@heroicons/react/24/outline";
 import React from "react";
-import { useModal } from "../hooks/useModal";
+import { useOverlay } from "../hooks/useOverlay";
 import { useTheme } from "../hooks/useTheme";
 import ThemeButton from "./ui/ThemeButton";
 import ThemeMenu from "./ThemeMenu";
@@ -33,7 +33,7 @@ const navData = [
 export default function Header() {
   const { theme, setTheme, updateTheme } = useTheme();
   const { user } = useAuth();
-  const { setMessage } = useModal();
+  const { setToastMessage } = useOverlay();
   // console.log("Header: user", user);
 
   const handleLogout = async () => {
@@ -42,7 +42,7 @@ export default function Header() {
     try {
       await signOut(auth);
       console.log("User logged out successfully");
-      setMessage("Erfolgreich abgemeldet");
+      setToastMessage("Erfolgreich abgemeldet");
     } catch (error) {
       console.error("Error logging out:", error);
     }

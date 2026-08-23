@@ -83,14 +83,14 @@ export function createUserData(uid) {
 }
 
 // Favorites aktualisieren
-export function updateFavorites(uid, favorites) {
+export function saveFavorites(uid, favorites) {
   return updateDoc(getUserDocument(uid), {
     favorites,
   });
 }
 
 // Recent Locations aktualisieren
-export function updateRecentLocations(uid, recentLocations) {
+export function saveRecentLocations(uid, recentLocations) {
   return updateDoc(getUserDocument(uid), {
     recentLocations,
   });

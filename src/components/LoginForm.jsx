@@ -8,7 +8,6 @@ import schema from "../schemas/user";
 import styles from "../Styles";
 import InputField from "./InputField";
 import Button from "./ui/Button";
-import { getUserData } from "../firebase/user.repo";
 
 /**
  * Controlled component for a sign-in form.
@@ -41,9 +40,9 @@ export default function LoginForm({ onSwitch }) {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       console.log("Login erfolgreich!");
-      const userData = await getUserData(auth.currentUser.uid);
-      const userName = userData?.username;
-      console.log("User data userName:", userName);
+      //const userData = await getUserData(auth.currentUser.uid);
+      const userName = auth.currentUser.displayName || "Unbekannt";
+      console.log("User displayName:", auth.currentUser.displayName);
     } catch (err) {
       setError("Login fehlgeschlagen");
     }
