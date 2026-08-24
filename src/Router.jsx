@@ -1,17 +1,17 @@
 import {Routes, Route} from "react-router-dom";
-//import Home from "./pages/Home";
 import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
 import Login from "./pages/Login";
+import Favorites from "./pages/Favorites";
 
 export default function Router() {
   return (
     <Routes>
       <Route path="/" element={<Dashboard />} />
       <Route path="/home" element={<Dashboard />} />
+      <Route path="/favorites" element={<Favorites />} />
       <Route path="/login" element={<Login />} />
-      {/* <Route path="/projects" element={<Projects />} />
-      <Route path="/faq" element={<Faq />} />
+      {/* <Route path="/faq" element={<Faq />} />
       <Route path="/contact" element={<Contact />} /> */}
       <Route path="/*" element={<NotFound />} />
     </Routes>

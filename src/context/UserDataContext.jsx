@@ -12,6 +12,10 @@ export const UserDataProvider = ({ children }) => {
   const [recentLocations, setRecentLocations] = useState([]);
   const [favorites, setFavorites] = useState([]);
 
+  const isFavorite = (location) => {
+    return favorites.some((fav) => fav.id === location.id);
+  };
+
   const updateRecentLocations = async (location) => {
     // Firestore aktualisieren
     const hasLocation = recentLocations.some((item) => item.id === location.id);
@@ -75,6 +79,7 @@ export const UserDataProvider = ({ children }) => {
     <UserDataContext.Provider
       value={{
         currentLocation,
+        isFavorite,
         recentLocations,
         favorites,
         updateRecentLocations,
