@@ -1,9 +1,10 @@
 import { createContext } from "react";
 import { useWeatherData } from "../hooks/useWeatherData";
 
-export const WeatherDataContext = createContext();
+const WeatherDataContext = createContext();
+export { WeatherDataContext };
 
-export const WeatherDataProvider = ({ children }) => {
+const WeatherDataProvider = ({ children }) => {
   const {
     getCity,
     model,
@@ -36,3 +37,4 @@ export const WeatherDataProvider = ({ children }) => {
     </WeatherDataContext.Provider>
   );
 };
+export default WeatherDataProvider;

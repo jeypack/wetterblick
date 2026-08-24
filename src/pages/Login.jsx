@@ -1,6 +1,6 @@
 import { useState } from "react";
 import PageTitle from "../components/PageTitle";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../hooks/useAuth";
 import LoginForm from "../components/LoginForm";
 import RegisterForm from "../components/RegisterForm";
 import { Navigate } from "react-router";

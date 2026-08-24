@@ -18,7 +18,7 @@ import { useOverlay } from "../hooks/useOverlay";
 import { useTheme } from "../hooks/useTheme";
 import ThemeButton from "./ui/ThemeButton";
 import ThemeMenu from "./ThemeMenu";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../hooks/useAuth";
 import { getAuth, signOut } from "firebase/auth";
 
 const navData = [

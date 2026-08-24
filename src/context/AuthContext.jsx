@@ -4,8 +4,9 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../firebase/config";
 
 const AuthContext = createContext();
+export { AuthContext };
 
-export function AuthProvider({ children }) {
+export default function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -23,5 +24,3 @@ export function AuthProvider({ children }) {
     </AuthContext.Provider>
   );
 }
-// Custom hook to use the AuthContext
-export const useAuth = () => useContext(AuthContext);
