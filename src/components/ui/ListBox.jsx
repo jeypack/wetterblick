@@ -11,7 +11,7 @@ const ListBox = ({ className, label, options, onChange, selectedModel }) => {
     }
   };
   return (
-    <Field>
+    <Field as="div" className="flex flex-col justify-center items-start gap-1 w-full">
       <Label className={"text-neutral-400"}>{label}</Label>
       <Listbox value={selectedValue} onChange={handleChange}>
         <ListboxButton
@@ -24,7 +24,7 @@ const ListBox = ({ className, label, options, onChange, selectedModel }) => {
         </ListboxButton>
         <ListboxOptions
           anchor="bottom"
-          className="border border-neutral-400 bg-neutral-100 dark:border-olive-500 dark:bg-olive-800 rounded-md gap-2 w-fit-content mt-2 focus-visible:outline-none focus:outline-none max-h-60 overflow-y-auto"
+          className="border border-neutral-400 bg-neutral-100 dark:border-olive-500 dark:bg-olive-800 rounded-md gap-2 w-xs mt-2 focus-visible:outline-none focus:outline-none max-h-60 overflow-y-auto"
         >
           {options.map((value, index) => (
             <ListboxOption

@@ -1,13 +1,32 @@
 import { useState, useEffect } from "react";
-import { getGeocodingData, getWeatherForecast, getWeather } from "../data/api";
+import {
+  getGeocodingData,
+  getWeatherForecast,
+  getWeather,
+  getWeatherListCurrent,
+} from "../data/api";
 import { useUserData } from "../hooks/useUserData";
 
+/**
+ * Custom hook to manage weather data and user interactions.
+ * Used in the WeatherDataContext to provide weather data and functions to components.
+ * Do not use this hook directly in components; instead, use the WeatherDataContext useWeather hook.
+ * @param {string} initialLocation - The initial location to fetch weather data for.
+ * @returns {object} - An object containing weather data and functions to manage it.
+ */
 export function useWeatherData(initialLocation = "") {
   const [model, setModel] = useState("knmi_seamless");
   const [previewCityId, setPreviewCityId] = useState(null);
   const [results, setResults] = useState([]);
+  const [favoriteList, setFavoriteList] = useState([]);
+  const [recentList, setRecentList] = useState([]);
   const [selectedCities, setSelectedCities] = useState(new Set());
-  const { updateRecentLocations } = useUserData();
+  const {
+    updateRecentLocations,
+    favorites,
+    recentLocations,
+    isLoading: isUserDataLoading,
+  } = useUserData();
 
   const update = (modelToUse, weatherData) => {
     setModel(modelToUse);
@@ -32,6 +51,30 @@ export function useWeatherData(initialLocation = "") {
     });
 
     setPreviewCityId(weatherData.id);
+  };
+
+  const getWeatherList = async (locations) => {
+    const geoCodings = locations.map((location) => ({
+      latitude: location.latitude,
+      longitude: location.longitude,
+      name: location.name,
+      country: location.country,
+      state: location.state || "",
+      id: location.id,
+    }));
+    const weatherDataList = await getWeatherListCurrent(geoCodings, model);
+    console.log("getWeatherList: weatherDataList", weatherDataList);
+    return weatherDataList;
+  };
+
+  const getFavorites = async () => {
+    if (favorites.length === 0) {
+      setFavoriteList([]);
+      return;
+    }
+    const weatherDataList = await getWeatherList(favorites);
+    console.log("getFavorites: weatherDataList", weatherDataList);
+    setFavoriteList(weatherDataList);
   };
 
   const getCity = async (location, modelParam) => {
@@ -87,12 +130,43 @@ export function useWeatherData(initialLocation = "") {
     return await getGeocodingData(location);
   };
 
+  useEffect(() => {
+    if (isUserDataLoading || recentLocations.length === 0) {
+      return;
+    }
+    const fetchData = async () => {
+      if (recentLocations.length > 0) {
+        const weatherDataList = await getWeatherList(recentLocations);
+        console.log("useWeatherData: weatherDataList", weatherDataList);
+        setRecentList(weatherDataList);
+      }
+    };
+    fetchData();
+  }, [isUserDataLoading, recentLocations]);
+
+  useEffect(() => {
+    if (isUserDataLoading || favorites.length === 0) {
+      return;
+    }
+    const fetchData = async () => {
+     const favoriteData = await getWeatherList(favorites);
+      console.log("useWeatherData: fetchData: favorites", favorites);
+      console.log("useWeatherData: fetchData: favoriteData", favoriteData);
+      setFavoriteList(favoriteData);
+
+    };
+    fetchData();
+  }, [isUserDataLoading, favorites]);
+
   return {
     getCity,
+    getFavorites,
     model,
     results,
     removeCity,
     previewCityId,
+    recentList,
+    favoriteList,
     selectedCities,
     searchLocations,
     setPreviewCityId,
@@ -100,32 +174,3 @@ export function useWeatherData(initialLocation = "") {
     toggleCities,
   };
 }
-
-/* useEffect(() => {
-    const fetchData = async () => {
-      const weatherData = await getWeatherForecast(location);
-      console.log("weatherData", weatherData);
-      setSelectedCities((prevSelected) => {
-        if (!prevSelected.has(weatherData.id)) {
-          const newSelected = new Set(prevSelected);
-          newSelected.add(weatherData.id);
-          return newSelected;
-        }
-        return prevSelected;
-      });
-      setResults((prev) => {
-        const index = prev.findIndex(
-          (city) => city.location === weatherData.location,
-        );
-        if (index !== -1) {
-          prev.splice(index, 1, weatherData);
-          return [...prev];
-          //return prev.map((city, i) => (i === index ? weatherData : city));
-        }
-        return [...prev, weatherData];
-      });
-    };
-    if (location) {
-      fetchData();
-    }
-  }, [location]); */

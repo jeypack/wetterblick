@@ -1,13 +1,13 @@
 import { useMemo, useState } from "react";
 import { Checkbox } from "@headlessui/react";
 import PageTitle from "../components/PageTitle";
-import WeatherPanel from "../components/WeatherPanel";
 import { useWeather } from "../hooks/useWeather";
 import CitySearch from "../components/dashboard/CitySearch";
 import CityList from "../components/dashboard/CityList";
 import Sidebar from "../components/dashboard/Sidebar";
 import ComparePanel from "../components/dashboard/ComparePanel";
 import Toast from "../components/ui/Toast";
+import RecentLocations from "../components/RecentLocations";
 
 const DAYS_OF_WEEK = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
@@ -18,6 +18,7 @@ export default function Dashboard() {
     results,
     removeCity,
     previewCityId,
+    recentList,
     selectedCities,
     searchLocations,
     setPreviewCityId,
@@ -122,23 +123,28 @@ export default function Dashboard() {
   return (
     <>
       <PageTitle title="JP Weather - Dashboard" />
-      <main className="flex-1 flex flex-col justify-between items-start gap-2 mb-8 p-8 w-full md:flex-row">
+      <main className="flex-1 flex flex-col justify-between items-start gap-2 mb-8 md:p-8 w-full md:flex-row">
         <Sidebar>
           <CitySearch getCity={getCity} model={model} searchLocations={searchLocations} />
-          <p className="text-neutral-400 pl-1">Filter mit Städten…</p>
-          <CityList
+          {/* <p className="text-neutral-400 pl-1">Filter mit Städten…</p> */}
+          {/* <CityList
             cities={results}
             selectedCities={selectedCities}
             onChange={handleCityChange}
+          /> */}
+          <RecentLocations
+            previewCityId={previewCityId}
+            recentList={recentList}
+            setPreviewCityId={setPreviewCityId}
           />
         </Sidebar>
         <section className="w-full p-2">
-          <ComparePanel
+          {/* <ComparePanel
             dailyData={getDaylyData(selectedCities, results)}
             previewCityId={previewCityId}
             selectedCitiesData={getSelectedCitiesData(selectedCities, results)}
             setPreviewCityId={setPreviewCityId}
-          />
+          /> */}
           <div className="flex flex-row justify-start items-end gap-4 text-neutral-500 dark:text-neutral-300 text-sm text-left mx-auto p-4 container w-full">
             <p className={pClassName}>
               Bekommen Sie Echtzeit-Wetterdaten und Vorhersagen für jeden Standort
@@ -155,11 +161,7 @@ export default function Dashboard() {
               {textOpen ? "[weniger]" : "[mehr]"}
             </button>
           </div>
-          <WeatherPanel
-            previewCityId={previewCityId}
-            results={results}
-            setPreviewCityId={setPreviewCityId}
-          />
+          
         </section>
       </main>
     </>

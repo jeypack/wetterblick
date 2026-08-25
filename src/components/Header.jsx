@@ -23,7 +23,7 @@ import { getAuth, signOut } from "firebase/auth";
 
 const navData = [
   { id: 1, name: "Wetter", path: "/" },
-  { id: 2, name: "Favoriten", path: "/favorites" },
+  { id: 2, name: "Meine Orte", path: "/favorites" },
   /* { id: 3, name: "User", path: "/user" },
   {name: "Projects", path: "/projects"},
   {name: "FAQ", path: "/faq"},

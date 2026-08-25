@@ -7,10 +7,13 @@ export { WeatherDataContext };
 const WeatherDataProvider = ({ children }) => {
   const {
     getCity,
+    getFavorites,
     model,
     results,
     removeCity,
     previewCityId,
+    recentList,
+    favoriteList,
     selectedCities,
     searchLocations,
     setPreviewCityId,
@@ -22,10 +25,13 @@ const WeatherDataProvider = ({ children }) => {
     <WeatherDataContext.Provider
       value={{
         getCity,
+        getFavorites,
         model,
         results,
         removeCity,
         previewCityId,
+        recentList,
+        favoriteList,
         selectedCities,
         searchLocations,
         setPreviewCityId,

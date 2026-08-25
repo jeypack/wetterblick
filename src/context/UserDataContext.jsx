@@ -1,14 +1,14 @@
 // src/context/UserDataContext.jsx
 import { createContext, useContext, useEffect, useState } from "react";
 import { getUserData, saveRecentLocations, saveFavorites } from "../firebase/user.repo";
-import { useAuth } from "./AuthContext";
+import { useAuth } from "../hooks/useAuth";
 
-export const UserDataContext = createContext(null);
+const UserDataContext = createContext(null);
+export { UserDataContext };
 
-export const UserDataProvider = ({ children }) => {
+const UserDataProvider = ({ children }) => {
   const { user } = useAuth();
-
-  const [currentLocation, setCurrentLocation] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
   const [recentLocations, setRecentLocations] = useState([]);
   const [favorites, setFavorites] = useState([]);
 
@@ -23,7 +23,6 @@ export const UserDataProvider = ({ children }) => {
       const updatedLocations = [location, ...recentLocations].slice(0, 20); // Keep only the last 20 locations
       try {
         setRecentLocations(updatedLocations);
-        setCurrentLocation(location);
         // Update Firestore
         if (user) {
           await saveRecentLocations(user.uid, updatedLocations);
@@ -59,17 +58,18 @@ export const UserDataProvider = ({ children }) => {
     async function fetchUserData() {
       // If no user is logged in, reset the state to default values
       if (!user) {
-        //setCurrentLocation(null);
         setRecentLocations([]);
         setFavorites([]);
+        setIsLoading(false);
         return;
       }
 
+      setIsLoading(true);
       const userData = await getUserData(user.uid);
 
-      setCurrentLocation(userData?.currentLocation || null);
       setRecentLocations(userData?.recentLocations || []);
       setFavorites(userData?.favorites || []);
+      setIsLoading(false);
     }
 
     fetchUserData();
@@ -78,8 +78,8 @@ export const UserDataProvider = ({ children }) => {
   return (
     <UserDataContext.Provider
       value={{
-        currentLocation,
         isFavorite,
+        isLoading,
         recentLocations,
         favorites,
         updateRecentLocations,
@@ -90,3 +90,5 @@ export const UserDataProvider = ({ children }) => {
     </UserDataContext.Provider>
   );
 };
+
+export default UserDataProvider;

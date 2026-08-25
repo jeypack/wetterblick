@@ -18,7 +18,7 @@ const directionsFull = [
 ];
 const directions = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"];
 
-const CityWeather = ({ previewCityId, weather, setPreviewCityId }) => {
+const CityWeatherCard = ({ previewCityId, weather, setPreviewCityId }) => {
   const {
     time,
     temperature,
@@ -26,7 +26,7 @@ const CityWeather = ({ previewCityId, weather, setPreviewCityId }) => {
     windSpeed,
     windDirection: angle,
     weatherCode,
-  } = weather?.current || {};
+  } = weather ?? {};
   const { updateFavorites, isFavorite } = useUserData();
 
   /* const getFirstUpper = (str) => {
@@ -34,17 +34,17 @@ const CityWeather = ({ previewCityId, weather, setPreviewCityId }) => {
   }; */
   const handleFavoriteClick = () => {
     // set favorite city in context
-    console.log("CityWeather: handleFavoriteClick: weather.id", weather.id);
+    console.log("CityWeatherCard: handleFavoriteClick: weather.id", weather.id);
     updateFavorites(weather.location);
   };
 
-  const model = getWeatherModel(weather.model);
+  //const model = getWeatherModel(weather.model);
 
   const direction = directions[Math.round(angle / 45) % 8];
   const startPos = { x: 30, y: 30, dif: 16 };
 
   const containerClassName =
-    "cursor-pointer flex flex-col justify-center items-start gap-2 border-2 p-4 rounded-md w-auto min-w-50 hover:-translate-y-1 transition-transform duration-200 ease-in-out hover:shadow-lg";
+    "cursor-pointer flex flex-col justify-center items-start gap-2 border-2 p-4 rounded-md w-auto min-w-xs hover:-translate-y-1 transition-transform duration-200 ease-in-out hover:shadow-lg";
   const selectedClassName =
     previewCityId === weather.id
       ? "bg-neutral-100 border-neutral-400 shadow-neutral-900/20 dark:bg-neutral-800 dark:border-neutral-600 dark:hover:shadow-neutral-900/20  shadow-lg -translate-y-1"
@@ -57,7 +57,7 @@ const CityWeather = ({ previewCityId, weather, setPreviewCityId }) => {
 
   const isFavoriteCity = isFavorite(weather.location);
   /* console.log(
-    "CityWeather: angle",
+    "CityWeatherCard: angle",
     angle,
     "direction",
     direction,
@@ -158,11 +158,11 @@ const CityWeather = ({ previewCityId, weather, setPreviewCityId }) => {
             timeStyle: "short",
           })}
       </div>
-      <div className="block text-neutral-400 text-xs truncate max-w-44">
+      {/* <div className="block text-neutral-400 text-xs truncate max-w-44">
         {model.name + " (" + model.model + ")"}
-      </div>
+      </div> */}
     </div>
   );
 };
 
-export default React.memo(CityWeather);
+export default React.memo(CityWeatherCard);

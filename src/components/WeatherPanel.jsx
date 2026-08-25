@@ -1,5 +1,5 @@
 import React from "react";
-import CityWeather from "./dashboard/CityWeather";
+import CityWeatherCard from "./dashboard/CityWeatherCard";
 
 const WeatherPanel = ({ previewCityId, results, setPreviewCityId }) => {
   const currentWeather = results.at(-1);
@@ -14,7 +14,7 @@ const WeatherPanel = ({ previewCityId, results, setPreviewCityId }) => {
       </p>
       <div className="flex flex-wrap justify-center items-center gap-4">
         {results.map((result) => (
-          <CityWeather
+          <CityWeatherCard
             key={result.id}
             previewCityId={previewCityId}
             setPreviewCityId={setPreviewCityId}

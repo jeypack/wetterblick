@@ -13,6 +13,13 @@ export const weatherModels = [
   { name: "KNMI Forecast", model: "knmi_seamless" },
 ];
 
+
+export const getWeatherModel = (modelName) => {
+  const model = weatherModels.find((item) => item.model === modelName);
+  return model ? model : null;
+};
+
+
 async function getGeocoding(location) {
   const url = new URL(GEOCODING_URL);
   url.searchParams.append("name", location);
@@ -29,16 +36,13 @@ async function getGeocoding(location) {
   }
 }
 
-function getMappedWeatherData(location, weatherData, model) {
+function getMappedWeatherDataForecast(location, weatherData, model) {
   if (!weatherData) {
     return null;
   }
   const mappedWeatherData = {
-    //id: uuidv4(),
     id: `${location.latitude}-${location.longitude}`,
     location: location,
-    //latitude: weatherData.latitude,
-    //longitude: weatherData.longitude,
     model: model,
     current: {
       temperature: weatherData.current.temperature_2m,
@@ -80,7 +84,7 @@ function getMappedWeatherData(location, weatherData, model) {
   return mappedWeatherData;
 }
 
-async function getWeatherData(latitude, longitude, model) {
+async function getWeatherDataForecast(latitude, longitude, model) {
   const url = new URL(OPEN_METEO_URL);
   url.searchParams.append("latitude", latitude);
   url.searchParams.append("longitude", longitude);
@@ -97,6 +101,30 @@ async function getWeatherData(latitude, longitude, model) {
   //url.searchParams.append("hourly", "temperature_2m,relative_humidity_2m,weather_code");
   url.searchParams.append("timezone", "auto");
   url.searchParams.append("models", model);
+  try {
+    const response = await fetch(url.toString());
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching weather data:", error);
+    return {};
+  }
+}
+
+//https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&current=temperature_2m,relative_humidity_2m,apparent_temperature,is_day,weather_code,wind_speed_10m,wind_direction_10m,cloud_cover,surface_pressure&utm_source=chatgpt.com
+async function getWeatherDataListCurrent(latitudes, longitudes, model) {
+  const url = new URL(OPEN_METEO_URL);
+  url.searchParams.append("latitude", latitudes);
+  url.searchParams.append("longitude", longitudes);
+  url.searchParams.append(
+    "current",
+    "apparent_temperature,temperature_2m,relative_humidity_2m,weather_code,rain,snowfall,cloudcover,surface_pressure,windspeed_10m,winddirection_10m",
+  );
+  url.searchParams.append("timezone", "auto");
+  //url.searchParams.append("models", model);
   try {
     const response = await fetch(url.toString());
     if (!response.ok) {
@@ -129,10 +157,41 @@ export async function getGeocodingData(location) {
 
 export async function getWeather(geoCoding, model = "knmi_seamless") {
   const { latitude, longitude } = geoCoding;
-  const weatherData = await getWeatherData(latitude, longitude, model);
-  const mappedWeatherData = getMappedWeatherData(geoCoding, weatherData, model);
+  const weatherData = await getWeatherDataForecast(latitude, longitude, model);
+  const mappedWeatherData = getMappedWeatherDataForecast(geoCoding, weatherData, model);
   console.log("Weather mappedWeatherData:", mappedWeatherData);
   return mappedWeatherData;
+}
+
+export async function getWeatherListCurrent(geoCodings, model = "knmi_seamless") {
+  const latitudes = geoCodings.map(({ latitude }) => latitude).join(",");
+  const longitudes = geoCodings.map(({ longitude }) => longitude).join(",");
+  const weatherDataList = await getWeatherDataListCurrent(latitudes, longitudes, model);
+  //console.log("getWeatherListCurrent weatherDataList:", weatherDataList, "geoCodings", geoCodings);
+  const list = weatherDataList?.length > 0 ? weatherDataList : [weatherDataList];
+  //console.log("Weather Data List:", list);
+  const mappedWeatherDataList = geoCodings.map((geoCoding, index) => {
+    // const geoCoding = geoCodings[index];
+    const data = list[index];
+    //console.log("getWeatherListCurrent geoCoding ", geoCoding);
+    //console.log("getWeatherListCurrent Data ", data);
+    return {
+      id: `${data.latitude}-${data.longitude}`,
+      location: geoCoding,
+      temperature: data.current.temperature_2m,
+      apparentTemperature: data.current.apparent_temperature,
+      relativeHumidity: data.current.relative_humidity_2m,
+      windSpeed: data.current.windspeed_10m,
+      windDirection: data.current.winddirection_10m,
+      time: data.current.time,
+      pressure: data.current.surface_pressure,
+      weatherCode: data.current.weather_code,
+      cloudCover: data.current.cloudcover,
+      rain: data.current.rain,
+      snowfall: data.current.snowfall,
+    };
+  });
+  return mappedWeatherDataList;
 }
 
 export async function getWeatherForecast(location, model = "knmi_seamless") {
@@ -152,9 +211,9 @@ export async function getWeatherForecast(location, model = "knmi_seamless") {
     "Model:",
     model,
   ); */
-  const weatherData = await getWeatherData(latitude, longitude, model);
+  const weatherData = await getWeatherDataForecast(latitude, longitude, model);
   //console.log("Weather Data:", weatherData);
-  const mappedWeatherData = getMappedWeatherData(geoCoding, weatherData, model);
+  const mappedWeatherData = getMappedWeatherDataForecast(geoCoding, weatherData, model);
   //console.log("Weather mappedWeatherData:", mappedWeatherData);
   return mappedWeatherData;
   // return weatherData;
@@ -170,36 +229,52 @@ export async function getWeatherForecast(location, model = "knmi_seamless") {
 + Add City
 */
 
+/* 
+Code	Beschreibung
+0	Klarer Himmel
+1, 2, 3	Überwiegend klar, teils bewölkt und bedeckt
+45, 48	Nebel und sich ablagernder Raureifnebel
+51, 53, 55	Nieselregen: Leichte, mittlere und starke Intensität
+56, 57	Gefrierender Nieselregen: Leichte und dichte Intensität
+61, 63, 65	Regen: Leichte, mäßige und starke Intensität
+66, 67	Gefrierender Regen: Leichte und starke Intensität
+71, 73, 75	Schneefall: Leichte, mäßige und starke Intensität
+77	Schneekörner
+80, 81, 82	Regenschauer: Leicht, mäßig und heftig
+85, 86	Leichte und starke Schneeschauer
+95 *	Gewitter: Leicht bis mäßig
+96, 99 *	Gewitter mit leichtem und schwerem Hagel
+*/
 /* Weather Codes (WMO)*/
 export const weatherCodes = [
-  { code: 0, name: "Sunny" },
-  { code: 1, name: "Mostly Clear" },
-  { code: 2, name: "Partly Cloudy" },
-  { code: 3, name: "Cloudy" },
-  { code: 45, name: "Fog" },
-  { code: 48, name: "Freezing Fog" },
-  { code: 51, name: "Light Drizzle" },
-  { code: 53, name: "Drizzle" },
-  { code: 55, name: "Heavy Drizzle" },
-  { code: 56, name: "Light Freezing Drizzle" },
-  { code: 57, name: "Freezing Drizzle" },
-  { code: 61, name: "Light Rain" },
-  { code: 63, name: "Rain" },
-  { code: 65, name: "Heavy Rain" },
-  { code: 66, name: "Light Freezing Rain" },
-  { code: 67, name: "Freezing Rain" },
-  { code: 71, name: "Light Snow" },
-  { code: 73, name: "Snow" },
-  { code: 75, name: "Heavy Snow" },
-  { code: 77, name: "Snow Grains" },
-  { code: 80, name: "Light Rain Shower" },
-  { code: 81, name: "Rain Shower" },
-  { code: 82, name: "Heavy Rain Shower" },
-  { code: 85, name: "Snow Shower" },
-  { code: 86, name: "Heavy Snow Shower" },
-  { code: 95, name: "Thunderstorm" },
-  { code: 96, name: "Hailstorm" },
-  { code: 99, name: "Heavy Hailstorm" },
+  { code: 0, name: "Sunny", de: "Klarer Himmel" },
+  { code: 1, name: "Mostly Clear", de: "Überwiegend klar" },
+  { code: 2, name: "Partly Cloudy", de: "Teils bewölkt" },
+  { code: 3, name: "Cloudy", de: "Bedeckt" },
+  { code: 45, name: "Fog", de: "Nebel" },
+  { code: 48, name: "Freezing Fog", de: "Raureifnebel" },
+  { code: 51, name: "Light Drizzle", de: "Leichter Nieselregen" },
+  { code: 53, name: "Drizzle", de: "Mäßiger Nieselregen" },
+  { code: 55, name: "Heavy Drizzle", de: "Starker Nieselregen" },
+  { code: 56, name: "Light Freezing Drizzle", de: "Leichter gefrierender Nieselregen" },
+  { code: 57, name: "Freezing Drizzle", de: "Dichter gefrierender Nieselregen" },
+  { code: 61, name: "Light Rain", de: "Leichter Regen" },
+  { code: 63, name: "Rain", de: "Mäßiger Regen" },
+  { code: 65, name: "Heavy Rain", de: "Starker Regen" },
+  { code: 66, name: "Light Freezing Rain", de: "Leichter gefrierender Regen" },
+  { code: 67, name: "Freezing Rain", de: "Starker gefrierender Regen" },
+  { code: 71, name: "Light Snow", de: "Leichter Schneefall" },
+  { code: 73, name: "Snow", de: "Mäßiger Schneefall" },
+  { code: 75, name: "Heavy Snow", de: "Starker Schneefall" },
+  { code: 77, name: "Snow Grains", de: "Schneekörner" },
+  { code: 80, name: "Light Rain Shower", de: "Leichte Regenschauer" },
+  { code: 81, name: "Rain Shower", de: "Mäßige Regenschauer" },
+  { code: 82, name: "Heavy Rain Shower", de: "Heftige Regenschauer" },
+  { code: 85, name: "Snow Shower", de: "Leichte Schneeschauer" },
+  { code: 86, name: "Heavy Snow Shower", de: "Starke Schneeschauer" },
+  { code: 95, name: "Thunderstorm", de: "Gewitter: Leicht bis mäßig" },
+  { code: 96, name: "Hailstorm", de: "Gewitter mit leichtem Hagel" },
+  { code: 99, name: "Heavy Hailstorm", de: "Gewitter mit schwerem Hagel" },
 ];
 /* 
 const sampleWeatherData = {
