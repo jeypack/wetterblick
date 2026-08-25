@@ -1,5 +1,5 @@
 import React from "react";
-import CityCard from "./dashboard/CityCard";
+import CityCard from "./CityCard";
 
 const RecentLocations = ({ previewCityId, recentList, setPreviewCityId }) => {
   //const currentWeather = results.at(-1);
@@ -17,7 +17,7 @@ const RecentLocations = ({ previewCityId, recentList, setPreviewCityId }) => {
         <span className="font-bold text-neutral-300">{currentWeather.location.name}</span>
       </p> */}
       <div className="block w-full text-neutral-400 text-xs">
-        {"Last: " +
+        {"Stand: " +
           new Date(time).toLocaleString("de-DE", {
             dateStyle: "short",
             timeStyle: "short",

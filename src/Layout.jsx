@@ -1,6 +1,4 @@
 import Header from "./components/Header";
-import Hero from "./components/Hero";
-import Toast from "./components/ui/Toast";
 
 export default function Layout({ children }) {
   return (

@@ -1,13 +1,13 @@
 import React from "react";
-import { useUserData } from "../../hooks/useUserData";
 import WeatherIcon from "./WeatherIcon";
+import { useWeather } from "../../hooks/useWeather";
 
 const CityCard = ({ previewCityId, weather, setPreviewCityId }) => {
   const {
     temperature,
     weatherCode,
   } = weather ?? {};
-  const { updateFavorites, isFavorite } = useUserData();
+  const { getCity } = useWeather();
 
   /* const getFirstUpper = (str) => {
     return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
@@ -25,10 +25,16 @@ const CityCard = ({ previewCityId, weather, setPreviewCityId }) => {
       ? "text-neutral-600 dark:text-olive-50"
       : "text-neutral-500 dark:text-neutral-200";
   
+  const handleCityUpdate = async () => {
+    //console.log("inputValue", inputValue, "selectedModel", selectedModel);
+    //getCity(inputValue, selectedModel.model);
+    getCity(weather.location);
+  };
+
   return (
     <div
       className={`${containerClassName} ${selectedClassName}`}
-      onClick={() => setPreviewCityId(weather.id)}
+      onClick={handleCityUpdate}
     >
       <div className="w-full">
         <div

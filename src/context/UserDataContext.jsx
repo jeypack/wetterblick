@@ -18,18 +18,25 @@ const UserDataProvider = ({ children }) => {
 
   const updateRecentLocations = async (location) => {
     // Firestore aktualisieren
-    const hasLocation = recentLocations.some((item) => item.id === location.id);
-    if (!hasLocation) {
-      const updatedLocations = [location, ...recentLocations].slice(0, 20); // Keep only the last 20 locations
-      try {
-        setRecentLocations(updatedLocations);
-        // Update Firestore
-        if (user) {
-          await saveRecentLocations(user.uid, updatedLocations);
-        }
-      } catch (error) {
-        // ggf. State zurücksetzen / Toast anzeigen
+    const existingLocation = recentLocations.find((item) => item.id === location.id);
+    let updatedLocations;
+    if (existingLocation) {
+      // Move the existing location to the front of the list
+      updatedLocations = [
+        existingLocation,
+        ...recentLocations.filter((item) => item.id !== location.id),
+      ];
+    } else {
+      updatedLocations = [location, ...recentLocations].slice(0, 20); // Keep only the last 20 locations
+    }
+    try {
+      setRecentLocations(updatedLocations);
+      // Update Firestore
+      if (user) {
+        await saveRecentLocations(user.uid, updatedLocations);
       }
+    } catch (error) {
+      // ggf. State zurücksetzen / Toast anzeigen
     }
   };
 

@@ -6,17 +6,11 @@ import {
   MenuItems,
   MenuItem,
   MenuSeparator,
-  Button,
-  Popover,
-  PopoverButton,
-  PopoverPanel,
 } from "@headlessui/react";
-import { ChartArea, Moon, Sun, Eclipse, UserShield, ChevronDownIcon } from "lucide-react";
+import { UserShield, ChevronDownIcon } from "lucide-react";
 import { Bars3Icon } from "@heroicons/react/24/outline";
 import React from "react";
 import { useOverlay } from "../hooks/useOverlay";
-import { useTheme } from "../hooks/useTheme";
-import ThemeButton from "./ui/ThemeButton";
 import ThemeMenu from "./ThemeMenu";
 import { useAuth } from "../hooks/useAuth";
 import { getAuth, signOut } from "firebase/auth";
@@ -31,7 +25,6 @@ const navData = [
 ];
 
 export default function Header() {
-  const { theme, setTheme, updateTheme } = useTheme();
   const { user } = useAuth();
   const { setToastMessage } = useOverlay();
   // console.log("Header: user", user);
@@ -86,9 +79,10 @@ export default function Header() {
               }
             >
               <UserShield className="mr-2" />
-              <p className="text-md font-bold text-neutral-500 dark:text-olive-400">
+              <div className="flex text-md font-bold text-neutral-500 dark:text-olive-400">
                 {user ? user.displayName : "Guest"}
-              </p>
+                <ChevronDownIcon className="inline-block size-5 ml-1" />
+              </div>
             </MenuButton>
             <MenuItems
               anchor="bottom end"

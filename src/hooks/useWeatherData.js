@@ -79,7 +79,7 @@ export function useWeatherData(initialLocation = "") {
 
   const getCity = async (location, modelParam) => {
     const modelToUse = modelParam || model;
-    console.log("location", location);
+    console.log("getCity location", location);
     const weatherData =
       typeof location === "string"
         ? await getWeatherForecast(location, modelToUse)
@@ -115,6 +115,10 @@ export function useWeatherData(initialLocation = "") {
       }
       return newSelected;
     });
+  };
+
+  const updateCities = (id) => {
+    // Implement the updateCity logic here
   };
 
   const toggleCities = (checked) => {

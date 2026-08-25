@@ -7,7 +7,8 @@ import CityList from "../components/dashboard/CityList";
 import Sidebar from "../components/dashboard/Sidebar";
 import ComparePanel from "../components/dashboard/ComparePanel";
 import Toast from "../components/ui/Toast";
-import RecentLocations from "../components/RecentLocations";
+import RecentLocations from "../components/dashboard/RecentLocations";
+import CityPanel from "../components/dashboard/CityPanel";
 
 const DAYS_OF_WEEK = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
@@ -27,27 +28,8 @@ export default function Dashboard() {
   } = useWeather();
 
   const [textOpen, setTextOpen] = useState(true);
-
-  const getSelectedCitiesData = useMemo(() => {
-    return (selectedCities, results) => {
-      const compareCities = results.filter((city) => selectedCities.has(city.id));
-      const selectedCitiesData = compareCities.map((city) => {
-        return {
-          id: city.id,
-          location: city.location,
-          data: city.current || {},
-          units: city.currentUnits || {},
-          model: city.model || {},
-        };
-      });
-      /* console.log(
-        "getSelectedCitiesData: selectedCitiesData",
-        selectedCitiesData,
-      ); */
-      return selectedCitiesData;
-    };
-  }, [selectedCities, results]);
-
+  /* 
+  
   const getHourlyData = useMemo(() => {
     return (selectedCities, results) => {
       const compareCities = results.filter((city) => selectedCities.has(city.id));
@@ -72,6 +54,36 @@ export default function Dashboard() {
     };
   }, [selectedCities, results]);
 
+  const handleCityChange = ({ id, type, checked }) => {
+    console.log("id", id, "type", type, "checked", checked);
+    // Handle the change in city selection here
+    if (type === "toggle") {
+      toggleCity(id);
+    } else if (type === "remove") {
+      removeCity(id);
+    } else if (type === "all") {
+      //console.log("handleCityChange: type all, checked", checked);
+      // Handle select all logic here
+      toggleCities(checked);
+    }
+  };
+ */
+  const getSelectedCitiesData = useMemo(() => {
+    return (selectedCities, results) => {
+      const compareCities = results.filter((city) => selectedCities.has(city.id));
+      const selectedCitiesData = compareCities.map((city) => {
+        return {
+          id: city.id,
+          location: city.location,
+          data: city.current || {},
+          units: city.currentUnits || {},
+          model: city.model || {},
+        };
+      });
+      return selectedCitiesData;
+    };
+  }, [selectedCities, results]);
+
   const getDaylyData = useMemo(() => {
     return (selectedCities, results) => {
       const compareCities = results.filter((city) => selectedCities.has(city.id));
@@ -87,8 +99,6 @@ export default function Dashboard() {
               city.daily?.temperatureMin[index],
               city.daily?.temperature[index],
             ],
-            /* apparentMax: city.daily?.apparentTemperatureMax[index],
-            apparentMin: city.daily?.apparentTemperatureMin[index], */
             weatherCode: city.daily?.weatherCode[index],
           };
         });
@@ -104,25 +114,11 @@ export default function Dashboard() {
     };
   }, [selectedCities, results]);
 
-  const handleCityChange = ({ id, type, checked }) => {
-    console.log("id", id, "type", type, "checked", checked);
-    // Handle the change in city selection here
-    if (type === "toggle") {
-      toggleCity(id);
-    } else if (type === "remove") {
-      removeCity(id);
-    } else if (type === "all") {
-      //console.log("handleCityChange: type all, checked", checked);
-      // Handle select all logic here
-      toggleCities(checked);
-    }
-  };
-
   const pClassName = "max-w-2xl text-neutral-300 " + (textOpen ? "" : "line-clamp-1");
 
   return (
     <>
-      <PageTitle title="JP Weather - Dashboard" />
+      <PageTitle title="Wetter Suche" />
       <main className="flex-1 flex flex-col justify-between items-start gap-2 mb-8 md:p-8 w-full md:flex-row">
         <Sidebar>
           <CitySearch getCity={getCity} model={model} searchLocations={searchLocations} />
@@ -145,6 +141,10 @@ export default function Dashboard() {
             selectedCitiesData={getSelectedCitiesData(selectedCities, results)}
             setPreviewCityId={setPreviewCityId}
           /> */}
+          <CityPanel
+            dailyData={getDaylyData(selectedCities, results)}
+            previewCityId={previewCityId}
+          />
           <div className="flex flex-row justify-start items-end gap-4 text-neutral-500 dark:text-neutral-300 text-sm text-left mx-auto p-4 container w-full">
             <p className={pClassName}>
               Bekommen Sie Echtzeit-Wetterdaten und Vorhersagen für jeden Standort
@@ -161,7 +161,6 @@ export default function Dashboard() {
               {textOpen ? "[weniger]" : "[mehr]"}
             </button>
           </div>
-          
         </section>
       </main>
     </>

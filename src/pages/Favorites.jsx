@@ -1,5 +1,6 @@
 import { useWeather } from "../hooks/useWeather";
 import CityCard from "../components/dashboard/CityCard";
+import PageTitle from "../components/PageTitle";
 
 const Favorites = () => {
   //const { favorites } = useUserData();
@@ -9,25 +10,28 @@ const Favorites = () => {
   if (!favoriteList || favoriteList.length === 0) {
     return (
       <div className="flex flex-col items-center justify-start min-h-screen py-2">
-        <h1 className="text-3xl font-bold mb-4">Favorites</h1>
-        <p>No favorites yet.</p>
+        <h1 className="text-3xl font-bold mb-4">Meine Orte verwalten</h1>
+        <p>Sie haben noch keine Favoriten.</p>
       </div>
     );
   }
   return (
-    <div className="flex flex-col items-center justify-start min-h-screen py-2">
-      <h1 className="text-3xl font-bold mb-4">Favorites</h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-        {favoriteList.map((result) => (
-          <CityCard
-            key={result.id}
-            previewCityId={previewCityId}
-            setPreviewCityId={setPreviewCityId}
-            weather={result}
-          />
-        ))}
+    <>
+      <PageTitle title="Meine Orte" />
+      <div className="flex flex-col items-center justify-start min-h-screen py-2">
+        <h1 className="text-3xl font-bold mb-4">Verwalte deine persönlichen Wetterorte.</h1>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+          {favoriteList.map((result) => (
+            <CityCard
+              key={result.id}
+              previewCityId={previewCityId}
+              setPreviewCityId={setPreviewCityId}
+              weather={result}
+            />
+          ))}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

@@ -178,6 +178,7 @@ export async function getWeatherListCurrent(geoCodings, model = "knmi_seamless")
     return {
       id: `${data.latitude}-${data.longitude}`,
       location: geoCoding,
+      model: getWeatherModel(model),
       temperature: data.current.temperature_2m,
       apparentTemperature: data.current.apparent_temperature,
       relativeHumidity: data.current.relative_humidity_2m,
