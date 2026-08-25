@@ -122,12 +122,6 @@ export default function Dashboard() {
       <main className="flex-1 flex flex-col justify-between items-start gap-2 mb-8 md:p-8 w-full md:flex-row">
         <Sidebar>
           <CitySearch getCity={getCity} model={model} searchLocations={searchLocations} />
-          {/* <p className="text-neutral-400 pl-1">Filter mit Städten…</p> */}
-          {/* <CityList
-            cities={results}
-            selectedCities={selectedCities}
-            onChange={handleCityChange}
-          /> */}
           <RecentLocations
             previewCityId={previewCityId}
             recentList={recentList}
@@ -135,12 +129,6 @@ export default function Dashboard() {
           />
         </Sidebar>
         <section className="w-full p-2">
-          {/* <ComparePanel
-            dailyData={getDaylyData(selectedCities, results)}
-            previewCityId={previewCityId}
-            selectedCitiesData={getSelectedCitiesData(selectedCities, results)}
-            setPreviewCityId={setPreviewCityId}
-          /> */}
           <CityPanel
             dailyData={getDaylyData(selectedCities, results)}
             previewCityId={previewCityId}
@@ -165,4 +153,22 @@ export default function Dashboard() {
       </main>
     </>
   );
+}
+{
+  /* <p className="text-neutral-400 pl-1">Filter mit Städten…</p> */
+}
+{
+  /* <CityList
+            cities={results}
+            selectedCities={selectedCities}
+            onChange={handleCityChange}
+          /> */
+}
+{
+  /* <ComparePanel
+            dailyData={getDaylyData(selectedCities, results)}
+            previewCityId={previewCityId}
+            selectedCitiesData={getSelectedCitiesData(selectedCities, results)}
+            setPreviewCityId={setPreviewCityId}
+          /> */
 }
