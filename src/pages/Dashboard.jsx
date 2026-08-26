@@ -114,7 +114,7 @@ export default function Dashboard() {
     };
   }, [selectedCities, results]);
 
-  const pClassName = "max-w-2xl text-neutral-300 " + (textOpen ? "" : "line-clamp-1");
+  const pClassName = "max-w-2xl text-neutral-600 dark:text-neutral-300 " + (textOpen ? "" : "line-clamp-1");
 
   return (
     <>

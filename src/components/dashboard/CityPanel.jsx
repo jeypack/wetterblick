@@ -35,7 +35,7 @@ const CityPanel = ({ dailyData, previewCityId }) => {
     return (
       <div className="bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-600 flex flex-col justify-start items-start gap-6 p-4 rounded-xl w-auto min-h-60 transition-shadow duration-200 ease-in-out shadow-md lg:flex-row">
         <div className="flex flex-col justify-start items-start gap-2 relative w-full">
-          <h6 className="text-neutral-400 dark:text-neutral-300 text-lg pl-1">
+          <h6 className="text-neutral-700 dark:text-neutral-300 text-lg pl-1">
             Keine Vorschau verfügbar
           </h6>
         </div>
@@ -66,30 +66,30 @@ const CityPanel = ({ dailyData, previewCityId }) => {
   const time = dateSplit[1]; // Extract time from the formatted date string
 
   return (
-    <div className={"bg-white dark:bg-neutral-800 bg-cover bg-blend-overlay border border-neutral-200 dark:border-neutral-600 flex flex-col justify-start items-start gap-6 p-6 rounded-xl w-auto min-h-60 transition-shadow duration-200 ease-in-out shadow-md lg:flex-row lg:max-w-4xl relative"} style={{ backgroundImage: `url(${getWeatherImage(lastCityData.weatherCode)})` }}>
+    <div className={"bg-neutral-600 dark:bg-neutral-700 bg-cover bg-blend-overlay border border-neutral-200 dark:border-neutral-600 flex flex-col justify-start items-start gap-6 p-6 rounded-xl w-auto min-h-60 transition-shadow duration-200 ease-in-out shadow-md lg:flex-row lg:max-w-4xl relative"} style={{ backgroundImage: `url(${getWeatherImage(lastCityData.weatherCode)})` }}>
       <div className="flex flex-col justify-start items-start gap-2 relative w-fit">
         <WeatherIcon
           code={lastCityData.weatherCode}
-          className="text-neutral-400 dark:text-neutral-200"
+          className="text-neutral-50 dark:text-neutral-200"
           size={90}
         />
-        <div className="flex flex-row justify-around items-start gap-1 text-neutral-400 dark:text-neutral-200 text-nowrap">
+        <div className="flex flex-row justify-around items-start gap-1 text-neutral-50 dark:text-neutral-200 text-nowrap">
           <span className="text-4xl ">{lastCityData.temperature}</span>°
           <span className="text-2xl">C</span>
         </div>
-        <div className="text-neutral-400 dark:text-neutral-200 text-nowrap text-sm">
+        <div className="text-neutral-50 dark:text-neutral-200 text-nowrap text-sm">
           {getWeatherDescription(lastCityData.weatherCode)}
         </div>
-        <div className="flex flex-row justify-start items-center gap-2 mt-2 text-neutral-400 dark:text-neutral-200 text-nowrap text-sm">
+        <div className="flex flex-row justify-start items-center gap-2 mt-2 text-neutral-50 dark:text-neutral-200 text-nowrap text-sm">
           <span>Gefühlt:</span>
           <span className="font-bold">{lastCityData.apparentTemperature}°C</span>
         </div>
-        <div className="flex flex-row justify-start items-center gap-2 text-neutral-400 dark:text-neutral-200 text-nowrap text-sm">
+        <div className="flex flex-row justify-start items-center gap-2 text-neutral-50 dark:text-neutral-200 text-nowrap text-sm">
           <span>Luftfeuchtigkeit:</span>
           <span className="font-bold">{lastCityData.relativeHumidity}%</span>
         </div>
         <hr className="mb-2 mt-1 w-full border-neutral-500 dark:border-neutral-300/70" />
-        <div className="flex flex-row justify-start items-baseline gap-2 text-neutral-400 dark:text-neutral-200 text-nowrap text-sm">
+        <div className="flex flex-row justify-start items-baseline gap-2 text-neutral-50 dark:text-neutral-200 text-nowrap text-sm">
           <MapPin size={15} color="#ffffff" />
           <span className="font-bold">
             {lastCityData.location.name},
@@ -98,11 +98,11 @@ const CityPanel = ({ dailyData, previewCityId }) => {
             {lastCityData.location.country}
           </span>
         </div>
-        <div className="flex flex-row justify-start items-baseline gap-2 text-neutral-400 dark:text-neutral-200 text-nowrap text-sm">
+        <div className="flex flex-row justify-start items-baseline gap-2 text-neutral-50 dark:text-neutral-200 text-nowrap text-sm">
           <CalendarRange size={15} color="#ffffff" />
           <span>{date}</span>
           <span className="font-bold">{time}</span>
-          <span className="text-neutral-400 dark:text-neutral-400 text-xs ml-4">
+          <span className="text-neutral-50 dark:text-neutral-300 text-xs ml-4">
             {lastCityData.model.name}
           </span>
         </div>
