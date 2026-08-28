@@ -1,5 +1,5 @@
 import React from "react";
-import CityWeatherCard from "./dashboard/CityWeatherCard";
+import CityWeatherCard from "./dashboard/CityFavoriteCard";
 
 const WeatherPanel = ({ previewCityId, results, setPreviewCityId }) => {
   const currentWeather = results.at(-1);

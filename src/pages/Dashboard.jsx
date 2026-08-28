@@ -1,12 +1,8 @@
 import { useMemo, useState } from "react";
-import { Checkbox } from "@headlessui/react";
 import PageTitle from "../components/PageTitle";
 import { useWeather } from "../hooks/useWeather";
 import CitySearch from "../components/dashboard/CitySearch";
-import CityList from "../components/dashboard/CityList";
 import Sidebar from "../components/dashboard/Sidebar";
-import ComparePanel from "../components/dashboard/ComparePanel";
-import Toast from "../components/ui/Toast";
 import RecentLocations from "../components/dashboard/RecentLocations";
 import CityPanel from "../components/dashboard/CityPanel";
 
@@ -17,14 +13,11 @@ export default function Dashboard() {
     getCity,
     model,
     results,
-    removeCity,
     previewCityId,
     recentList,
     selectedCities,
     searchLocations,
     setPreviewCityId,
-    toggleCity,
-    toggleCities,
   } = useWeather();
 
   const [textOpen, setTextOpen] = useState(true);
@@ -67,7 +60,7 @@ export default function Dashboard() {
       toggleCities(checked);
     }
   };
- */
+ 
   const getSelectedCitiesData = useMemo(() => {
     return (selectedCities, results) => {
       const compareCities = results.filter((city) => selectedCities.has(city.id));
@@ -113,6 +106,7 @@ export default function Dashboard() {
       return selectedCitiesData;
     };
   }, [selectedCities, results]);
+*/
 
   const pClassName = "max-w-2xl text-neutral-600 dark:text-neutral-300 " + (textOpen ? "" : "line-clamp-1");
 
@@ -121,7 +115,7 @@ export default function Dashboard() {
       <PageTitle title="Wetter Suche" />
       <main className="flex-1 flex flex-col justify-between items-start gap-2 mb-8 md:p-8 w-full md:flex-row">
         <Sidebar>
-          <CitySearch getCity={getCity} model={model} searchLocations={searchLocations} />
+          <CitySearch onSubmit={getCity} model={model} searchLocations={searchLocations} />
           <RecentLocations
             previewCityId={previewCityId}
             recentList={recentList}
@@ -129,10 +123,7 @@ export default function Dashboard() {
           />
         </Sidebar>
         <section className="w-full p-2">
-          <CityPanel
-            dailyData={getDaylyData(selectedCities, results)}
-            previewCityId={previewCityId}
-          />
+          <CityPanel />
           <div className="flex flex-row justify-start items-end gap-4 text-neutral-500 dark:text-neutral-300 text-sm text-left mx-auto p-4 container w-full">
             <p className={pClassName}>
               Bekommen Sie Echtzeit-Wetterdaten und Vorhersagen für jeden Standort

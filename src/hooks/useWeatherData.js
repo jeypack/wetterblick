@@ -62,19 +62,10 @@ export function useWeatherData(initialLocation = "") {
       state: location.state || "",
       id: location.id,
     }));
+    //console.log("getWeatherList: geoCodings", geoCodings);
     const weatherDataList = await getWeatherListCurrent(geoCodings, model);
-    console.log("getWeatherList: weatherDataList", weatherDataList);
+    //console.log("getWeatherList: weatherDataList", weatherDataList);
     return weatherDataList;
-  };
-
-  const getFavorites = async () => {
-    if (favorites.length === 0) {
-      setFavoriteList([]);
-      return;
-    }
-    const weatherDataList = await getWeatherList(favorites);
-    console.log("getFavorites: weatherDataList", weatherDataList);
-    setFavoriteList(weatherDataList);
   };
 
   const getCity = async (location, modelParam) => {
@@ -135,36 +126,61 @@ export function useWeatherData(initialLocation = "") {
   };
 
   useEffect(() => {
-    if (isUserDataLoading || recentLocations.length === 0) {
+    if (isUserDataLoading) {
       return;
     }
+
+    if (recentLocations.length === 0) {
+      setRecentList([]);
+      return;
+    }
+
     const fetchData = async () => {
-      if (recentLocations.length > 0) {
-        const weatherDataList = await getWeatherList(recentLocations);
-        console.log("useWeatherData: weatherDataList", weatherDataList);
-        setRecentList(weatherDataList);
-      }
+      const weatherDataList = await getWeatherList(recentLocations);
+      //console.log("useWeatherData: weatherDataList", weatherDataList);
+      setRecentList(weatherDataList);
     };
     fetchData();
   }, [isUserDataLoading, recentLocations]);
 
   useEffect(() => {
-    if (isUserDataLoading || favorites.length === 0) {
+    if (isUserDataLoading) {
       return;
     }
-    const fetchData = async () => {
-     const favoriteData = await getWeatherList(favorites);
-      console.log("useWeatherData: fetchData: favorites", favorites);
-      console.log("useWeatherData: fetchData: favoriteData", favoriteData);
-      setFavoriteList(favoriteData);
 
+    if (favorites.length === 0) {
+      setFavoriteList([]);
+      return;
+    }
+
+    const fetchData = async () => {
+      const favoriteLocations = favorites.map((fav) => fav.location);
+      const favoriteData = await getWeatherList(favoriteLocations);
+      //console.log("useWeatherData: fetchData: favorites", favorites);
+      //console.log("useWeatherData: fetchData: favoriteLocations", favoriteLocations);
+      //console.log("useWeatherData: fetchData: favoriteData", favoriteData);
+      // hier müssen wir die Titel und Notizen aus den Favoriten hinzufügen
+      const favoriteDataWithNotes = favoriteData.map((data) => {
+        const fav = favorites.find((f) => {
+          const location = f.location;
+          const id = location.latitude + "-" + location.longitude;
+          //console.log("useWeatherData: fetchData: id", id, "data.id", data.id);
+          return id === data.id;
+        });
+        console.log("useWeatherData: fetchData: fav", fav);
+        return {
+          ...data,
+          title: fav?.title || "",
+          note: fav?.note || "",
+        };
+      });
+      setFavoriteList(favoriteDataWithNotes);
     };
     fetchData();
   }, [isUserDataLoading, favorites]);
 
   return {
     getCity,
-    getFavorites,
     model,
     results,
     removeCity,

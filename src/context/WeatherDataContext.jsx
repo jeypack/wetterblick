@@ -7,7 +7,6 @@ export { WeatherDataContext };
 const WeatherDataProvider = ({ children }) => {
   const {
     getCity,
-    getFavorites,
     model,
     results,
     removeCity,
@@ -25,7 +24,6 @@ const WeatherDataProvider = ({ children }) => {
     <WeatherDataContext.Provider
       value={{
         getCity,
-        getFavorites,
         model,
         results,
         removeCity,

@@ -2,7 +2,7 @@ import React from "react";
 import WeatherIcon from "./WeatherIcon";
 import { useWeather } from "../../hooks/useWeather";
 
-const CityCard = ({ active, weather, desc }) => {
+const CityCard = ({ active, weather }) => {
   const { temperature, weatherCode } = weather ?? {};
   const { getCity } = useWeather();
 
@@ -57,11 +57,6 @@ const CityCard = ({ active, weather, desc }) => {
           </div>
         </div>
       </div>
-      {desc && (
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 mb-2 px-2 py-1 bg-neutral-500 dark:bg-neutral-700 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10">
-          {desc}
-        </div>
-      )}
     </div>
   );
 };

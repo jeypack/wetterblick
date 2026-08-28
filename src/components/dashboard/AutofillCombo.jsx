@@ -6,7 +6,7 @@ import {
 } from "@headlessui/react";
 import { useState } from "react";
 
-const AutofillCombo = ({ options, onInput, onChange }) => {
+const AutofillCombo = ({ options, onInput, onChange, onFocus }) => {
   const [selectedLocation, setSelectedLocation] = useState(null);
   const [query, setQuery] = useState("");
 
@@ -44,6 +44,7 @@ const AutofillCombo = ({ options, onInput, onChange }) => {
         displayValue={(option) => option?.name}
         onChange={handleInputChange}
         onClose={() => setQuery("")}
+        onFocus={onFocus}
         placeholder="Suche..."
         className="border bg-neutral-100 border-neutral-300 text-neutral-600 dark:bg-neutral-700 dark:border-neutral-400 dark:text-neutral-400 w-full px-3 py-1 rounded-md focus:outline-none dark:focus:text-neutral-50 focus:ring-2 focus:ring-neutral-300 placeholder-neutral-400"
       />

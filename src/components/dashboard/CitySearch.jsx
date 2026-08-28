@@ -5,7 +5,12 @@ import ListBox from "../ui/ListBox";
 import { weatherModels } from "../../data/api";
 import AutofillCombo from "./AutofillCombo";
 
-export default function CitySearch({ getCity, model, searchLocations }) {
+export default function CitySearch({
+  btnLabel = "Wetter anzeigen",
+  onSubmit,
+  model,
+  searchLocations,
+}) {
   const [inputValue, setInputValue] = useState("");
   const [location, setLocation] = useState(null);
   const [locations, setLocations] = useState([]);
@@ -21,8 +26,7 @@ export default function CitySearch({ getCity, model, searchLocations }) {
   const handleSubmit = async (event) => {
     event.preventDefault();
     //console.log("inputValue", inputValue, "selectedModel", selectedModel);
-    //getCity(inputValue, selectedModel.model);
-    getCity(location, selectedModel.model);
+    onSubmit(location, selectedModel.model);
   };
 
   const handleChange = async (selected) => {
@@ -50,14 +54,14 @@ export default function CitySearch({ getCity, model, searchLocations }) {
       onSubmit={handleSubmit}
       autoComplete="off"
     >
-      <AutofillCombo options={locations} onInput={handleInput} onChange={handleChange} />
+      <AutofillCombo options={locations} onInput={handleInput} onChange={handleChange} onFocus={handleFocus} />
 
       <Button
         type="submit"
         disabled={!location}
         className="border cursor-pointer text-neutral-600 hover:text-neutral-500 border-neutral-500 hover:border-neutral-400 dark:text-neutral-400 dark:hover:text-neutral-300 dark:border-neutral-500 dark:hover:border-neutral-400 focus-visible:outline-none rounded-2xl w-full"
       >
-        <RippleFX className="w-full px-3 py-1 rounded-2xl">Wetter anzeigen</RippleFX>
+        <RippleFX className="w-full px-3 py-1 rounded-2xl">{btnLabel}</RippleFX>
       </Button>
 
       <ListBox

@@ -1,0 +1,204 @@
+import React, { useState } from "react";
+import { Switch } from "@headlessui/react";
+import { WiWindDeg } from "react-icons/wi";
+import { MapPin, Droplets, CalendarRange, Wind, Thermometer } from "lucide-react";
+import WindDirection from "./WindDirection";
+//import { getWeatherModel } from "../../data/api";
+import { useUserData } from "../../hooks/useUserData";
+import WeatherIcon from "./WeatherIcon";
+import { Button } from "@headlessui/react";
+import RemoveCityDialog from "./RemoveCityDialog";
+
+const dialogData = {
+  title: "Stadt entfernen",
+  description:
+    "Dies wird diese Stadt dauerhaft aus deiner Liste löschen. Diese Aktion kann nicht rückgängig gemacht werden.",
+  text: "Bist du sicher, dass du diese Stadt aus deiner Liste löschen möchtest? Alle deine Daten werden dauerhaft entfernt.",
+  confirmText: "Löschen",
+  cancelText: "Abbrechen",
+};
+
+const directions = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"];
+
+const CityFavoriteCard = ({ active, mode, weather, onChange, onEdit }) => {
+  const {
+    id,
+    time,
+    temperature,
+    relativeHumidity,
+    windSpeed,
+    windDirection: angle,
+    weatherCode,
+    location,
+  } = weather ?? {};
+  const { updateFavorites } = useUserData();
+  const [enabled, setEnabled] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  console.log("CityFavoriteCard: weather", weather);
+  /* const getFirstUpper = (str) => {
+    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+  }; */
+  const handleFavoriteClick = () => {
+    console.log("CityWeatherCard: handleFavoriteClick: weather.id", id);
+    dialogData.title = "Ort " + location.name + " entfernen?";
+    setIsOpen(true);
+  };
+
+  const handleEditClick = () => {
+    console.log("CityWeatherCard: handleEditClick: weather", weather);
+    dialogData.title = "Ort " + location.name + " bearbeiten?";
+    //setIsOpen(true);
+    if (onEdit) {
+      onEdit(weather);
+    }
+  };
+
+  const handleConfirm = () => {
+    setIsOpen(false);
+    console.log("CityCard: handleConfirm: weather.id", id);
+    updateFavorites({ location });
+  };
+
+  const containerClassName =
+    "flex flex-col justify-center items-start gap-2 border-2 p-4 rounded-md w-auto min-w-xs hover:scale(105) transition-transform duration-200 ease-in-out hover:shadow-lg";
+  const selectedClassName = active
+    ? "bg-neutral-100 border-neutral-400 shadow-neutral-900/20 dark:bg-neutral-800 dark:border-neutral-600 dark:hover:shadow-neutral-900/20 shadow-lg scale(102)"
+    : "bg-neutral-50 border-neutral-300 hover:shadow-neutral-900/20 dark:bg-neutral-800 dark:border-neutral-600 dark:hover:shadow-neutral-900/20";
+
+  const classNameLocation = active
+    ? "text-neutral-600 dark:text-olive-50"
+    : "text-neutral-500 dark:text-neutral-200";
+
+  //const model = getWeatherModel(weather.model);
+  const direction = directions[Math.round(angle / 45) % 8];
+  const dateSplit = new Date(time)
+    .toLocaleString("de-DE", {
+      dateStyle: "long",
+      timeStyle: "short",
+    })
+    .split("um");
+  const date = dateSplit[0]; // Extract date from the formatted date string
+  const timeStr = dateSplit[1]; // Extract time from the formatted date string
+
+  return (
+    <div className={`${containerClassName} ${selectedClassName}`}>
+      <div className="w-full">
+        <div
+          className={
+            "flex justify-between items-start w-full text-neutral-500 dark:text-olive-300"
+          }
+        >
+          <h3
+            className={`content-center font-semibold max-w-42 text-xl truncate uppercase ${classNameLocation}`}
+          >
+            {location.name}
+          </h3>
+          <div className="cursor-pointer">
+            <MapPin size={32} className={"text-neutral-400 dark:text-neutral-200"} />
+          </div>
+        </div>
+        <p className="text-sm text-neutral-400">Aktuelles Wetter</p>
+        <div className="flex flex-row justify-start items-center gap-3 mt-3">
+          <WeatherIcon
+            code={weatherCode}
+            className="text-neutral-400 dark:text-neutral-200"
+            size={48}
+          />
+          <div className="flex flex-row justify-around items-start gap-1 text-neutral-400 dark:text-neutral-200 text-nowrap">
+            <Thermometer className="self-center" size={26} color="#ffffff" />
+            <span className="text-3xl ">{temperature}</span>°
+            <span className="text-xl">C</span>
+          </div>
+        </div>
+      </div>
+
+      <div className="flex flex-row justify-between items-center gap-3 w-full">
+        <p className="text-xs text-center text-neutral-400 dark:text-neutral-400">
+          <Droplets className="text-4xl text-neutral-400 dark:text-neutral-400" />
+          {relativeHumidity}%
+        </p>
+        <p className="text-xs text-center text-neutral-400 dark:text-neutral-400">
+          <Wind className="text-4xl text-neutral-400 dark:text-neutral-400" />
+          {windSpeed}
+        </p>
+        <p className="text-xs text-center text-neutral-400 dark:text-neutral-400">
+          <WiWindDeg className="text-2xl text-neutral-400 dark:text-neutral-400" />
+          {direction}
+        </p>
+        <WindDirection angle={angle} size={60} />
+      </div>
+      <div className="flex flex-row justify-start items-baseline gap-2 text-neutral-500 dark:text-neutral-200 text-nowrap text-sm">
+        <CalendarRange size={15} />
+        <span>{date}</span>
+        <span className="font-bold">{timeStr}</span>
+      </div>
+      <div className="text-neutral-500 dark:text-neutral-300 text-xs">
+        {weather.model.name}
+      </div>
+      <hr className="mb-2 mt-2 w-full border-neutral-500 dark:border-neutral-300/70" />
+      <div className="flex flex-row justify-between items-center gap-3 mt-2 w-full">
+        <Button
+          onClick={handleEditClick}
+          className="border-2 cursor-pointer text-neutral-600 hover:text-neutral-500 border-neutral-500 hover:border-neutral-400 dark:text-neutral-400 dark:hover:text-neutral-300 dark:border-neutral-500 dark:hover:border-neutral-400 rounded-2xl px-3 py-1 text-sm"
+        >
+          Bearbeiten
+        </Button>
+        <Button
+          onClick={handleFavoriteClick}
+          className="border-2 cursor-pointer text-neutral-600 hover:text-neutral-500 border-neutral-500 hover:border-neutral-400 dark:text-neutral-400 dark:hover:text-neutral-300 dark:border-neutral-500 dark:hover:border-neutral-400 rounded-2xl px-3 py-1 text-sm"
+        >
+          Löschen
+        </Button>
+        <Switch
+          checked={enabled}
+          onChange={(checked) => {
+            setEnabled(checked);
+            onChange(checked, weather);
+          }}
+          className={
+            "group inline-flex h-6 w-11 items-center rounded-full bg-neutral-100 dark:bg-neutral-800 border-2 border-neutral-400 transition data-checked:bg-neutral-200 dark:data-checked:bg-neutral-800" +
+            (mode === "compare" ? "" : " invisible")
+          }
+        >
+          <span className="size-4 translate-x-1 rounded-full bg-neutral-400 dark:bg-neutral-500 group-data-checked:bg-neutral-500 dark:group-data-checked:bg-neutral-300 transition group-data-checked:translate-x-5.75" />
+        </Switch>
+      </div>
+      <RemoveCityDialog
+        data={dialogData}
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        onConfirm={handleConfirm}
+      />
+    </div>
+  );
+};
+
+export default React.memo(CityFavoriteCard);
+{
+  /* <Popover className="group relative">
+        <PopoverButton className="flex items-center text-sm text-neutral-500">
+          More...
+          <ChevronDownIcon className="size-5 text-neutral-500 group-data-open:rotate-180" />
+        </PopoverButton>
+        <PopoverPanel
+          anchor="bottom"
+          className="flex flex-col justify-between items-start border border-neutral-400 bg-neutral-900 p-4 rounded-md gap-1 w-fit-content max-w-58"
+        >
+          <div className="flex flex-row justify-center items-center gap-3">
+            <p className="text-xs text-center">
+              <Droplets className="text-4xl text-neutral-400" />
+              {relativeHumidity}%
+            </p>
+            <p className="text-xs text-center">
+              <Wind className="text-4xl text-neutral-400" />
+              {windSpeed}
+            </p>
+            <p className="text-xs text-center">
+              <WiWindDeg className="text-2xl text-neutral-400" />
+              {direction}
+            </p>
+            <WindDirection angle={angle} size={60} />
+          </div>
+        </PopoverPanel>
+      </Popover> */
+}

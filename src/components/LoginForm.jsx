@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase/config";
 import { useForm } from "react-hook-form";
-import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import schema from "../schemas/user";
 import styles from "../Styles";
@@ -20,7 +19,6 @@ export default function LoginForm({ onSwitch }) {
   const {
     register,
     handleSubmit,
-    reset,
     setFocus,
     formState: { errors, isSubmitting },
   } = useForm({

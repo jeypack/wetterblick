@@ -16,12 +16,10 @@ export const weatherModels = [
   { name: "KNMI Forecast", model: "knmi_seamless" },
 ];
 
-
 export const getWeatherModel = (modelName) => {
   const model = weatherModels.find((item) => item.model === modelName);
   return model ? model : null;
 };
-
 
 async function getGeocoding(location) {
   const url = new URL(GEOCODING_URL);
@@ -179,7 +177,7 @@ export async function getWeatherListCurrent(geoCodings, model = "knmi_seamless")
     //console.log("getWeatherListCurrent geoCoding ", geoCoding);
     //console.log("getWeatherListCurrent Data ", data);
     return {
-      id: `${data.latitude}-${data.longitude}`,
+      id: `${geoCoding.latitude}-${geoCoding.longitude}`,
       location: geoCoding,
       model: getWeatherModel(model),
       temperature: data.current.temperature_2m,
@@ -252,33 +250,158 @@ Code	Beschreibung
 /* Weather Codes (WMO)*/
 export const weatherCodes = [
   { code: 0, name: "Sunny", de: "Klarer Himmel", image: resolveLocalImage("sunny.jpg") },
-  { code: 1, name: "Mostly Clear", de: "Überwiegend klar", image: resolveLocalImage("mostly_clear.jpg") },
-  { code: 2, name: "Partly Cloudy", de: "Teils bewölkt", image: resolveLocalImage("partly_cloudy.jpg") },
-  { code: 3, name: "Cloudy", de: "Bedeckt", image: resolveLocalImage("partly_cloudy.jpg") },
+  {
+    code: 1,
+    name: "Mostly Clear",
+    de: "Überwiegend klar",
+    image: resolveLocalImage("mostly_clear.jpg"),
+  },
+  {
+    code: 2,
+    name: "Partly Cloudy",
+    de: "Teils bewölkt",
+    image: resolveLocalImage("partly_cloudy.jpg"),
+  },
+  {
+    code: 3,
+    name: "Cloudy",
+    de: "Bedeckt",
+    image: resolveLocalImage("partly_cloudy.jpg"),
+  },
   { code: 45, name: "Fog", de: "Nebel", image: resolveLocalImage("fog.jpg") },
-  { code: 48, name: "Freezing Fog", de: "Raureifnebel", image: resolveLocalImage("fog.jpg") },
-  { code: 51, name: "Light Drizzle", de: "Leichter Nieselregen", image: resolveLocalImage("rain.jpg") },
-  { code: 53, name: "Drizzle", de: "Mäßiger Nieselregen", image: resolveLocalImage("rain.jpg") },
-  { code: 55, name: "Heavy Drizzle", de: "Starker Nieselregen", image: resolveLocalImage("rain.jpg") },
-  { code: 56, name: "Light Freezing Drizzle", de: "Leichter gefrierender Nieselregen", image: resolveLocalImage("rain.jpg") },
-  { code: 57, name: "Freezing Drizzle", de: "Dichter gefrierender Nieselregen", image: resolveLocalImage("rain.jpg") },
-  { code: 61, name: "Light Rain", de: "Leichter Regen", image: resolveLocalImage("rain.jpg") },
+  {
+    code: 48,
+    name: "Freezing Fog",
+    de: "Raureifnebel",
+    image: resolveLocalImage("fog.jpg"),
+  },
+  {
+    code: 51,
+    name: "Light Drizzle",
+    de: "Leichter Nieselregen",
+    image: resolveLocalImage("rain.jpg"),
+  },
+  {
+    code: 53,
+    name: "Drizzle",
+    de: "Mäßiger Nieselregen",
+    image: resolveLocalImage("rain.jpg"),
+  },
+  {
+    code: 55,
+    name: "Heavy Drizzle",
+    de: "Starker Nieselregen",
+    image: resolveLocalImage("rain.jpg"),
+  },
+  {
+    code: 56,
+    name: "Light Freezing Drizzle",
+    de: "Leichter gefrierender Nieselregen",
+    image: resolveLocalImage("rain.jpg"),
+  },
+  {
+    code: 57,
+    name: "Freezing Drizzle",
+    de: "Dichter gefrierender Nieselregen",
+    image: resolveLocalImage("rain.jpg"),
+  },
+  {
+    code: 61,
+    name: "Light Rain",
+    de: "Leichter Regen",
+    image: resolveLocalImage("rain.jpg"),
+  },
   { code: 63, name: "Rain", de: "Mäßiger Regen", image: resolveLocalImage("rain.jpg") },
-  { code: 65, name: "Heavy Rain", de: "Starker Regen", image: resolveLocalImage("rain.jpg") },
-  { code: 66, name: "Light Freezing Rain", de: "Leichter gefrierender Regen", image: resolveLocalImage("rain.jpg") },
-  { code: 67, name: "Freezing Rain", de: "Starker gefrierender Regen", image: resolveLocalImage("rain.jpg") },
-  { code: 71, name: "Light Snow", de: "Leichter Schneefall", image: resolveLocalImage("snowing.jpg") },
-  { code: 73, name: "Snow", de: "Mäßiger Schneefall", image: resolveLocalImage("snowing.jpg") },
-  { code: 75, name: "Heavy Snow", de: "Starker Schneefall", image: resolveLocalImage("snowing.jpg") },
-  { code: 77, name: "Snow Grains", de: "Schneekörner", image: resolveLocalImage("snowing.jpg") },
-  { code: 80, name: "Light Rain Shower", de: "Leichte Regenschauer", image: resolveLocalImage("rain.jpg") },
-  { code: 81, name: "Rain Shower", de: "Mäßige Regenschauer", image: resolveLocalImage("rain.jpg") },
-  { code: 82, name: "Heavy Rain Shower", de: "Heftige Regenschauer", image: resolveLocalImage("rain.jpg") },
-  { code: 85, name: "Snow Shower", de: "Leichte Schneeschauer", image: resolveLocalImage("snowing.jpg") },
-  { code: 86, name: "Heavy Snow Shower", de: "Starke Schneeschauer", image: resolveLocalImage("snowing.jpg") },
-  { code: 95, name: "Thunderstorm", de: "Gewitter: Leicht bis mäßig", image: resolveLocalImage("thunderstorm.jpg") },
-  { code: 96, name: "Hailstorm", de: "Gewitter mit leichtem Hagel", image: resolveLocalImage("thunderstorm.jpg") },
-  { code: 99, name: "Heavy Hailstorm", de: "Gewitter mit schwerem Hagel", image: resolveLocalImage("thunderstorm.jpg") },
+  {
+    code: 65,
+    name: "Heavy Rain",
+    de: "Starker Regen",
+    image: resolveLocalImage("rain.jpg"),
+  },
+  {
+    code: 66,
+    name: "Light Freezing Rain",
+    de: "Leichter gefrierender Regen",
+    image: resolveLocalImage("rain.jpg"),
+  },
+  {
+    code: 67,
+    name: "Freezing Rain",
+    de: "Starker gefrierender Regen",
+    image: resolveLocalImage("rain.jpg"),
+  },
+  {
+    code: 71,
+    name: "Light Snow",
+    de: "Leichter Schneefall",
+    image: resolveLocalImage("snowing.jpg"),
+  },
+  {
+    code: 73,
+    name: "Snow",
+    de: "Mäßiger Schneefall",
+    image: resolveLocalImage("snowing.jpg"),
+  },
+  {
+    code: 75,
+    name: "Heavy Snow",
+    de: "Starker Schneefall",
+    image: resolveLocalImage("snowing.jpg"),
+  },
+  {
+    code: 77,
+    name: "Snow Grains",
+    de: "Schneekörner",
+    image: resolveLocalImage("snowing.jpg"),
+  },
+  {
+    code: 80,
+    name: "Light Rain Shower",
+    de: "Leichte Regenschauer",
+    image: resolveLocalImage("rain.jpg"),
+  },
+  {
+    code: 81,
+    name: "Rain Shower",
+    de: "Mäßige Regenschauer",
+    image: resolveLocalImage("rain.jpg"),
+  },
+  {
+    code: 82,
+    name: "Heavy Rain Shower",
+    de: "Heftige Regenschauer",
+    image: resolveLocalImage("rain.jpg"),
+  },
+  {
+    code: 85,
+    name: "Snow Shower",
+    de: "Leichte Schneeschauer",
+    image: resolveLocalImage("snowing.jpg"),
+  },
+  {
+    code: 86,
+    name: "Heavy Snow Shower",
+    de: "Starke Schneeschauer",
+    image: resolveLocalImage("snowing.jpg"),
+  },
+  {
+    code: 95,
+    name: "Thunderstorm",
+    de: "Gewitter: Leicht bis mäßig",
+    image: resolveLocalImage("thunderstorm.jpg"),
+  },
+  {
+    code: 96,
+    name: "Hailstorm",
+    de: "Gewitter mit leichtem Hagel",
+    image: resolveLocalImage("thunderstorm.jpg"),
+  },
+  {
+    code: 99,
+    name: "Heavy Hailstorm",
+    de: "Gewitter mit schwerem Hagel",
+    image: resolveLocalImage("thunderstorm.jpg"),
+  },
 ];
 /* 
 const sampleWeatherData = {

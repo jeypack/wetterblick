@@ -13,7 +13,7 @@ const UserDataProvider = ({ children }) => {
   const [favorites, setFavorites] = useState([]);
 
   const isFavorite = (location) => {
-    return favorites.some((fav) => fav.id === location.id);
+    return favorites.some((fav) => fav.location.id === location.id);
   };
 
   const updateRecentLocations = async (location) => {
@@ -40,14 +40,14 @@ const UserDataProvider = ({ children }) => {
     }
   };
 
-  const updateFavorites = async (location) => {
+  const updateFavorites = async (favorite) => {
     // Firestore aktualisieren
-    const hasFavorite = favorites.some((item) => item.id === location.id);
+    const hasFavorite = favorites.some((item) => item.location.id === favorite.location.id);
     let updatedFavorites;
     if (hasFavorite) {
-      updatedFavorites = favorites.filter((fav) => fav.id !== location.id);
+      updatedFavorites = favorites.filter((fav) => fav.location.id !== favorite.location.id);
     } else {
-      updatedFavorites = [...favorites, location];
+      updatedFavorites = [...favorites, favorite];
     }
     try {
       setFavorites(updatedFavorites);
@@ -62,6 +62,7 @@ const UserDataProvider = ({ children }) => {
 
   // useEffect to fetch user data when the user changes
   useEffect(() => {
+    //console.log("UserDataProvider: user", user);
     async function fetchUserData() {
       // If no user is logged in, reset the state to default values
       if (!user) {
@@ -73,7 +74,7 @@ const UserDataProvider = ({ children }) => {
 
       setIsLoading(true);
       const userData = await getUserData(user.uid);
-
+      console.log("UserDataProvider: userData", userData);
       setRecentLocations(userData?.recentLocations || []);
       setFavorites(userData?.favorites || []);
       setIsLoading(false);

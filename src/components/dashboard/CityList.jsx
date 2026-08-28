@@ -1,15 +1,4 @@
 import { useState } from "react";
-import {
-  Checkbox,
-  Field,
-  Label,
-  Button,
-  Description,
-  Dialog,
-  DialogPanel,
-  DialogTitle,
-} from "@headlessui/react";
-import RippleFX from "../ui/RippleFX";
 import ThemeButton from "../ui/ThemeButton";
 import RemoveCityDialog from "./RemoveCityDialog";
 import CityCheckbox from "./CityCheckbox";

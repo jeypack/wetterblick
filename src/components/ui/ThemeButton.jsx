@@ -1,9 +1,15 @@
 import styles from "../../Styles.js";
 
-export default function ThemeButton({ onClick, active, children, size, ...rest }) {
+export default function ThemeButton({ onClick, active, className, children, size, ...rest }) {
   //console.log("ThemeButton: active", active);
   const textSizeClass =
-    size === "xs" ? "text-xs" : size === "sm" ? "text-sm" : size === "md" ? "text-md" : "text-base";
+    size === "xs"
+      ? "text-xs"
+      : size === "sm"
+        ? "text-sm"
+        : size === "md"
+          ? "text-md"
+          : "text-base";
   /* const baseClassName =
     "cursor-pointer border focus:outline-2 focus:outline-offset-2 font-bold text-nowrap py-1 px-4 rounded-2xl ";
   const btnClassName = 
@@ -17,7 +23,17 @@ export default function ThemeButton({ onClick, active, children, size, ...rest }
   return (
     <button
       onClick={onClick}
-      className={active ? styles.btnActive + " " + textSizeClass : styles.btn + " " + textSizeClass}
+      className={
+        active
+          ? styles.btnActive +
+            " " +
+            textSizeClass +
+            (className ? " " + className : "")
+          : styles.btn +
+            " " +
+            textSizeClass +
+            (className ? " " + className : "")
+      }
       {...rest}
     >
       {children}
