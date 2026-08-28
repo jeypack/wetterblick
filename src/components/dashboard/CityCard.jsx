@@ -6,12 +6,8 @@ const CityCard = ({ active, weather }) => {
   const { temperature, weatherCode } = weather ?? {};
   const { getCity } = useWeather();
 
-  /* const getFirstUpper = (str) => {
-    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
-  }; */
-
   const containerClassName =
-    "cursor-pointer flex flex-col justify-center items-start gap-2 border-2 p-3 rounded-3xl w-auto min-w-xs hover:scale-102 transition-transform duration-200 ease-in-out hover:shadow-md dark:hover:shadow-md dark:hover:shadow-neutral-100/20 relative group";
+    "cursor-pointer flex flex-col justify-center items-start gap-2 border-2 px-3 py-2 rounded-3xl w-auto min-w-xs hover:scale-102 transition-transform duration-200 ease-in-out hover:shadow-md dark:hover:shadow-md dark:hover:shadow-neutral-100/20 relative group";
   const selectedClassName = active
     ? "bg-neutral-100 border-neutral-400 shadow-neutral-900/20 dark:bg-neutral-800 dark:border-neutral-600 shadow-lg scale-102"
     : "bg-neutral-50 border-neutral-300 hover:shadow-neutral-900/20 dark:bg-neutral-800 dark:border-neutral-600";
@@ -21,8 +17,6 @@ const CityCard = ({ active, weather }) => {
     : "text-neutral-500 dark:text-neutral-200";
 
   const handleCityUpdate = async () => {
-    //console.log("inputValue", inputValue, "selectedModel", selectedModel);
-    //getCity(inputValue, selectedModel.model);
     getCity(weather.location);
   };
 

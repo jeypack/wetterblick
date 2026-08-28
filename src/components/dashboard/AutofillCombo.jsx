@@ -20,15 +20,12 @@ const AutofillCombo = ({ options, onInput, onChange, onFocus }) => {
   const handleChange = (selected) => {
     console.log("AutofillCombo: handleChange: selected", selected);
     setSelectedLocation(selected);
-    /* const selected = event;
-    console.log("AutofillCombo: handleChange: selected", selected);
-    setSelectedLocation(selected); */
     onChange(selected);
   };
 
   const handleInputChange = (event) => {
     const value = event.target.value;
-    console.log("AutofillCombo: handleInputChange: value", value);
+    //console.log("AutofillCombo: handleInputChange: value", value);
     setQuery(event.target.value);
     onInput(event);
   };
@@ -72,31 +69,3 @@ const AutofillCombo = ({ options, onInput, onChange, onFocus }) => {
 };
 
 export default AutofillCombo;
-
-/* 
-const [selectedPerson, setSelectedPerson] = useState(people[0])
-  const [query, setQuery] = useState('')
-
-  const filteredPeople =
-    query === ''
-      ? people
-      : people.filter((person) => {
-          return person.name.toLowerCase().includes(query.toLowerCase())
-        })
-
-  return (
-    <Combobox value={selectedPerson} onChange={setSelectedPerson} onClose={() => setQuery('')}>
-      <ComboboxInput
-        aria-label="Assignee"
-        displayValue={(person) => person?.name}
-        onChange={(event) => setQuery(event.target.value)}
-      />
-      <ComboboxOptions anchor="bottom" className="w-52 border empty:invisible">
-        {filteredPeople.map((person) => (
-          <ComboboxOption key={person.id} value={person} className="data-focus:bg-blue-100">
-            {person.name}
-          </ComboboxOption>
-        ))}
-      </ComboboxOptions>
-    </Combobox>
-*/

@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import React, { useState } from "react";
 import PageTitle from "../components/PageTitle";
 import { useWeather } from "../hooks/useWeather";
 import CitySearch from "../components/dashboard/CitySearch";
@@ -8,119 +8,26 @@ import CityPanel from "../components/dashboard/CityPanel";
 
 const DAYS_OF_WEEK = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
-export default function Dashboard() {
-  const {
-    getCity,
-    model,
-    results,
-    previewCityId,
-    recentList,
-    selectedCities,
-    searchLocations,
-    setPreviewCityId,
-  } = useWeather();
+const Dashboard = () => {
+  const { getCity, model, recentList, searchLocations } = useWeather();
 
   const [textOpen, setTextOpen] = useState(true);
-  /* 
-  
-  const getHourlyData = useMemo(() => {
-    return (selectedCities, results) => {
-      const compareCities = results.filter((city) => selectedCities.has(city.id));
-      const selectedCitiesData = compareCities.map((city) => {
-        const hourlyData = city.hourly?.time.map((t, index) => {
-          return {
-            time: t.toString().slice(-4),
-            temperature: city.hourly?.temperature[index],
-            relativeHumidity: city.hourly?.relativeHumidity[index],
-            weatherCode: city.hourly?.weatherCode[index],
-          };
-        });
-        return {
-          id: city.id,
-          location: city.location,
-          data: hourlyData,
-          units: city.hourlyUnits || {},
-        };
-      });
-      console.log("getHourlyData:", selectedCitiesData);
-      return selectedCitiesData;
-    };
-  }, [selectedCities, results]);
 
-  const handleCityChange = ({ id, type, checked }) => {
-    console.log("id", id, "type", type, "checked", checked);
-    // Handle the change in city selection here
-    if (type === "toggle") {
-      toggleCity(id);
-    } else if (type === "remove") {
-      removeCity(id);
-    } else if (type === "all") {
-      //console.log("handleCityChange: type all, checked", checked);
-      // Handle select all logic here
-      toggleCities(checked);
-    }
-  };
- 
-  const getSelectedCitiesData = useMemo(() => {
-    return (selectedCities, results) => {
-      const compareCities = results.filter((city) => selectedCities.has(city.id));
-      const selectedCitiesData = compareCities.map((city) => {
-        return {
-          id: city.id,
-          location: city.location,
-          data: city.current || {},
-          units: city.currentUnits || {},
-          model: city.model || {},
-        };
-      });
-      return selectedCitiesData;
-    };
-  }, [selectedCities, results]);
-
-  const getDaylyData = useMemo(() => {
-    return (selectedCities, results) => {
-      const compareCities = results.filter((city) => selectedCities.has(city.id));
-      const selectedCitiesData = compareCities.map((city) => {
-        const daylyData = city.daily?.time.map((t, index) => {
-          const date = new Date(t);
-          const day = date.getDay();
-          return {
-            date: DAYS_OF_WEEK[day] + " " + date.getDate() + "." + (date.getMonth() + 1),
-            temperatureMax: city.daily?.temperature[index],
-            temperatureMin: city.daily?.temperatureMin[index],
-            temperature: [
-              city.daily?.temperatureMin[index],
-              city.daily?.temperature[index],
-            ],
-            weatherCode: city.daily?.weatherCode[index],
-          };
-        });
-        return {
-          id: city.id,
-          location: city.location,
-          data: daylyData,
-          units: city.dailyUnits || {},
-        };
-      });
-      //console.log("getDaylyData:", selectedCitiesData);
-      return selectedCitiesData;
-    };
-  }, [selectedCities, results]);
-*/
-
-  const pClassName = "max-w-2xl text-neutral-600 dark:text-neutral-300 " + (textOpen ? "" : "line-clamp-1");
+  const pClassName =
+    "max-w-2xl text-neutral-600 dark:text-neutral-300 " +
+    (textOpen ? "" : "line-clamp-1");
 
   return (
     <>
       <PageTitle title="Wetter Suche" />
       <main className="flex-1 flex flex-col justify-between items-start gap-2 mb-8 md:p-8 w-full md:flex-row">
         <Sidebar>
-          <CitySearch onSubmit={getCity} model={model} searchLocations={searchLocations} />
-          <RecentLocations
-            previewCityId={previewCityId}
-            recentList={recentList}
-            setPreviewCityId={setPreviewCityId}
+          <CitySearch
+            onSubmit={getCity}
+            model={model}
+            searchLocations={searchLocations}
           />
+          <RecentLocations recentList={recentList} />
         </Sidebar>
         <section className="w-full p-2">
           <CityPanel />
@@ -144,22 +51,6 @@ export default function Dashboard() {
       </main>
     </>
   );
-}
-{
-  /* <p className="text-neutral-400 pl-1">Filter mit Städten…</p> */
-}
-{
-  /* <CityList
-            cities={results}
-            selectedCities={selectedCities}
-            onChange={handleCityChange}
-          /> */
-}
-{
-  /* <ComparePanel
-            dailyData={getDaylyData(selectedCities, results)}
-            previewCityId={previewCityId}
-            selectedCitiesData={getSelectedCitiesData(selectedCities, results)}
-            setPreviewCityId={setPreviewCityId}
-          /> */
-}
+};
+
+export default React.memo(Dashboard);

@@ -1,17 +1,17 @@
-import { useState } from "react";
-import { Button, Input } from "@headlessui/react";
+import React, { useState } from "react";
+import { Button } from "@headlessui/react";
 import RippleFX from "../ui/RippleFX";
 import ListBox from "../ui/ListBox";
 import { weatherModels } from "../../data/api";
 import AutofillCombo from "./AutofillCombo";
 
-export default function CitySearch({
+const CitySearch = ({
   btnLabel = "Wetter anzeigen",
   onSubmit,
   model,
   searchLocations,
-}) {
-  const [inputValue, setInputValue] = useState("");
+}) => {
+  const [, setInputValue] = useState("");
   const [location, setLocation] = useState(null);
   const [locations, setLocations] = useState([]);
   const weatherModel = weatherModels.find((m) => m.model === model) || weatherModels[0];
@@ -54,7 +54,12 @@ export default function CitySearch({
       onSubmit={handleSubmit}
       autoComplete="off"
     >
-      <AutofillCombo options={locations} onInput={handleInput} onChange={handleChange} onFocus={handleFocus} />
+      <AutofillCombo
+        options={locations}
+        onInput={handleInput}
+        onChange={handleChange}
+        onFocus={handleFocus}
+      />
 
       <Button
         type="submit"
@@ -73,4 +78,6 @@ export default function CitySearch({
       />
     </form>
   );
-}
+};
+
+export default React.memo(CitySearch);

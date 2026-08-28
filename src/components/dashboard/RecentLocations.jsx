@@ -1,9 +1,7 @@
 import React from "react";
 import CityCard from "./CityCard";
-import Tooltip from "../ui/Tooltip";
 
-const RecentLocations = ({ previewCityId, recentList, setPreviewCityId }) => {
-  //const currentWeather = results.at(-1);
+const RecentLocations = ({ recentList }) => {
   console.log("RecentLocations: recentList", recentList);
   if (recentList.length === 0) {
     return null;
@@ -22,18 +20,11 @@ const RecentLocations = ({ previewCityId, recentList, setPreviewCityId }) => {
       </div>
       <div className="flex flex-col justify-center items-center gap-3">
         {recentList.map((result, index) => {
-          return (
-            <Tooltip
-              key={result.id}
-              desc={"Für ein update klicken"}
-            >
-              <CityCard key={result.id} active={index === 0} weather={result} />
-            </Tooltip>
-          );
+          return <CityCard key={result.id} active={index === 0} weather={result} />;
         })}
       </div>
     </section>
   );
 };
-//export default RecentLocations;
+
 export default React.memo(RecentLocations);

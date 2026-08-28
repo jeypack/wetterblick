@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { schemaFavorite } from "../schemas/favorite";
@@ -7,20 +7,20 @@ import InputField from "./InputField";
 import Button from "./ui/Button";
 import ThemeButton from "./ui/ThemeButton";
 
-export default function FavoriteForm({
+const FavoriteForm = ({
   btnLabels = { confirm: "Hinzufügen", cancel: "Abbrechen" },
   onConfirm,
   onCancel,
   formTitle,
   formLocation,
   defaultValues = { title: "", note: "" },
-}) {
+}) => {
   const [error, setError] = useState("");
   const {
     register,
     handleSubmit,
     reset,
-    setFocus,
+    //setFocus,
     formState: { errors, isSubmitting },
   } = useForm({
     mode: "onSubmit",
@@ -80,11 +80,6 @@ export default function FavoriteForm({
       </div>
     </form>
   );
-}
+};
 
-  /* 
-  useEffect(() => {
-    // Autofocus on the first input field when the component mounts
-    setFocus("title");
-  }, []);
- */
+export default React.memo(FavoriteForm);

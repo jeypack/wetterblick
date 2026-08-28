@@ -1,33 +1,6 @@
 import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { db } from "./config";
 
-/* {
-  email: "joerg@example.com",
-
-  favorites: [
-    {
-      id: "51.4556-7.0116",
-      name: "Essen",
-      latitude: 51.4556,
-      longitude: 7.0116
-    },
-    {
-      id: "52.5200-13.4050",
-      name: "Berlin",
-      latitude: 52.5200,
-      longitude: 13.4050
-    }
-  ],
-
-  recentLocations: [
-    {
-      id: "51.4556-7.0116",
-      name: "Essen",
-      latitude: 51.4556,
-      longitude: 7.0116
-    }
-  ]
-} */
 /* 
 users (Collection)
 │
@@ -57,17 +30,7 @@ export async function getUserData(uid) {
 
   return snapshot.data();
 }
-/* 
-export async function getUserName(uid) {
-  const data = getUserData(uid);
-  return data ? data.username || "" : "";
-}
 
-export async function getUserFavorites(uid) {
-  const data = await getUserData(uid);
-  return data ? data.favorites || [] : [];
-}
- */
 export async function getUserRecentLocations(uid) {
   const data = await getUserData(uid);
   return data ? data.recentLocations || [] : [];

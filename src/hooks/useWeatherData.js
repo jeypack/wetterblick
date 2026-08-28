@@ -156,18 +156,14 @@ export function useWeatherData(initialLocation = "") {
     const fetchData = async () => {
       const favoriteLocations = favorites.map((fav) => fav.location);
       const favoriteData = await getWeatherList(favoriteLocations);
-      //console.log("useWeatherData: fetchData: favorites", favorites);
-      //console.log("useWeatherData: fetchData: favoriteLocations", favoriteLocations);
-      //console.log("useWeatherData: fetchData: favoriteData", favoriteData);
       // hier müssen wir die Titel und Notizen aus den Favoriten hinzufügen
       const favoriteDataWithNotes = favoriteData.map((data) => {
         const fav = favorites.find((f) => {
           const location = f.location;
           const id = location.latitude + "-" + location.longitude;
-          //console.log("useWeatherData: fetchData: id", id, "data.id", data.id);
           return id === data.id;
         });
-        console.log("useWeatherData: fetchData: fav", fav);
+        //console.log("useWeatherData: fetchData: fav", fav);
         return {
           ...data,
           title: fav?.title || "",

@@ -1,5 +1,5 @@
 // src/context/UserDataContext.jsx
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import { getUserData, saveRecentLocations, saveFavorites } from "../firebase/user.repo";
 import { useAuth } from "../hooks/useAuth";
 
@@ -74,7 +74,7 @@ const UserDataProvider = ({ children }) => {
 
       setIsLoading(true);
       const userData = await getUserData(user.uid);
-      console.log("UserDataProvider: userData", userData);
+      //console.log("UserDataProvider: userData", userData);
       setRecentLocations(userData?.recentLocations || []);
       setFavorites(userData?.favorites || []);
       setIsLoading(false);

@@ -20,7 +20,7 @@ const dialogData = {
 
 const directions = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"];
 
-const CityFavoriteCard = ({ active, mode, weather, onChange, onEdit }) => {
+const CityFavoriteCard = ({ active, mode, favorite, onChange, onEdit }) => {
   const {
     id,
     time,
@@ -30,32 +30,30 @@ const CityFavoriteCard = ({ active, mode, weather, onChange, onEdit }) => {
     windDirection: angle,
     weatherCode,
     location,
-  } = weather ?? {};
+  } = favorite ?? {};
   const { updateFavorites } = useUserData();
   const [enabled, setEnabled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-  console.log("CityFavoriteCard: weather", weather);
-  /* const getFirstUpper = (str) => {
-    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
-  }; */
+  console.log("CityFavoriteCard: favorite", favorite);
+
   const handleFavoriteClick = () => {
-    console.log("CityWeatherCard: handleFavoriteClick: weather.id", id);
+    console.log("CityWeatherCard: handleFavoriteClick: favorite.id", id);
     dialogData.title = "Ort " + location.name + " entfernen?";
     setIsOpen(true);
   };
 
   const handleEditClick = () => {
-    console.log("CityWeatherCard: handleEditClick: weather", weather);
+    console.log("CityWeatherCard: handleEditClick: favorite", favorite);
     dialogData.title = "Ort " + location.name + " bearbeiten?";
     //setIsOpen(true);
     if (onEdit) {
-      onEdit(weather);
+      onEdit(favorite);
     }
   };
 
   const handleConfirm = () => {
     setIsOpen(false);
-    console.log("CityCard: handleConfirm: weather.id", id);
+    console.log("CityCard: handleConfirm: favorite.id", id);
     updateFavorites({ location });
   };
 
@@ -69,7 +67,7 @@ const CityFavoriteCard = ({ active, mode, weather, onChange, onEdit }) => {
     ? "text-neutral-600 dark:text-olive-50"
     : "text-neutral-500 dark:text-neutral-200";
 
-  //const model = getWeatherModel(weather.model);
+  //const model = getWeatherModel(favorite.model);
   const direction = directions[Math.round(angle / 45) % 8];
   const dateSplit = new Date(time)
     .toLocaleString("de-DE", {
@@ -133,7 +131,7 @@ const CityFavoriteCard = ({ active, mode, weather, onChange, onEdit }) => {
         <span className="font-bold">{timeStr}</span>
       </div>
       <div className="text-neutral-500 dark:text-neutral-300 text-xs">
-        {weather.model.name}
+        {favorite.model.name}
       </div>
       <hr className="mb-2 mt-2 w-full border-neutral-500 dark:border-neutral-300/70" />
       <div className="flex flex-row justify-between items-center gap-3 mt-2 w-full">
@@ -153,7 +151,7 @@ const CityFavoriteCard = ({ active, mode, weather, onChange, onEdit }) => {
           checked={enabled}
           onChange={(checked) => {
             setEnabled(checked);
-            onChange(checked, weather);
+            onChange(checked, favorite);
           }}
           className={
             "group inline-flex h-6 w-11 items-center rounded-full bg-neutral-100 dark:bg-neutral-800 border-2 border-neutral-400 transition data-checked:bg-neutral-200 dark:data-checked:bg-neutral-800" +
@@ -174,31 +172,3 @@ const CityFavoriteCard = ({ active, mode, weather, onChange, onEdit }) => {
 };
 
 export default React.memo(CityFavoriteCard);
-{
-  /* <Popover className="group relative">
-        <PopoverButton className="flex items-center text-sm text-neutral-500">
-          More...
-          <ChevronDownIcon className="size-5 text-neutral-500 group-data-open:rotate-180" />
-        </PopoverButton>
-        <PopoverPanel
-          anchor="bottom"
-          className="flex flex-col justify-between items-start border border-neutral-400 bg-neutral-900 p-4 rounded-md gap-1 w-fit-content max-w-58"
-        >
-          <div className="flex flex-row justify-center items-center gap-3">
-            <p className="text-xs text-center">
-              <Droplets className="text-4xl text-neutral-400" />
-              {relativeHumidity}%
-            </p>
-            <p className="text-xs text-center">
-              <Wind className="text-4xl text-neutral-400" />
-              {windSpeed}
-            </p>
-            <p className="text-xs text-center">
-              <WiWindDeg className="text-2xl text-neutral-400" />
-              {direction}
-            </p>
-            <WindDirection angle={angle} size={60} />
-          </div>
-        </PopoverPanel>
-      </Popover> */
-}

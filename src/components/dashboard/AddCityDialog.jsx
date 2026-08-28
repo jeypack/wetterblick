@@ -12,12 +12,7 @@ export default function AddCityDialog({ data, isOpen, setIsOpen, onConfirm }) {
   const handleAddLocation = async (location, model) => {
     setCurrentLocation(location);
   };
-  // const [isOpen, setIsOpen] = useState(false);
-  /* const baseClassName =
-    "w-30 text-nowrap rounded-2xl border cursor-pointer focus:ring-sky-500 focus:outline-none focus-visible:outline-none text-sm";
-  const classNameBtn =
-    "bg-neutral-600 text-neutral-100 border-2 border-neutral-700 hover:border-neutral-400 " +
-    baseClassName; */
+
   return (
     <>
       <Dialog open={isOpen} onClose={() => setIsOpen(false)} className="relative z-50">

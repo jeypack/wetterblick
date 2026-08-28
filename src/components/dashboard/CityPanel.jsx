@@ -1,5 +1,3 @@
-//import { Button } from "@headlessui/react";
-
 import { MapPin, CalendarRange } from "lucide-react";
 import { memo, useState } from "react";
 import { useWeather } from "../../hooks/useWeather";
@@ -57,9 +55,9 @@ const CityPanel = () => {
 
   const handleFavoriteClick = () => {
     // set favorite city in context
-    console.log("CityCard: handleFavoriteClick: lastCityData.id", lastCityData.id);
+    //console.log("CityCard: handleFavoriteClick: lastCityData.id", lastCityData.id);
     const isFav = isFavorite(lastCityData.location);
-    console.log("CityCard: handleFavoriteClick: isFav", isFav);
+    //console.log("CityCard: handleFavoriteClick: isFav", isFav);
     if (isFav) {
       dialogData.title = "Favorit " + lastCityData.location.name + " entfernen?";
       setIsOpen(true);
@@ -75,14 +73,13 @@ const CityPanel = () => {
   };
 
   const handleDetailClick = () => {
-    // set favorite city in context
+    // route to city detail page with lastCityData.location
     console.log("CityCard: handleDetailClick: lastCityData.id", lastCityData.id);
-    //updateFavorites(lastCityData.location);
   };
 
   const handleConfirm = () => {
     setIsOpen(false);
-    console.log("CityCard: handleDetailClick: lastCityData.id", lastCityData.id);
+    console.log("CityCard: handleConfirm: lastCityData.id", lastCityData.id);
     updateFavorites({
       location: lastCityData.location,
       title: "Favorit " + lastCityData.location.name,

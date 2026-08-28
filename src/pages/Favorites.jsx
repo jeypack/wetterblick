@@ -2,10 +2,9 @@ import { useWeather } from "../hooks/useWeather";
 import { useUserData } from "../hooks/useUserData";
 import CityFavoriteCard from "../components/dashboard/CityFavoriteCard";
 import PageTitle from "../components/PageTitle";
-//import { Button } from "@headlessui/react";
 import ThemeButton from "../components/ui/ThemeButton";
-import { CirclePlus, Edit, GitCompareArrows } from "lucide-react";
-import { useState } from "react";
+import { CirclePlus, GitCompareArrows } from "lucide-react";
+import React, { useState } from "react";
 import AddCityDialog from "../components/dashboard/AddCityDialog";
 import EditCityDialog from "../components/dashboard/EditCityDialog";
 
@@ -56,12 +55,12 @@ const Favorites = () => {
     setFavoriteMode(mode);
   };
 
-  const handleCityChange = (checked, weather) => {
-    console.log("Favorites.jsx: handleCityChange", checked, weather);
+  const handleCityChange = (checked, favorite) => {
+    console.log("Favorites.jsx: handleCityChange", checked, favorite);
     if (checked) {
-      setCompareList((prev) => [...prev, weather]);
+      setCompareList((prev) => [...prev, favorite]);
     } else {
-      setCompareList((prev) => prev.filter((item) => item.id !== weather.id));
+      setCompareList((prev) => prev.filter((item) => item.id !== favorite.id));
     }
   };
 
@@ -106,7 +105,7 @@ const Favorites = () => {
           {favoriteList.map((result) => (
             <CityFavoriteCard
               key={result.id}
-              weather={result}
+              favorite={result}
               mode={favoriteMode}
               onChange={handleCityChange}
               onEdit={handleEditClick}
@@ -139,4 +138,4 @@ const Favorites = () => {
   );
 };
 
-export default Favorites;
+export default React.memo(Favorites);
