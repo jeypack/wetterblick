@@ -81,7 +81,7 @@ const Favorites = () => {
   return (
     <>
       <PageTitle title="Meine Orte" />
-      <div className="container flex flex-col items-center sm:items-start justify-center mx-auto py-2">
+      <main className="container flex flex-col items-center sm:items-start justify-center mx-auto py-2">
         <div className="flex flex-col sm:flex-row items-baseline justify-center gap-4 p-4 mb-8">
           <h1 className="text-xl font-bold mr-4 text-nowrap">Meine Orte verwalten</h1>
           <ThemeButton
@@ -112,7 +112,7 @@ const Favorites = () => {
             />
           ))}
         </div>
-      </div>
+      </main>
       <AddCityDialog
         data={dialogData}
         isOpen={favoriteMode === "create"}

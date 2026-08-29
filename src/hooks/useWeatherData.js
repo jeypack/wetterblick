@@ -68,15 +68,22 @@ export function useWeatherData(initialLocation = "") {
     return weatherDataList;
   };
 
-  const getCity = async (location, modelParam) => {
+  const getCityWeather = async (location, modelParam) => {
     const modelToUse = modelParam || model;
-    console.log("getCity location", location);
+    console.log("getCityWeather location", location);
     const weatherData =
       typeof location === "string"
         ? await getWeatherForecast(location, modelToUse)
         : await getWeather(location, modelToUse);
-
     update(modelToUse, weatherData);
+    return weatherData;
+  };
+
+  const getCity = async (location, modelParam) => {
+    const modelToUse = modelParam || model;
+    console.log("getCity location", location);
+    const weatherData = await getCityWeather(location, modelToUse);
+    
     await updateRecentLocations(location);
   };
 
@@ -108,9 +115,9 @@ export function useWeatherData(initialLocation = "") {
     });
   };
 
-  const updateCities = (id) => {
+  /* const updateCities = (id) => {
     // Implement the updateCity logic here
-  };
+  }; */
 
   const toggleCities = (checked) => {
     if (checked) {

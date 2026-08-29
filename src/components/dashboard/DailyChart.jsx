@@ -32,11 +32,11 @@ const DailyChart = ({chartData, isAnimationActive = true}) => {
   /* const dailyDataForPreviewCity = useMemo(() => {
       return dailyData.find((city) => city.id === previewCityId);
     }, [dailyData, previewCityId]); */
-  const areaChartData = chartData?.data;
-  //console.log("DailyChart: areaChartData", areaChartData);
-  const coldestData = areaChartData?.reduce(
+  //const areaChartData = chartData?.data;
+  console.log("DailyChart: chartData", chartData);
+  const coldestData = chartData?.reduce(
     (min, item) => (item.temperatureMin < min.temperatureMin ? item : min),
-    areaChartData[0],
+    chartData[0],
   );
   //console.log("DailyChart: coldestData", coldestData);
   return (
@@ -45,11 +45,11 @@ const DailyChart = ({chartData, isAnimationActive = true}) => {
         width: "100%",
         maxWidth: "700px",
         height: "100%",
-        maxHeight: "70vh",
+        maxHeight: "288px",
         aspectRatio: 1.618,
       }}
       responsive
-      data={areaChartData}
+      data={chartData}
       margin={{
         top: 15,
         right: 0,

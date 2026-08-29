@@ -6,6 +6,7 @@ import WeatherIcon from "./WeatherIcon";
 import { weatherCodes } from "../../data/api";
 import { useOverlay } from "../../hooks/useOverlay";
 import RemoveCityDialog from "./RemoveCityDialog";
+import { useNavigate } from "react-router-dom";
 
 const dialogData = {
   title: "Stadt entfernen",
@@ -16,11 +17,13 @@ const dialogData = {
   cancelText: "Abbrechen",
 };
 
-const CityPanel = () => {
+const CityPanel = ({ hasDetail = true }) => {
   const [isOpen, setIsOpen] = useState(false);
   const { recentList } = useWeather();
   const { updateFavorites, isFavorite } = useUserData();
   const { setToastMessage } = useOverlay();
+  const navigate = useNavigate();
+
   //const lastDailyData = dailyData[dailyData.length - 1];
   //console.log("lastDailyData", lastDailyData);
   /* const dailyDataForPreviewCity = useMemo(() => {
@@ -75,6 +78,7 @@ const CityPanel = () => {
   const handleDetailClick = () => {
     // route to city detail page with lastCityData.location
     console.log("CityCard: handleDetailClick: lastCityData.id", lastCityData.id);
+    navigate(`/city/${encodeURIComponent(lastCityData.id)}`);
   };
 
   const handleConfirm = () => {
@@ -140,25 +144,28 @@ const CityPanel = () => {
           </span>
         </div>
       </div>
-      <div
-        onClick={handleDetailClick}
-        className="cursor-pointer text-white absolute bottom-6 right-6"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          strokeWidth={1.5}
-          stroke="currentColor"
-          className="size-12"
+      {hasDetail && (
+        <div
+          onClick={handleDetailClick}
+          className="cursor-pointer text-white absolute bottom-6 right-6"
         >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
-          />
-        </svg>
-      </div>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="size-12"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+            />
+          </svg>
+        </div>
+      )}
+
       <div
         onClick={handleFavoriteClick}
         className="cursor-pointer text-white absolute top-6 right-6"

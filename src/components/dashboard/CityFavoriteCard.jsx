@@ -37,13 +37,13 @@ const CityFavoriteCard = ({ active, mode, favorite, onChange, onEdit }) => {
   console.log("CityFavoriteCard: favorite", favorite);
 
   const handleFavoriteClick = () => {
-    console.log("CityWeatherCard: handleFavoriteClick: favorite.id", id);
+    console.log("CityFavoriteCard: handleFavoriteClick: favorite.id", id);
     dialogData.title = "Ort " + location.name + " entfernen?";
     setIsOpen(true);
   };
 
   const handleEditClick = () => {
-    console.log("CityWeatherCard: handleEditClick: favorite", favorite);
+    console.log("CityFavoriteCard: handleEditClick: favorite", favorite);
     dialogData.title = "Ort " + location.name + " bearbeiten?";
     //setIsOpen(true);
     if (onEdit) {
@@ -53,12 +53,13 @@ const CityFavoriteCard = ({ active, mode, favorite, onChange, onEdit }) => {
 
   const handleConfirm = () => {
     setIsOpen(false);
-    console.log("CityCard: handleConfirm: favorite.id", id);
+    console.log("CityFavoriteCard: handleConfirm: favorite", favorite);
     updateFavorites({ location });
   };
 
   const containerClassName =
     "flex flex-col justify-center items-start gap-2 border-2 p-4 rounded-md w-auto min-w-xs hover:scale(105) transition-transform duration-200 ease-in-out hover:shadow-lg";
+  
   const selectedClassName = active
     ? "bg-neutral-100 border-neutral-400 shadow-neutral-900/20 dark:bg-neutral-800 dark:border-neutral-600 dark:hover:shadow-neutral-900/20 shadow-lg scale(102)"
     : "bg-neutral-50 border-neutral-300 hover:shadow-neutral-900/20 dark:bg-neutral-800 dark:border-neutral-600 dark:hover:shadow-neutral-900/20";
