@@ -81,7 +81,7 @@ const Favorites = () => {
   return (
     <>
       <PageTitle title="Meine Orte" />
-      <main className="container flex flex-col items-center sm:items-start justify-center mx-auto py-2">
+      <main className="container flex-1 flex flex-col justify-start items-start mx-auto py-2">
         <div className="flex flex-col sm:flex-row items-baseline justify-center gap-4 p-4 mb-8">
           <h1 className="text-xl font-bold mr-4 text-nowrap">Meine Orte verwalten</h1>
           <ThemeButton
@@ -101,7 +101,7 @@ const Favorites = () => {
             Orte vergleichen <GitCompareArrows size={20} className="inline ml-1" />
           </ThemeButton>
         </div>
-        <div className="flex flex-wrap justify-center items-center gap-4">
+        <div className="flex flex-wrap justify-center items-center sm:justify-start gap-4 w-full">
           {favoriteList.map((result) => (
             <CityFavoriteCard
               key={result.id}

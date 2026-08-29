@@ -19,25 +19,33 @@ export default function Login() {
     // wird die Register-Komponente angezeigt.
     if (showRegister) {
       return (
-        <>
+        <div className="flex-1 flex flex-col justify-start items-center gap-4 p-4 w-full">
           <PageTitle title="Weather Dashboard - Register" />
+          <p className="text-neutral-500 dark:text-neutral-400 text-md max-w-2xl text-center">
+            Bitte registrieren dich, um auf das Dashboard zuzugreifen. Nach der
+            Registrierung werden deine zuletzt besuchten Orte und Favoriten gespeichert.
+          </p>
           <RegisterForm
             // Wenn onSwitch aufgerufen wird, wechseln wir zurück zur Login-Seite.
             onSwitch={() => setShowRegister(false)}
           />
-        </>
+        </div>
       );
     }
     return (
-      <>
+      <div className="flex-1 flex flex-col justify-start items-center gap-4 p-4 w-full">
         <PageTitle title="Weather Dashboard - Login" />
+        <p className="text-neutral-500 dark:text-neutral-400 text-md max-w-2xl text-center">
+          Bitte melde dich an, um auf das Dashboard zuzugreifen. Nach der
+          Anmeldung werden deine zuletzt besuchten Orte und Favoriten angezeigt.
+        </p>
         <LoginForm
           // Wenn der Benutzer auf "Registrieren" klickt,
           // wird showRegister auf true gesetzt.
           // Dadurch wird anschließend die Register-Seite angezeigt.
           onSwitch={() => setShowRegister(true)}
         />
-      </>
+      </div>
     );
   }
   return <Navigate to="/" replace />;

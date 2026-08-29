@@ -34,7 +34,7 @@ export default function Header() {
   };
 
   return (
-    <header className="sticky top-0 bg-neutral-50 border-b-12 border-neutral-400 dark:bg-neutral-800 dark:border-olive-600 flex flex-row gap-2 justify-start items-center h-16 mb-4 p-4 w-full z-40">
+    <header className="sticky top-0 bg-neutral-50 border-b-12 border-neutral-400 dark:bg-neutral-800 dark:border-olive-600 flex flex-row gap-2 justify-start items-center h-16 p-4 w-full z-40">
       <div className="flex flex-row justify-start items-center gap-2 text-neutral-500 dark:text-olive-400">
         <ThemeMenu />
         <h1 className="text-xl font-bold uppercase truncate w-32 sm:w-full">

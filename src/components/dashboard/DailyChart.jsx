@@ -18,26 +18,49 @@ stroke="var(--color-chart-1)" --color-sky-500
 activeDot={{r: 8, stroke: "var(--color-surface-base)"}} --color-amber-700
 stroke="var(--color-chart-2)" --color-green-500
 */
-const renderTooltipWithoutTemp = ({payload, content, ...rest}) => {
+const renderTooltipWithoutTemp = ({ payload, content, ...rest }) => {
   const newPayload = payload.filter((x) => x.dataKey !== "temperature");
   return <DefaultTooltipContent payload={newPayload} {...rest} />;
 };
 
-const renderLegendWithoutTemp = ({payload, ...rest}) => {
+const renderLegendWithoutTemp = ({ payload, ...rest }) => {
   const newPayload = payload?.filter((x) => x.dataKey !== "temperature");
   return <DefaultLegendContent payload={newPayload} {...rest} />;
 };
 
-const DailyChart = ({chartData, isAnimationActive = true}) => {
+const DailyChart = ({ chartData, isAnimationActive = true }) => {
   /* const dailyDataForPreviewCity = useMemo(() => {
       return dailyData.find((city) => city.id === previewCityId);
     }, [dailyData, previewCityId]); */
   //const areaChartData = chartData?.data;
   console.log("DailyChart: chartData", chartData);
-  const coldestData = chartData?.reduce(
+  if (!chartData || chartData.length === 0) {
+    return (
+      <div className="flex flex-col justify-center items-center gap-2 w-full h-60">
+        <p className="text-neutral-400 dark:text-neutral-300 text-sm">
+          Keine Daten verfügbar
+        </p>
+      </div>
+    );
+  }
+  const coldestData = chartData.reduce(
     (min, item) => (item.temperatureMin < min.temperatureMin ? item : min),
     chartData[0],
   );
+
+  const tempValues = chartData.flatMap((item) => [
+    item.temperatureMin,
+    item.temperatureMax,
+  ]);
+
+  const minTemp = Math.floor(Math.min(...tempValues) / 2) * 2 - 1;
+  const maxTemp = Math.ceil(Math.max(...tempValues) / 2) * 2 + 1;
+
+  const yTicks = Array.from(
+    { length: (maxTemp - minTemp) / 2 + 1 },
+    (_, index) => minTemp + index * 2,
+  );
+
   //console.log("DailyChart: coldestData", coldestData);
   return (
     <ComposedChart
@@ -45,8 +68,8 @@ const DailyChart = ({chartData, isAnimationActive = true}) => {
         width: "100%",
         maxWidth: "700px",
         height: "100%",
-        maxHeight: "288px",
-        aspectRatio: 1.618,
+        maxHeight: "400px",
+        aspectRatio: 1.25,
       }}
       responsive
       data={chartData}
@@ -54,7 +77,7 @@ const DailyChart = ({chartData, isAnimationActive = true}) => {
         top: 15,
         right: 0,
         left: 0,
-        bottom: 5,
+        bottom: 15,
       }}
     >
       <defs>
@@ -72,13 +95,41 @@ const DailyChart = ({chartData, isAnimationActive = true}) => {
       <XAxis
         dataKey="date"
         stroke="var(--color-neutral-400)"
-        padding={{left: 30, right: 30, top: 20}}
+        padding={{ left: 20, right: 20, top: 20, bottom: 20 }}
+        interval={0}
+        minTickGap={16}
+        tick={({ x, y, payload }) => {
+          const [day, date] = String(payload.value).split(" ");
+          return (
+            <g transform={`translate(${x},${y})`}>
+              <text
+                x={0}
+                y={0}
+                fill="var(--color-neutral-400)"
+                fontSize={11}
+                textAnchor="middle"
+              >
+                <tspan x={0} dy="5">
+                  {day?.slice(0, 3)}
+                </tspan>
+                <tspan x={0} dy="14">
+                  {date}
+                </tspan>
+              </text>
+            </g>
+          );
+        }}
       />
       <YAxis
         dataKey="temperatureMax"
-        width="50"
+        width={42}
         stroke="var(--color-neutral-400)"
-        unit="°"
+        axisLine={false}
+        tickLine={false}
+        tickMargin={2}
+        ticks={yTicks}
+        domain={[minTemp, maxTemp]}
+        tickFormatter={(value) => `${Math.round(value)}°`}
       />
       <Area
         type="monotone"
@@ -95,10 +146,10 @@ const DailyChart = ({chartData, isAnimationActive = true}) => {
         dot={{
           fill: "var(--color-amber-700)",
         }}
-        activeDot={{r: 4, stroke: "var(--color-amber-700)", unit: "°"}}
+        activeDot={{ r: 4, stroke: "var(--color-amber-700)", unit: "°" }}
         label={{
           position: "top",
-          fill: "var(--color-amber-700)",
+          fill: "var(--color-neutral-300)",
           fontSize: 13,
         }}
         unit="°"
@@ -108,12 +159,12 @@ const DailyChart = ({chartData, isAnimationActive = true}) => {
         dataKey="temperatureMin"
         stroke="var(--color-sky-500)"
         dot={{
-          fill: "var(--color-amber-700)",
+          fill: "var(--color-sky-700)",
         }}
-        activeDot={{r: 4, stroke: "var(--color-amber-700)", unit: "°"}}
+        activeDot={{ r: 4, stroke: "var(--color-sky-700)", unit: "°" }}
         label={{
           position: "bottom",
-          fill: "var(--color-sky-600)",
+          fill: "var(--color-neutral-300)",
           fontSize: 13,
         }}
         unit="°"
