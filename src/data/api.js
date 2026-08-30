@@ -1,10 +1,13 @@
 // meteor call: https://api.open-meteo.com/v1/forecast?latitude=35.6895&longitude=139.6917&hourly=temperature_2m,relative_humidity_2m,precipitation,rain,snowfall,cloudcover,windspeed_10m,winddirection_10m&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,rain_sum,snowfall_sum,cloudcover_max,windspeed_10m_max&current_weather=true&timezone=auto
 
+//https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&daily=weather_code&current=temperature_2m,relative_humidity_2m,wind_speed_10m,wind_direction_10m,apparent_temperature,weather_code&timezone=auto
+
 import { resolveLocalImage } from "../utils/assets";
 
-//https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&daily=weather_code&current=temperature_2m,relative_humidity_2m,wind_speed_10m,wind_direction_10m,apparent_temperature,weather_code&timezone=auto
 const GEOCODING_URL = "https://geocoding-api.open-meteo.com/v1/search";
 const OPEN_METEO_URL = "https://api.open-meteo.com/v1/forecast";
+
+const DAYS_OF_WEEK = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 export const weatherModels = [
   { name: "ECMWF IFS", model: "ecmwf_ifs" },
@@ -41,6 +44,37 @@ function getMappedWeatherDataForecast(location, weatherData, model) {
   if (!weatherData) {
     return null;
   }
+  
+  const dailyData =
+    weatherData.daily.time.map((t, index) => {
+      const date = new Date(t);
+      const day = date.getDay();
+      return {
+        date: DAYS_OF_WEEK[day] + " " + date.getDate() + "." + (date.getMonth() + 1),
+        temperatureMax: weatherData.daily.temperature_2m_max[index],
+        temperatureMin: weatherData.daily.temperature_2m_min[index],
+        temperature: [weatherData.daily.temperature_2m_min[index], weatherData.daily.temperature_2m_max[index]],
+        apparentMax: weatherData.daily.apparent_temperature_max[index],
+        apparentMin: weatherData.daily.apparent_temperature_min[index],
+        weatherCode: weatherData.daily.weather_code[index],
+      };
+    }) || [];
+ 
+  const hourlyData =
+    weatherData.hourly.time.map((t, index) => {
+      const date = new Date(t);
+      const day = date.getDay();
+      return {
+        date: DAYS_OF_WEEK[day] + " " + date.getDate() + "." + (date.getMonth() + 1),
+        time: date.getHours() + ":00",
+        temperature: weatherData.hourly.temperature_2m[index],
+        apparent: weatherData.hourly.apparent_temperature[index],
+        relativeHumidity: weatherData.hourly.relative_humidity_2m[index],
+        windSpeed: weatherData.hourly.wind_speed_10m[index],
+        weatherCode: weatherData.hourly.weather_code[index],
+      };
+    }) || [];
+ 
   const mappedWeatherData = {
     id: `${location.latitude}-${location.longitude}`,
     location: location,
@@ -55,31 +89,8 @@ function getMappedWeatherDataForecast(location, weatherData, model) {
       pressure: weatherData.current.surface_pressure,
       weatherCode: weatherData.current.weather_code,
     },
-    currentUnits: {
-      temperature: weatherData.current_units.temperature_2m,
-      apparentTemperature: weatherData.current_units.apparent_temperature,
-      relativeHumidity: weatherData.current_units.relative_humidity_2m,
-      windSpeed: weatherData.current_units.windspeed_10m,
-      windDirection: weatherData.current_units.winddirection_10m,
-      pressure: weatherData.current_units.surface_pressure,
-      weatherCode: weatherData.current_units.weather_code,
-    },
-    //weather_code,temperature_2m_max,temperature_2m_min,apparent_temperature_max,apparent_temperature_min
-    daily: {
-      time: weatherData.daily.time,
-      temperature: weatherData.daily.temperature_2m_max,
-      temperatureMin: weatherData.daily.temperature_2m_min,
-      apparentTemperatureMax: weatherData.daily.apparent_temperature_max,
-      apparentTemperatureMin: weatherData.daily.apparent_temperature_min,
-      weatherCode: weatherData.daily.weather_code,
-    },
-    dailyUnits: {
-      temperature: weatherData.daily_units.temperature_2m_max,
-      temperatureMin: weatherData.daily_units.temperature_2m_min,
-      apparentTemperatureMax: weatherData.daily_units.apparent_temperature_max,
-      apparentTemperatureMin: weatherData.daily_units.apparent_temperature_min,
-      weatherCode: weatherData.daily_units.weather_code,
-    },
+    daily: dailyData,
+    hourly: hourlyData,
   };
   //console.log("Weather mappedWeatherData:", mappedWeatherData);
   return mappedWeatherData;
@@ -98,8 +109,9 @@ async function getWeatherDataForecast(latitude, longitude, model) {
     "weather_code,temperature_2m_max,temperature_2m_min,apparent_temperature_max,apparent_temperature_min",
   );
   url.searchParams.append("forecast_days", "15");
+  url.searchParams.append("forecast_hours", "24");
   //url.searchParams.append("current_weather", "true");
-  //url.searchParams.append("hourly", "temperature_2m,relative_humidity_2m,weather_code");
+  url.searchParams.append("hourly", "temperature_2m,relative_humidity_2m,precipitation,weather_code,wind_speed_10m,apparent_temperature");
   url.searchParams.append("timezone", "auto");
   url.searchParams.append("models", model);
   try {

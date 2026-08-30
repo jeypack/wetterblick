@@ -104,7 +104,7 @@ const CityPanel = ({ hasDetail = true }) => {
   return (
     <div
       className={
-        "bg-neutral-600 dark:bg-neutral-700 bg-cover bg-blend-overlay border border-neutral-200 dark:border-neutral-600 flex flex-col justify-start items-start gap-6 p-6 rounded-xl w-auto min-h-60 transition-shadow duration-200 ease-in-out shadow-md lg:flex-row lg:max-w-4xl relative"
+        "bg-neutral-600 dark:bg-neutral-700 bg-cover bg-blend-overlay border border-neutral-200 dark:border-neutral-600 flex flex-col justify-start items-start gap-6 p-6 rounded-xl w-full min-h-60 transition-shadow duration-200 ease-in-out shadow-md lg:flex-row lg:max-w-4xl relative"
       }
       style={{ backgroundImage: `url(${getWeatherImage(lastCityData.weatherCode)})` }}
     >

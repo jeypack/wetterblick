@@ -12,12 +12,6 @@ import {
   Area,
 } from "recharts";
 
-/* 
-var(--color-surface-raised) --color-amber-500
-stroke="var(--color-chart-1)" --color-sky-500
-activeDot={{r: 8, stroke: "var(--color-surface-base)"}} --color-amber-700
-stroke="var(--color-chart-2)" --color-green-500
-*/
 const renderTooltipWithoutTemp = ({ payload, content, ...rest }) => {
   const newPayload = payload.filter((x) => x.dataKey !== "temperature");
   return <DefaultTooltipContent payload={newPayload} {...rest} />;
@@ -29,11 +23,7 @@ const renderLegendWithoutTemp = ({ payload, ...rest }) => {
 };
 
 const DailyChart = ({ chartData, isAnimationActive = true }) => {
-  /* const dailyDataForPreviewCity = useMemo(() => {
-      return dailyData.find((city) => city.id === previewCityId);
-    }, [dailyData, previewCityId]); */
-  //const areaChartData = chartData?.data;
-  console.log("DailyChart: chartData", chartData);
+  //console.log("DailyChart: chartData", chartData);
   if (!chartData || chartData.length === 0) {
     return (
       <div className="flex flex-col justify-center items-center gap-2 w-full h-60">
@@ -66,7 +56,7 @@ const DailyChart = ({ chartData, isAnimationActive = true }) => {
     <ComposedChart
       style={{
         width: "100%",
-        maxWidth: "700px",
+        maxWidth: "860px",
         height: "100%",
         maxHeight: "400px",
         aspectRatio: 1.25,
@@ -134,7 +124,7 @@ const DailyChart = ({ chartData, isAnimationActive = true }) => {
       <Area
         type="monotone"
         dataKey="temperature"
-        stroke="var(--color-amber-600"
+        stroke="var(--color-amber-700"
         fill="url(#colorTemperature)"
         isAnimationActive={isAnimationActive}
         unit="°"
@@ -144,9 +134,9 @@ const DailyChart = ({ chartData, isAnimationActive = true }) => {
         dataKey="temperatureMax"
         stroke="var(--color-amber-500)"
         dot={{
-          fill: "var(--color-amber-700)",
+          fill: "var(--color-amber-800)",
         }}
-        activeDot={{ r: 4, stroke: "var(--color-amber-700)", unit: "°" }}
+        activeDot={{ r: 4, stroke: "var(--color-amber-800)", unit: "°" }}
         label={{
           position: "top",
           fill: "var(--color-neutral-300)",

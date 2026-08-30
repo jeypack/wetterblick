@@ -37,18 +37,17 @@ const CityDetail = () => {
     setLoading(true);
   }, [city, recentList, model]);
 
-  if (loading && !city) {
-    return (
-      <>
-        <PageTitle title={"Stadt Detail wird geladen"} />
-        <main className="container flex-1 flex flex-col justify-start items-start mx-auto py-2 text-olive-400 dark:text-olive-200">
-          Stadt Detail wird geladen. Bitte warten Sie einen Moment.
-        </main>
-      </>
-    );
-  }
-
   if (!city) {
+    if (loading) {
+      return (
+        <>
+          <PageTitle title={"Stadt Detail wird geladen"} />
+          <main className="container flex-1 flex flex-col justify-start items-start mx-auto py-2 text-olive-400 dark:text-olive-200">
+            Stadt Detail wird geladen. Bitte warten Sie einen Moment.
+          </main>
+        </>
+      );
+    }
     return (
       <>
         <PageTitle title={"Stadt Detail nicht gefunden"} />
@@ -66,37 +65,28 @@ const CityDetail = () => {
     );
   }
 
-  const dailyData =
-    city.daily?.time.map((t, index) => {
-      const date = new Date(t);
-      const day = date.getDay();
-      return {
-        date: DAYS_OF_WEEK[day] + " " + date.getDate() + "." + (date.getMonth() + 1),
-        temperatureMax: city.daily?.temperature[index],
-        temperatureMin: city.daily?.temperatureMin[index],
-        temperature: [city.daily?.temperatureMin[index], city.daily?.temperature[index]],
-        weatherCode: city.daily?.weatherCode[index],
-      };
-    }) || [];
-  console.log("CityDetail: dailyData", dailyData, "city.daily", city.daily);
+  console.log("CityDetail:", "city.daily", city.daily);
 
   return (
     <>
-      <PageTitle title={"Wetter Details " + city?.location?.name} />
+      <PageTitle title={"Wetter Details " + city.location?.name} />
       <main className="container flex-1 flex flex-col justify-start items-start mx-auto py-2">
         <section className="flex flex-col justify-start items-start p-2 w-full">
-          <div className="flex flex-row justify-start items-start gap-4 text-neutral-500 dark:text-neutral-300 text-sm text-left p-4 w-2xl">
-            <p className="text-neutral-600 dark:text-neutral-300">
-              Detaillierte Wetterinformationen für die ausgewählte Stadt werden hier
-              angezeigt.
-            </p>
-          </div>
-          <div className="max-w-xl">
+          <p className="text-neutral-600 dark:text-neutral-300 text-left">
+            Detaillierte Wetterinformationen für die ausgewählte Stadt werden hier
+            angezeigt.
+          </p>
+          <div className="flex mt-4 mb-2 max-w-lg w-full">
             <CityPanel hasDetail={false} />
           </div>
         </section>
-        <section className="h-100 w-full md:w-3xl p-2">
-          <DailyChart chartData={dailyData} />
+        <section className="flex flex-col justify-start items-start p-2 w-full">
+          <p className="text-neutral-600 dark:text-neutral-300 text-left">
+            Vorhersage für die nächsten Tage
+          </p>
+          <div className="h-100 w-full p-2">
+            <DailyChart chartData={city.daily} />
+          </div>
         </section>
       </main>
     </>
