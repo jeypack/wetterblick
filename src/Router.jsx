@@ -11,7 +11,7 @@ export default function Router() {
       <Route path="/" element={<Dashboard />} />
       <Route path="/home" element={<Dashboard />} />
       <Route path="/favorites" element={<Favorites />} />
-      <Route path="/login" element={<Login />} />
+      <Route path="/login/:type" element={<Login />} />
       <Route path="/city/:id" element={<CityDetail />} />
       <Route path="/*" element={<NotFound />} />
     </Routes>

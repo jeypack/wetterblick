@@ -1,6 +1,7 @@
 import { Link, NavLink } from "react-router-dom";
 import styles from "../Styles";
 import { Menu, MenuButton, MenuItems, MenuItem, MenuSeparator } from "@headlessui/react";
+import { CheckIcon } from "@heroicons/react/20/solid";
 import { UserShield, ChevronDownIcon } from "lucide-react";
 import { Bars3Icon } from "@heroicons/react/24/outline";
 import React from "react";
@@ -19,11 +20,11 @@ const navData = [
 export default function Header() {
   const { user } = useAuth();
   const { setToastMessage } = useOverlay();
+  const [isLoggIn, setIsLoggIn] = React.useState(null);
   // console.log("Header: user", user);
 
   const handleLogout = async () => {
     const auth = getAuth();
-
     try {
       await signOut(auth);
       console.log("User logged out successfully");
@@ -84,8 +85,8 @@ export default function Header() {
                 </p>
               </MenuItem>
               <MenuSeparator className="h-px bg-neutral-700 dark:bg-neutral-400" />
-              <MenuItem>
-                {user ? (
+              {user ? (
+                <MenuItem>
                   <button
                     onClick={handleLogout}
                     className={
@@ -94,15 +95,35 @@ export default function Header() {
                   >
                     Abmelden
                   </button>
-                ) : (
-                  <Link
-                    className="block px-2 py-1 bg-neutral-50 border-neutral-500 dark:border-neutral-500 dark:bg-neutral-900 dark:text-neutral-400 data-focus:text-neutral-900 data-focus:bg-neutral-200 dark:data-focus:text-neutral-200 dark:data-focus:bg-neutral-700"
-                    to="/login"
-                  >
-                    Anmelden
-                  </Link>
-                )}
-              </MenuItem>
+                </MenuItem>
+              ) : (
+                <>
+                  <MenuItem>
+                    <Link
+                      className={"flex items-center px-2 py-1 data-focus:text-neutral-900 data-focus:bg-neutral-200 dark:data-focus:text-neutral-200 dark:data-focus:bg-neutral-700 " + (isLoggIn === false ? "bg-neutral-200 dark:text-neutral-200 dark:bg-neutral-700" : "bg-neutral-50 border-neutral-500 dark:border-neutral-500 dark:bg-neutral-900 dark:text-neutral-400")}
+                      to="/login/login"
+                      onClick={() => setIsLoggIn(false)}
+                    >
+                      Anmelden
+                      {/* <CheckIcon
+                        className={"ml-2 size-5 " + (isLoggIn === false ? "visible" : "invisible")}
+                      /> */}
+                    </Link>
+                  </MenuItem>
+                  <MenuItem>
+                    <Link
+                      className={"flex items-center px-2 py-1 data-focus:text-neutral-900 data-focus:bg-neutral-200 dark:data-focus:text-neutral-200 dark:data-focus:bg-neutral-700 " + (isLoggIn === true ? "bg-neutral-200 dark:text-neutral-200 dark:bg-neutral-700" : "bg-neutral-50 border-neutral-500 dark:border-neutral-500 dark:bg-neutral-900 dark:text-neutral-400")}
+                      to="/login/register"
+                      onClick={() => setIsLoggIn(true)}
+                    >
+                      Registrieren
+                      {/* <CheckIcon
+                        className={"ml-2 size-5 " + (isLoggIn === true ? "visible" : "invisible")}
+                      /> */}
+                    </Link>
+                  </MenuItem>
+                </>
+              )}
             </MenuItems>
           </Menu>
         </div>
