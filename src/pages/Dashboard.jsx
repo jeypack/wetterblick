@@ -24,7 +24,7 @@ const Dashboard = () => {
   return (
     <>
       <PageTitle title="Wetter Suche" />
-      <main className="flex-1 flex flex-col justify-between items-start gap-2 mb-8 md:p-8 w-full md:flex-row">
+      <main className="flex-1 flex flex-col justify-between items-start gap-2 md:p-8 w-full md:flex-row">
         <Sidebar>
           <CitySearch
             onSubmit={getCity}

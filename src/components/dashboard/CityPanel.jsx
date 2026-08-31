@@ -7,6 +7,7 @@ import { weatherCodes } from "../../data/api";
 import { useOverlay } from "../../hooks/useOverlay";
 import RemoveCityDialog from "./RemoveCityDialog";
 import { useNavigate } from "react-router-dom";
+import styles from "../../Styles";
 
 const dialogData = {
   title: "Stadt entfernen",
@@ -104,11 +105,14 @@ const CityPanel = ({ hasDetail = true }) => {
   return (
     <div
       className={
-        "bg-neutral-600 dark:bg-neutral-700 bg-cover bg-blend-overlay border border-neutral-200 dark:border-neutral-600 flex flex-col justify-start items-start gap-6 p-6 rounded-xl w-full min-h-60 transition-shadow duration-200 ease-in-out shadow-md lg:flex-row lg:max-w-4xl relative"
+        styles.container +
+        " relative bg-cover bg-center w-full min-h-60 " +
+        (hasDetail ? styles.containerActive : "")
       }
       style={{ backgroundImage: `url(${getWeatherImage(lastCityData.weatherCode)})` }}
     >
-      <div className="flex flex-col justify-start items-start gap-2 relative w-fit">
+      <div className="absolute inset-0 pointer-events-none bg-[linear-gradient(70deg,rgba(2,6,23,0.72)_0%,rgba(2,6,23,0.64)_30%,rgba(2,6,23,0.28)_52%,rgba(2,6,23,0)_100%)] dark:bg-[linear-gradient(90deg,rgba(2,6,23,0.82)_0%,rgba(2,6,23,0.64)_30%,rgba(2,6,23,0.28)_52%,rgba(2,6,23,0)_100%)]" />
+      <div className="relative flex flex-col justify-start items-start gap-2 w-fit z-10">
         <WeatherIcon
           code={lastCityData.weatherCode}
           className="text-neutral-50 dark:text-neutral-200"
@@ -131,12 +135,12 @@ const CityPanel = ({ hasDetail = true }) => {
         </div>
         <hr className="mb-2 mt-1 w-full border-neutral-500 dark:border-neutral-300/70" />
         <div className="flex flex-row justify-start items-baseline gap-2 text-neutral-50 dark:text-neutral-200 text-nowrap text-sm">
-          <MapPin size={15} color="#ffffff" />
+          <MapPin size={15} />
           <span className="font-bold">{lastCityData.location.name},</span>
           <span>{lastCityData.location.country}</span>
         </div>
         <div className="flex flex-row justify-start items-baseline gap-2 text-neutral-50 dark:text-neutral-200 text-nowrap text-sm">
-          <CalendarRange size={15} color="#ffffff" />
+          <CalendarRange size={15} />
           <span>{date}</span>
           <span className="font-bold">{time}</span>
           <span className="text-neutral-50 dark:text-neutral-300 text-xs ml-4">

@@ -12,11 +12,11 @@ const ListBox = ({ className, label, options, onChange, selectedModel }) => {
   };
   return (
     <Field as="div" className="flex flex-col justify-center items-start gap-1 w-full">
-      <Label className={"text-neutral-400"}>{label}</Label>
+      <Label className={"text-neutral-500 dark:text-olive-400"}>{label}</Label>
       <Listbox value={selectedValue} onChange={handleChange}>
         <ListboxButton
           className={
-            "mt-2 border cursor-pointer text-neutral-600 hover:text-neutral-500 border-neutral-500 hover:border-neutral-400 dark:text-neutral-400 dark:hover:text-neutral-300 dark:border-neutral-500 dark:hover:border-neutral-400 focus-visible:outline-none rounded-2xl w-full px-3 py-1 " +
+            "mt-2 border bg-neutral-200/50 dark:bg-neutral-900/70 cursor-pointer text-neutral-500 hover:text-neutral-500 border-neutral-500 hover:border-neutral-400 dark:text-olive-400 dark:hover:text-neutral-300 dark:border-neutral-500 dark:hover:border-neutral-400 focus-visible:outline-none rounded-2xl w-full px-3 py-1 " +
             (className ?? "w-42")
           }
         >

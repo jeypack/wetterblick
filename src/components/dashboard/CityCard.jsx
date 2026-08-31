@@ -8,8 +8,8 @@ const CityCard = ({ active, weather }) => {
   const { getCity } = useWeather();
 
   const classNameLocation = active
-    ? "text-neutral-600 dark:text-olive-50"
-    : "text-neutral-500 dark:text-neutral-200";
+    ? "text-neutral-700 dark:text-olive-50"
+    : "text-neutral-600 dark:text-neutral-200";
 
   const handleCityUpdate = async () => {
     getCity(weather.location);
@@ -29,7 +29,7 @@ const CityCard = ({ active, weather }) => {
           <div className="flex flex-row justify-center items-center gap-1 text-neutral-400 dark:text-neutral-200 text-nowrap">
             <WeatherIcon
               code={weatherCode}
-              className="text-neutral-400 dark:text-neutral-200"
+              className="text-neutral-500 dark:text-neutral-200"
               size={40}
             />
             <div className={`ml-2 max-w-32 text-lg/5 truncate ${classNameLocation}`}>

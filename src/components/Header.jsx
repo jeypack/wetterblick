@@ -61,7 +61,7 @@ export default function Header() {
           ))}
         </div>
 
-        <div className="flex flex-col justify-center items-start gap-2">
+        <div className="flex flex-col justify-center items-start gap-2 z-50">
           <Menu>
             <MenuButton
               className={
@@ -138,7 +138,7 @@ export default function Header() {
           </MenuButton>
           <MenuItems
             anchor={{ to: "bottom end", gap: "4px" }}
-            className="mt-6 border border-slate-600 rounded-md shadow-lg data-focus:outline-none"
+            className="mt-6 border border-neutral-600 rounded-md shadow-lg data-focus:outline-none z-50"
             transition
           >
             {navData.map((value, index) => {
@@ -151,10 +151,10 @@ export default function Header() {
                         const baseClass =
                           "block w-28 h-8 px-4 py-2 text-sm text-center font-bold";
                         return isPending
-                          ? `${baseClass} pending bg-slate-850 text-gray-400`
+                          ? `${baseClass} pending bg-neutral-850 text-neutral-400`
                           : isActive
-                            ? `${baseClass} bg-slate-900 text-gray-200`
-                            : `${baseClass} bg-slate-900 text-gray-400`;
+                            ? `${baseClass} bg-neutral-900 text-neutral-200`
+                            : `${baseClass} bg-neutral-900 text-neutral-400`;
                       }}
                     >
                       {value.name}

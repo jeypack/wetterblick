@@ -50,7 +50,7 @@ const CitySearch = ({
   //console.log("CitySearch: model", model, "selectedModel", selectedModel);
   return (
     <form
-      className="flex flex-col justify-center items-center gap-2 px-2 pb-2 w-full z-20"
+      className="flex flex-col justify-center items-center gap-2 px-2 pb-2 w-full z-30"
       onSubmit={handleSubmit}
       autoComplete="off"
     >
@@ -65,7 +65,7 @@ const CitySearch = ({
       <Button
         type="submit"
         disabled={!location}
-        className="border cursor-pointer text-neutral-600 hover:text-neutral-500 border-neutral-500 hover:border-neutral-400 dark:text-neutral-400 dark:hover:text-neutral-300 dark:border-neutral-500 dark:hover:border-neutral-400 focus-visible:outline-none rounded-2xl w-full"
+        className="border cursor-pointer bg-neutral-200/50 dark:bg-neutral-900/70 text-neutral-600 hover:text-neutral-500 border-neutral-500 hover:border-neutral-400 dark:text-neutral-400 dark:hover:text-neutral-300 dark:border-neutral-500 dark:hover:border-neutral-400 focus-visible:outline-none rounded-2xl w-full"
       >
         <RippleFX className="w-full px-3 py-1 rounded-2xl">{btnLabel}</RippleFX>
       </Button>
