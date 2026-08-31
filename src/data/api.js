@@ -27,6 +27,7 @@ export const getWeatherModel = (modelName) => {
 async function getGeocoding(location) {
   const url = new URL(GEOCODING_URL);
   url.searchParams.append("name", location);
+  url.searchParams.append("language", "de");
   try {
     const response = await fetch(url.toString());
     if (!response.ok) {

@@ -6,16 +6,16 @@ import {
 } from "@headlessui/react";
 import { useState } from "react";
 
-const AutofillCombo = ({ options, onInput, onChange, onFocus }) => {
+const AutofillCombo = ({ options, onInput, onChange, onFocus, filterOptions = true }) => {
   const [selectedLocation, setSelectedLocation] = useState(null);
   const [query, setQuery] = useState("");
 
   const filteredOptions =
-    query === ""
-      ? options
-      : options.filter((option) => {
-          return option.name.toLowerCase().includes(query.toLowerCase());
-        });
+    filterOptions && query !== ""
+      ? options.filter((option) =>
+          option?.name?.toLowerCase().includes(query.toLowerCase()),
+        )
+      : options;
 
   const handleChange = (selected) => {
     console.log("AutofillCombo: handleChange: selected", selected);
@@ -26,12 +26,14 @@ const AutofillCombo = ({ options, onInput, onChange, onFocus }) => {
   const handleInputChange = (event) => {
     const value = event.target.value;
     //console.log("AutofillCombo: handleInputChange: value", value);
-    setQuery(event.target.value);
+    setQuery(value);
     onInput(event);
   };
-
+  console.log("AutofillCombo: options", options, "filteredOptions", filteredOptions);
   return (
     <Combobox
+      as="div"
+      className="relative w-full z-30"
       value={selectedLocation}
       onChange={handleChange}
       onClose={() => setQuery("")}
@@ -47,7 +49,7 @@ const AutofillCombo = ({ options, onInput, onChange, onFocus }) => {
       />
       <ComboboxOptions
         anchor="bottom start"
-        className="mt-1 w-80 border bg-neutral-100 border-neutral-300 text-neutral-600 dark:bg-neutral-900 dark:border-neutral-400 dark:text-neutral-400 rounded-lg empty:invisible"
+        className="mt-1 w-80 border bg-neutral-100 border-neutral-300 text-neutral-600 dark:bg-neutral-900 dark:border-neutral-400 dark:text-neutral-400 rounded-lg empty:invisible z-30"
       >
         {filteredOptions.map((option) => (
           <ComboboxOption
