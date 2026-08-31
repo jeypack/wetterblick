@@ -31,9 +31,11 @@ const FavoriteForm = ({
   async function onSubmit(data) {
     const { title, note } = data;
     try {
-      // Handle favorite form submission logic here
-      onConfirm({ title, note }); // Call the onConfirm callback with the favorite data
-      reset(); // Reset the form after successful submission
+      const confirmed = await onConfirm({ title, note });
+      if (confirmed === false) {
+        return;
+      }
+      reset();
     } catch (err) {
       setError("Favorite form submission failed");
     }

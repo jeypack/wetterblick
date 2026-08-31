@@ -96,18 +96,16 @@ const CityFavoriteCard = ({ active, mode, favorite, onChange, onEdit }) => {
           className={
             "flex justify-between items-start w-full text-neutral-500 dark:text-olive-300"
           }
+          onClick={handleDetailClick}
         >
           <h3
             className={`content-center font-semibold max-w-42 text-xl truncate uppercase ${classNameLocation}`}
           >
             {location.name}
           </h3>
-          <div className="cursor-pointer">
+          <div className="cursor-pointer" onClick={handleDetailClick}>
             {/* <MapPin size={32} className={"text-neutral-400 dark:text-neutral-200"} /> */}
-            <div
-              onClick={handleDetailClick}
-              className="cursor-pointer text-neutral-400 dark:text-neutral-100 hover:scale-105 transition-transform duration-200 ease-in-out relative"
-            >
+            <div className="cursor-pointer text-neutral-400 dark:text-neutral-100 hover:scale-105 transition-transform duration-200 ease-in-out relative">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -126,7 +124,10 @@ const CityFavoriteCard = ({ active, mode, favorite, onChange, onEdit }) => {
           </div>
         </div>
         <p className="text-sm text-neutral-400">Aktuelles Wetter</p>
-        <div className="flex flex-row justify-start items-center gap-3 mt-3">
+        <div
+          className="flex flex-row justify-start items-center gap-3 mt-3"
+          onClick={handleDetailClick}
+        >
           <WeatherIcon
             code={weatherCode}
             className="text-neutral-400 dark:text-neutral-200"
@@ -140,7 +141,10 @@ const CityFavoriteCard = ({ active, mode, favorite, onChange, onEdit }) => {
         </div>
       </div>
 
-      <div className="flex flex-row justify-between items-center gap-3 w-full">
+      <div
+        className="flex flex-row justify-between items-center gap-3 w-full"
+        onClick={handleDetailClick}
+      >
         <p className="text-xs text-center text-neutral-400 dark:text-neutral-400">
           <Droplets className="text-4xl text-neutral-400 dark:text-neutral-400" />
           {relativeHumidity}%
@@ -155,7 +159,10 @@ const CityFavoriteCard = ({ active, mode, favorite, onChange, onEdit }) => {
         </p>
         <WindDirection angle={angle} size={60} />
       </div>
-      <div className="flex flex-row justify-start items-baseline gap-2 text-neutral-500 dark:text-neutral-200 text-nowrap text-sm">
+      <div
+        className="flex flex-row justify-start items-baseline gap-2 text-neutral-500 dark:text-neutral-200 text-nowrap text-sm"
+        onClick={handleDetailClick}
+      >
         <CalendarRange size={15} />
         <span>{date}</span>
         <span className="font-bold">{timeStr}</span>
@@ -165,16 +172,10 @@ const CityFavoriteCard = ({ active, mode, favorite, onChange, onEdit }) => {
       </div>
       <hr className="mb-2 mt-2 w-full border-neutral-500 dark:border-neutral-300/70" />
       <div className="flex flex-row justify-between items-center gap-3 mt-2 w-full">
-        <Button
-          onClick={handleEditClick}
-          className={styles.btnSimple + " text-sm"}
-        >
+        <Button onClick={handleEditClick} className={styles.btnSimple + " text-sm"}>
           Bearbeiten
         </Button>
-        <Button
-          onClick={handleFavoriteClick}
-          className={styles.btnSimple + " text-sm"}
-        >
+        <Button onClick={handleFavoriteClick} className={styles.btnSimple + " text-sm"}>
           Löschen
         </Button>
         <Switch

@@ -8,9 +8,11 @@ import CitySearch from "./CitySearch";
 export default function AddCityDialog({ data, isOpen, setIsOpen, onConfirm }) {
   const { model, searchLocations } = useWeather();
   const [currentLocation, setCurrentLocation] = useState(null);
+  const [cityError, setCityError] = useState("");
 
   const handleAddLocation = async (location, model) => {
     setCurrentLocation(location);
+    setCityError("");
   };
 
   return (
@@ -25,17 +27,31 @@ export default function AddCityDialog({ data, isOpen, setIsOpen, onConfirm }) {
             <Description className={"text-neutral-600 dark:text-neutral-400"}>
               {data.description}
             </Description>
-            <CitySearch
-              btnLabel={"Ort hinzufügen"}
-              onSubmit={handleAddLocation}
-              model={model}
-              searchLocations={searchLocations}
-            />
+            <div className="w-full">
+              <CitySearch
+                btnLabel={"Ort hinzufügen"}
+                onSubmit={handleAddLocation}
+                model={model}
+                searchLocations={searchLocations}
+              />
+              {cityError && (
+                <p className="mt-2 text-xs text-red-500 dark:text-red-400" aria-live="polite">
+                  {cityError}
+                </p>
+              )}
+            </div>
             <FavoriteForm
               btnLabels={{ confirm: "Hinzufügen", cancel: "Abbrechen" }}
-              onConfirm={({ title, note }) =>
-                onConfirm({ title, note, location: currentLocation })
-              }
+              onConfirm={({ title, note }) => {
+                if (!currentLocation) {
+                  setCityError("Bitte wähle zuerst eine Stadt aus.");
+                  return false;
+                }
+
+                setCityError("");
+                onConfirm({ title, note, location: currentLocation });
+                return true;
+              }}
               onCancel={() => setIsOpen(false)}
               formTitle={data.formtitle}
               formLocation={currentLocation}

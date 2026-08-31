@@ -49,6 +49,7 @@ const UserDataProvider = ({ children }) => {
     } else {
       updatedFavorites = [...favorites, favorite];
     }
+    //console.log("UserDataProvider: favorite", favorite, "updatedFavorites", updatedFavorites);
     try {
       setFavorites(updatedFavorites);
       // Update Firestore

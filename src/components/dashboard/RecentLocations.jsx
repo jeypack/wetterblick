@@ -62,7 +62,17 @@ const RecentLocations = ({ recentList, onUpdate, pageSize = DEFAULT_PAGE_SIZE })
       </div>
       <div className="flex flex-col justify-center items-center gap-3">
         {visibleList.map((result, index) => {
-          return <CityCard key={result.id} active={index === 0} weather={result} />;
+          return (
+            <CityCard
+              key={result.id}
+              active={index === 0}
+              weather={result}
+              onSelect={() => {
+                setStartIndex(0);
+                onUpdate(result.location);
+              }}
+            />
+          );
         })}
       </div>
       <div className="flex justify-center items-center w-full text-neutral-400 text-xs px-2">

@@ -15,15 +15,17 @@ const CompareBar = ({ id, location, value, unit, percent, selected, onClick }) =
 
   return (
     <div
-      className={selected ? styles.compareBarSelected : styles.compareBar}
+      className={selected ? styles.compareBarSelected : styles.compareBarSelected}
       onClick={handleClick}
     >
       <span
-        className={selected ? styles.compareBarFillSelected : styles.compareBarFill}
+        className={selected ? styles.compareBarFillSelected : styles.compareBarFillSelected}
         style={{ width: `${safePercent}%` }}
       ></span>
-      <span className="z-10 truncate">{location.name}</span>
-      <span className="z-10 whitespace-nowrap">
+      <span className={styles.compareBarGlassTop} aria-hidden="true" />
+      <span className={styles.compareBarGlassBottom} aria-hidden="true" />
+      <span className="relative z-10 truncate text-left">{location.name}</span>
+      <span className="relative z-10 whitespace-nowrap text-right">
         {displayValue} {unit || ""}
       </span>
     </div>

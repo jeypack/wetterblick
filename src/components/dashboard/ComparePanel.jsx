@@ -20,8 +20,8 @@ const ComparePanel = ({
   const [selectedProp, setSelectedProp] = useState(metrics[0]);
 
   return (
-    <div className={styles.comparePanel + " min-h-60 w-auto"}>
-      <div className="flex flex-row justify-start items-start gap-2 w-auto">
+    <div className={styles.comparePanel + " min-h-60 w-fit"}>
+      <div className="flex flex-row justify-start items-start gap-2 w-fit">
         <CompareFilter
           options={metrics}
           selectedProp={selectedProp}

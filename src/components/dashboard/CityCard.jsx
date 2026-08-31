@@ -3,7 +3,7 @@ import WeatherIcon from "./WeatherIcon";
 import { useWeather } from "../../hooks/useWeather";
 import styles from "../../Styles";
 
-const CityCard = ({ active, weather }) => {
+const CityCard = ({ active, weather, onSelect }) => {
   const { temperature, weatherCode } = weather ?? {};
   const { getCity } = useWeather();
 
@@ -12,6 +12,11 @@ const CityCard = ({ active, weather }) => {
     : "text-neutral-600 dark:text-neutral-200";
 
   const handleCityUpdate = async () => {
+    if (onSelect) {
+      onSelect(weather.location);
+      return;
+    }
+
     getCity(weather.location);
   };
 
