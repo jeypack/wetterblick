@@ -28,7 +28,29 @@ const containerClassName =
 const containerClassNameActive =
   "cursor-pointer flex flex-col gap-2 border px-3 py-2 rounded-3xl hover:scale-[1.02] transition-all duration-300 ease-out relative overflow-hidden bg-[linear-gradient(135deg,rgba(255,255,255,1),rgba(240,240,242,0.96)_35%,rgba(226,226,229,0.9))] border-neutral-300/80 text-neutral-800 shadow-[inset_1px_1px_0_rgba(255,255,255,0.98),inset_-1px_-1px_0_rgba(113,113,122,0.14),0_14px_22px_rgba(15,23,42,0.12)] hover:shadow-[inset_1px_1px_0_rgba(255,255,255,0.98),inset_-1px_-1px_0_rgba(113,113,122,0.18),0_18px_28px_rgba(15,23,42,0.16)] before:absolute before:inset-0 before:bg-[linear-gradient(135deg,rgba(255,255,255,0.96)_0%,rgba(255,255,255,0.52)_17%,rgba(255,255,255,0.2)_27%,rgba(255,255,255,0)_38%,rgba(113,113,122,0.2)_100%)] before:pointer-events-none before:content-[''] dark:bg-[linear-gradient(135deg,rgba(68,68,72,0.96),rgba(30,30,32,0.96)_34%,rgba(9,9,11,0.99))] dark:text-neutral-100 dark:border-neutral-500/60 dark:border-t-neutral-400/80 dark:border-l-neutral-400/80 dark:shadow-[inset_1px_1px_0_rgba(255,255,255,0.1),inset_-1px_-1px_0_rgba(0,0,0,0.8),0_18px_30px_rgba(2,6,23,0.6)] dark:before:bg-[linear-gradient(135deg,rgba(255,255,255,0.42)_0%,rgba(255,255,255,0.2)_16%,rgba(255,255,255,0.06)_25%,rgba(255,255,255,0)_35%,rgba(82,82,91,0.36)_100%)]";
 
-const btnSimpleClassName = "border-2 cursor-pointer text-neutral-600 hover:text-neutral-500 border-neutral-500 hover:border-neutral-400 dark:text-neutral-400 dark:hover:text-neutral-300 dark:border-neutral-500 dark:hover:border-neutral-400 rounded-2xl px-3 py-1 transition-colors duration-200";  
+const btnSimpleClassName =
+  "border-2 cursor-pointer text-neutral-600 hover:text-neutral-500 border-neutral-500 hover:border-neutral-400 dark:text-neutral-400 dark:hover:text-neutral-300 dark:border-neutral-500 dark:hover:border-neutral-400 rounded-2xl px-3 py-1 transition-colors duration-200";
+
+const comparePanelClassName =
+  "flex flex-col gap-2 border px-3 py-2 rounded-3xl transition-all duration-300 ease-out relative overflow-hidden bg-[linear-gradient(135deg,rgba(255,255,255,0.98),rgba(244,244,245,0.92)_38%,rgba(228,228,231,0.84))] border-neutral-200/80 text-neutral-700 shadow-[inset_1px_1px_0_rgba(255,255,255,0.96),inset_-1px_-1px_0_rgba(113,113,122,0.12),0_12px_20px_rgba(15,23,42,0.08)] hover:shadow-[inset_1px_1px_0_rgba(255,255,255,0.96),inset_-1px_-1px_0_rgba(113,113,122,0.15),0_16px_28px_rgba(15,23,42,0.12)] before:absolute before:inset-0 before:bg-[linear-gradient(135deg,rgba(255,255,255,0.9)_0%,rgba(255,255,255,0.4)_18%,rgba(255,255,255,0.12)_26%,rgba(255,255,255,0)_38%,rgba(113,113,122,0.22)_100%)] before:pointer-events-none before:content-[''] dark:bg-[linear-gradient(135deg,rgba(58,58,60,0.96),rgba(28,28,30,0.96)_38%,rgba(10,10,10,0.98))] dark:text-neutral-200 dark:border-neutral-600/70 dark:border-t-neutral-300/80 dark:border-l-neutral-300/80 dark:shadow-[inset_1px_1px_0_rgba(255,255,255,0.08),inset_-1px_-1px_0_rgba(0,0,0,0.82),0_18px_30px_rgba(2,6,23,0.52)] dark:hover:shadow-[inset_1px_1px_0_rgba(255,255,255,0.09),inset_-1px_-1px_0_rgba(0,0,0,0.84),0_22px_34px_rgba(2,6,23,0.62)] dark:before:bg-[linear-gradient(135deg,rgba(255,255,255,0.35)_0%,rgba(255,255,255,0.14)_18%,rgba(255,255,255,0.04)_26%,rgba(255,255,255,0)_35%,rgba(82,82,91,0.34)_100%)]";
+
+const compareFilterButtonClassName =
+  "w-auto text-nowrap rounded-2xl border cursor-pointer focus:ring-neutral-500 focus:outline-none focus-visible:outline-none text-sm overflow-hidden whitespace-nowrap bg-neutral-50 text-neutral-400 border-neutral-400 dark:bg-neutral-700 dark:text-neutral-100 dark:hover:border-neutral-500 dark:hover:text-neutral-400 hover:border-neutral-400 hover:text-neutral-500";
+
+const compareFilterButtonActiveClassName =
+  "w-auto text-nowrap rounded-2xl border cursor-pointer focus:ring-neutral-500 focus:outline-none focus-visible:outline-none text-sm overflow-hidden whitespace-nowrap bg-neutral-100 text-neutral-600 border-neutral-500 dark:bg-neutral-900 dark:border-neutral-300 dark:text-neutral-200";
+
+const compareBarClassName =
+  "border-2 cursor-pointer flex flex-row justify-between items-center gap-1 py-0 px-4 rounded-2xl text-sm relative w-46 sm:w-60 overflow-hidden hover:font-bold transition-colors duration-200 ease-in-out text-neutral-500 bg-neutral-50 border-neutral-400 dark:bg-neutral-900 dark:border-neutral-500 dark:text-neutral-300 hover:border-neutral-400";
+
+const compareBarSelectedClassName =
+  "border-2 cursor-pointer flex flex-row justify-between items-center gap-1 py-0 px-4 rounded-2xl text-sm relative w-46 sm:w-60 overflow-hidden hover:font-bold transition-colors duration-200 ease-in-out text-neutral-500 bg-neutral-100 border-neutral-400 dark:bg-neutral-900 dark:border-neutral-300 dark:text-neutral-100 font-bold";
+
+const compareBarFillClassName =
+  "absolute left-0 top-0 h-full w-0 z-0 transition-all duration-500 bg-neutral-200 dark:bg-olive-700";
+
+const compareBarFillSelectedClassName =
+  "absolute left-0 top-0 h-full w-0 z-0 transition-all duration-500 bg-neutral-300 dark:bg-olive-700";
 
 const styles = {
   input: inputClassName,
@@ -41,6 +63,13 @@ const styles = {
   btn: btnClassName,
   btnActive: btnClassNameActive,
   icon: iconClassName,
+  comparePanel: comparePanelClassName,
+  compareFilterButton: compareFilterButtonClassName,
+  compareFilterButtonActive: compareFilterButtonActiveClassName,
+  compareBar: compareBarClassName,
+  compareBarSelected: compareBarSelectedClassName,
+  compareBarFill: compareBarFillClassName,
+  compareBarFillSelected: compareBarFillSelectedClassName,
 };
 
 export default styles;

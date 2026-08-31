@@ -1,21 +1,15 @@
 import { Button } from "@headlessui/react";
 import RippleFX from "../ui/RippleFX";
-
+import styles from "../../Styles";
 
 function CompareFilter({ options, selectedProp, setSelectedProp }) {
-  const baseClassName =
-    "w-auto text-nowrap rounded-2xl border cursor-pointer focus:ring-neutral-500 focus:outline-none focus-visible:outline-none text-sm overflow-hidden whitespace-nowrap";
-  const className =
-    "bg-neutral-50 text-neutral-400 border-neutral-400 dark:bg-neutral-700 dark:text-neutral-100 dark:hover:border-neutral-500 dark:hover:text-neutral-400 hover:border-neutral-400 hover:text-neutral-500 " +
-    baseClassName;
-  const classNameSelected =
-    "bg-neutral-100 text-neutral-600 border-neutral-500 dark:bg-neutral-900 dark:border-neutral-300 dark:text-neutral-200 " +
-    baseClassName;
   const getClassName = (value) =>
-    value.id === selectedProp.id ? classNameSelected : className;
-  //console.log("CompareFilter: selectedProp", selectedProp);
+    value.id === selectedProp.id
+      ? styles.compareFilterButtonActive
+      : styles.compareFilterButton;
+
   return (
-    <div className="flex flex-col justify-start items-start gap-2 w-40">
+    <div className="flex flex-col justify-start items-start gap-2 w-56">
       {options.map((value) => {
         return (
           <Button

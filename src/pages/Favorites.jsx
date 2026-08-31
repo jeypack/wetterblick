@@ -3,8 +3,9 @@ import { useUserData } from "../hooks/useUserData";
 import CityFavoriteCard from "../components/dashboard/CityFavoriteCard";
 import PageTitle from "../components/PageTitle";
 import ThemeButton from "../components/ui/ThemeButton";
+import ComparePanel from "../components/dashboard/ComparePanel";
 import { CirclePlus, GitCompareArrows } from "lucide-react";
-import React, { useState } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import AddCityDialog from "../components/dashboard/AddCityDialog";
 import EditCityDialog from "../components/dashboard/EditCityDialog";
 
@@ -32,6 +33,39 @@ const Favorites = () => {
   const [compareList, setCompareList] = useState([]);
   const [favoriteMode, setFavoriteMode] = useState("read");
   const [currentFavorite, setCurrentFavorite] = useState(null);
+  const [previewCityId, setPreviewCityId] = useState(null);
+
+  const selectedCitiesData = useMemo(
+    () =>
+      compareList.map((city) => ({
+        id: city.id,
+        location: city.location,
+        data: {
+          temperature: city.temperature,
+          relativeHumidity: city.relativeHumidity,
+          windSpeed: city.windSpeed,
+          pressure: city.pressure ?? 1013,
+        },
+        units: {
+          temperature: "°C",
+          relativeHumidity: "%",
+          windSpeed: "km/h",
+          pressure: "hPa",
+        },
+      })),
+    [compareList],
+  );
+
+  useEffect(() => {
+    if (compareList.length === 0) {
+      setPreviewCityId(null);
+      return;
+    }
+
+    if (!compareList.some((city) => city.id === previewCityId)) {
+      setPreviewCityId(compareList[0].id);
+    }
+  }, [compareList, previewCityId]);
 
   console.log("Favorites.jsx: favoriteList", favoriteList);
   //(!favoriteList || favoriteList.length === 0)
@@ -112,6 +146,16 @@ const Favorites = () => {
             />
           ))}
         </div>
+
+        {favoriteMode === "compare" && (
+          <div className="w-full mt-6">
+            <ComparePanel
+              selectedCitiesData={selectedCitiesData}
+              previewCityId={previewCityId}
+              setPreviewCityId={setPreviewCityId}
+            />
+          </div>
+        )}
       </main>
       <AddCityDialog
         data={dialogData}
