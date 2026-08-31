@@ -5,13 +5,15 @@ import { Link, useParams } from "react-router-dom";
 import CityPanel from "../components/dashboard/CityPanel";
 import DailyChart from "../components/dashboard/DailyChart";
 import HourlyCard from "../components/dashboard/HourlyCard";
+import styles from "../Styles";
 
 const DAYS_OF_WEEK = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 const CityDetail = () => {
   const { id } = useParams();
   const { model, results, favoriteList, recentList, getCity } = useWeather();
-  const [maxHourly, ] = useState(9);
+  const [maxHourly] = useState(9);
+  const [hourlyOffset, setHourlyOffset] = useState(0);
   const [loading, setLoading] = useState(false);
   //wenn wir die city in results finden, dann haben wir auch Details
   //ansonsten schauen wir in recentList und auch favoriteList nach, ob
@@ -69,6 +71,17 @@ const CityDetail = () => {
 
   //console.log("CityDetail:", "city.daily", city.daily);
 
+  const handlePrevHour = () => {
+    setHourlyOffset((prev) => Math.max(prev - 1, 0));
+  };
+
+  const handleNextHour = () => {
+    const maxOffset = Math.max(city.hourly.length - maxHourly, 0);
+    setHourlyOffset((prev) => Math.min(prev + 1, maxOffset));
+  };
+
+  const displayedHours = city.hourly.slice(hourlyOffset, hourlyOffset + maxHourly);
+
   return (
     <>
       <PageTitle title={"Wetter Details " + city.location?.name} />
@@ -82,10 +95,34 @@ const CityDetail = () => {
             <div className="flex mt-2 mb-2 max-w-96">
               <CityPanel hasDetail={false} />
             </div>
-            <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 max-w-lg p-2 w-full">
-              {city.hourly.slice(0, maxHourly).map((hour, index) => (
-                <HourlyCard key={index} active={true} weather={hour} />
-              ))}
+            <div className="flex flex-col gap-2">
+              <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 max-w-lg p-2 w-full">
+                {displayedHours.map((hour, index) => (
+                  <HourlyCard key={hourlyOffset + index} active={true} weather={hour} />
+                ))}
+              </div>
+              <div className="flex gap-2 justify-between items-center px-2">
+                <button
+                  onClick={handlePrevHour}
+                  disabled={hourlyOffset === 0}
+                  className={styles.btnSimple + " disabled:opacity-50 disabled:cursor-not-allowed text-sm"}
+                >
+                  ← Zurück
+                </button>
+                <span className="text-sm text-neutral-600 dark:text-neutral-400">
+                  {hourlyOffset + 1} - {Math.min(hourlyOffset + maxHourly, city.hourly.length)} von {city.hourly.length}
+                </span>
+                <span className="font-semibold text-sm text-neutral-600 dark:text-neutral-400">
+                  {city.hourly[hourlyOffset].time} - {city.hourly[Math.min(hourlyOffset + maxHourly - 1, city.hourly.length - 1)].time}
+                </span>
+                <button
+                  onClick={handleNextHour}
+                  disabled={hourlyOffset >= Math.max(city.hourly.length - maxHourly, 0)}
+                  className={styles.btnSimple + " disabled:opacity-50 disabled:cursor-not-allowed text-sm"}
+                >
+                  Weiter →
+                </button>
+              </div>
             </div>
           </div>
         </section>
