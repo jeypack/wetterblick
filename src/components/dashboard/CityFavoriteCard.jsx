@@ -167,13 +167,13 @@ const CityFavoriteCard = ({ active, mode, favorite, onChange, onEdit }) => {
       <div className="flex flex-row justify-between items-center gap-3 mt-2 w-full">
         <Button
           onClick={handleEditClick}
-          className="border-2 cursor-pointer text-neutral-600 hover:text-neutral-500 border-neutral-500 hover:border-neutral-400 dark:text-neutral-400 dark:hover:text-neutral-300 dark:border-neutral-500 dark:hover:border-neutral-400 rounded-2xl px-3 py-1 text-sm"
+          className={styles.btnSimple + " text-sm"}
         >
           Bearbeiten
         </Button>
         <Button
           onClick={handleFavoriteClick}
-          className="border-2 cursor-pointer text-neutral-600 hover:text-neutral-500 border-neutral-500 hover:border-neutral-400 dark:text-neutral-400 dark:hover:text-neutral-300 dark:border-neutral-500 dark:hover:border-neutral-400 rounded-2xl px-3 py-1 text-sm"
+          className={styles.btnSimple + " text-sm"}
         >
           Löschen
         </Button>
