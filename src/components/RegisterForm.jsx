@@ -28,7 +28,7 @@ export default function RegisterForm({ onSwitch }) {
 
   useEffect(() => {
     // Autofocus on the first input field when the component mounts
-    setFocus("email");
+    setFocus("username");
   }, []);
 
   async function onSubmit(data) {
