@@ -50,7 +50,7 @@ const CitySearch = ({
   //console.log("CitySearch: model", model, "selectedModel", selectedModel);
   return (
     <form
-      className="flex flex-col justify-center items-center gap-2 px-2 pb-2 w-full"
+      className="flex flex-col justify-center items-center gap-2 px-2 pb-2 w-full z-20"
       onSubmit={handleSubmit}
       autoComplete="off"
     >
@@ -59,6 +59,7 @@ const CitySearch = ({
         onInput={handleInput}
         onChange={handleChange}
         onFocus={handleFocus}
+        filterOptions={false}
       />
 
       <Button

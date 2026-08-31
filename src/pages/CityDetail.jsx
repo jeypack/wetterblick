@@ -4,18 +4,20 @@ import { useWeather } from "../hooks/useWeather";
 import { Link, useParams } from "react-router-dom";
 import CityPanel from "../components/dashboard/CityPanel";
 import DailyChart from "../components/dashboard/DailyChart";
+import HourlyCard from "../components/dashboard/HourlyCard";
 
 const DAYS_OF_WEEK = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 const CityDetail = () => {
   const { id } = useParams();
   const { model, results, favoriteList, recentList, getCity } = useWeather();
+  const [maxHourly, ] = useState(9);
   const [loading, setLoading] = useState(false);
   //wenn wir die city in results finden, dann haben wir auch Details
   //ansonsten schauen wir in recentList und auch favoriteList nach, ob
   // wir die city dort finden und dann die details laden
   let city = results.find((item) => item.id === id);
-  console.log("CityDetail: id", id, "city", city, "model", model);
+  //console.log("CityDetail: id", id, "city", city, "model", model);
 
   useEffect(() => {
     let location;
@@ -65,19 +67,26 @@ const CityDetail = () => {
     );
   }
 
-  console.log("CityDetail:", "city.daily", city.daily);
+  //console.log("CityDetail:", "city.daily", city.daily);
 
   return (
     <>
       <PageTitle title={"Wetter Details " + city.location?.name} />
       <main className="container flex-1 flex flex-col justify-start items-start mx-auto py-2">
-        <section className="flex flex-col justify-start items-start p-2 w-full">
+        <section className="flex flex-col justify-center items-start p-2 w-auto">
           <p className="text-neutral-600 dark:text-neutral-300 text-left">
             Detaillierte Wetterinformationen für die ausgewählte Stadt werden hier
             angezeigt.
           </p>
-          <div className="flex mt-4 mb-2 max-w-lg w-full">
-            <CityPanel hasDetail={false} />
+          <div className="flex flex-col sm:flex-row justify-start items-center sm:items-start gap-4 p-2">
+            <div className="flex mt-2 mb-2 max-w-96">
+              <CityPanel hasDetail={false} />
+            </div>
+            <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 max-w-lg p-2 w-full">
+              {city.hourly.slice(0, maxHourly).map((hour, index) => (
+                <HourlyCard key={index} active={true} weather={hour} />
+              ))}
+            </div>
           </div>
         </section>
         <section className="flex flex-col justify-start items-start p-2 w-full">

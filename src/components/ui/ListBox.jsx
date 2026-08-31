@@ -24,7 +24,7 @@ const ListBox = ({ className, label, options, onChange, selectedModel }) => {
         </ListboxButton>
         <ListboxOptions
           anchor="bottom"
-          className="border border-neutral-400 bg-neutral-100 dark:border-olive-500 dark:bg-olive-800 rounded-md gap-2 w-xs mt-2 focus-visible:outline-none focus:outline-none max-h-60 overflow-y-auto"
+          className="border border-neutral-400 bg-neutral-100 dark:border-olive-500 dark:bg-olive-800 rounded-md gap-2 w-xs mt-2 focus-visible:outline-none focus:outline-none max-h-60 overflow-y-auto z-20"
         >
           {options.map((value, index) => (
             <ListboxOption

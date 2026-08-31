@@ -1,13 +1,14 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Switch } from "@headlessui/react";
 import { WiWindDeg } from "react-icons/wi";
-import { MapPin, Droplets, CalendarRange, Wind, Thermometer } from "lucide-react";
+import { Droplets, CalendarRange, Wind, Thermometer } from "lucide-react";
 import WindDirection from "./WindDirection";
-//import { getWeatherModel } from "../../data/api";
 import { useUserData } from "../../hooks/useUserData";
 import WeatherIcon from "./WeatherIcon";
 import { Button } from "@headlessui/react";
 import RemoveCityDialog from "./RemoveCityDialog";
+import styles from "../../Styles";
 
 const dialogData = {
   title: "Stadt entfernen",
@@ -31,6 +32,7 @@ const CityFavoriteCard = ({ active, mode, favorite, onChange, onEdit }) => {
     weatherCode,
     location,
   } = favorite ?? {};
+  const navigate = useNavigate();
   const { updateFavorites } = useUserData();
   const [enabled, setEnabled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -57,12 +59,12 @@ const CityFavoriteCard = ({ active, mode, favorite, onChange, onEdit }) => {
     updateFavorites({ location });
   };
 
-  const containerClassName =
+  /* const containerClassName =
     "flex flex-col justify-center items-start gap-2 border-2 p-4 rounded-md w-auto min-w-xs hover:scale(105) transition-transform duration-200 ease-in-out hover:shadow-lg";
-  
+
   const selectedClassName = active
     ? "bg-neutral-100 border-neutral-400 shadow-neutral-900/20 dark:bg-neutral-800 dark:border-neutral-600 dark:hover:shadow-neutral-900/20 shadow-lg scale(102)"
-    : "bg-neutral-50 border-neutral-300 hover:shadow-neutral-900/20 dark:bg-neutral-800 dark:border-neutral-600 dark:hover:shadow-neutral-900/20";
+    : "bg-neutral-50 border-neutral-300 hover:shadow-neutral-900/20 dark:bg-neutral-800 dark:border-neutral-600 dark:hover:shadow-neutral-900/20"; */
 
   const classNameLocation = active
     ? "text-neutral-600 dark:text-olive-50"
@@ -79,8 +81,16 @@ const CityFavoriteCard = ({ active, mode, favorite, onChange, onEdit }) => {
   const date = dateSplit[0]; // Extract date from the formatted date string
   const timeStr = dateSplit[1]; // Extract time from the formatted date string
 
+  const handleDetailClick = () => {
+    // route to city detail page with lastCityData.location
+    console.log("CityCard: handleDetailClick: id", id);
+    navigate(`/city/${encodeURIComponent(id)}`);
+  };
+
   return (
-    <div className={`${containerClassName} ${selectedClassName}`}>
+    <div
+      className={`${styles.container} max-w-sm ${active ? styles.containerActive : ""}`}
+    >
       <div className="w-full">
         <div
           className={
@@ -93,7 +103,26 @@ const CityFavoriteCard = ({ active, mode, favorite, onChange, onEdit }) => {
             {location.name}
           </h3>
           <div className="cursor-pointer">
-            <MapPin size={32} className={"text-neutral-400 dark:text-neutral-200"} />
+            {/* <MapPin size={32} className={"text-neutral-400 dark:text-neutral-200"} /> */}
+            <div
+              onClick={handleDetailClick}
+              className="cursor-pointer text-neutral-400 dark:text-neutral-100 hover:scale-105 transition-transform duration-200 ease-in-out relative"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="size-12"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+                />
+              </svg>
+            </div>
           </div>
         </div>
         <p className="text-sm text-neutral-400">Aktuelles Wetter</p>

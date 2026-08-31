@@ -112,7 +112,7 @@ const CityPanel = ({ hasDetail = true }) => {
         <WeatherIcon
           code={lastCityData.weatherCode}
           className="text-neutral-50 dark:text-neutral-200"
-          size={90}
+          size={80}
         />
         <div className="flex flex-row justify-around items-start gap-1 text-neutral-50 dark:text-neutral-200 text-nowrap">
           <span className="text-4xl ">{lastCityData.temperature}</span>°
@@ -147,7 +147,7 @@ const CityPanel = ({ hasDetail = true }) => {
       {hasDetail && (
         <div
           onClick={handleDetailClick}
-          className="cursor-pointer text-white absolute bottom-6 right-6"
+          className="cursor-pointer text-white absolute bottom-6 right-6 hover:scale-105 transition-transform duration-200 ease-in-out group"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -168,7 +168,7 @@ const CityPanel = ({ hasDetail = true }) => {
 
       <div
         onClick={handleFavoriteClick}
-        className="cursor-pointer text-white absolute top-6 right-6"
+        className="cursor-pointer text-white absolute top-6 right-6 hover:scale-105 transition-transform duration-200 ease-in-out group"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"

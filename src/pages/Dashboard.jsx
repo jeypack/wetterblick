@@ -5,8 +5,8 @@ import CitySearch from "../components/dashboard/CitySearch";
 import Sidebar from "../components/dashboard/Sidebar";
 import RecentLocations from "../components/dashboard/RecentLocations";
 import CityPanel from "../components/dashboard/CityPanel";
-
-const DAYS_OF_WEEK = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+import { Link } from "react-router-dom";
+import styles from "../Styles";
 
 const Dashboard = () => {
   const { getCity, model, recentList, searchLocations } = useWeather();
@@ -16,6 +16,10 @@ const Dashboard = () => {
   const pClassName =
     "max-w-2xl text-neutral-600 dark:text-neutral-300 " +
     (textOpen ? "" : "line-clamp-1");
+
+  const handleUpdate = (location) => {
+    getCity(location);
+  };
 
   return (
     <>
@@ -27,18 +31,33 @@ const Dashboard = () => {
             model={model}
             searchLocations={searchLocations}
           />
-          <RecentLocations recentList={recentList} />
+          <RecentLocations recentList={recentList} onUpdate={handleUpdate} />
         </Sidebar>
         <section className="w-full p-2">
           <CityPanel />
+          <div className="flex flex-col justify-start items-start gap-4 text-neutral-500 dark:text-neutral-300 text-sm text-left mx-auto p-4 container w-full">
+            <h4 className="font-semibold text-neutral-500 dark:text-olive-400">
+              Wettervorschau
+            </h4>
+            <h5 className="font-medium text-neutral-600 dark:text-olive-300">
+              Melde dich an, um das volle Wettererlebnis zu nutzen
+            </h5>
+            <div className="flex flex-row justify-start items-center gap-4 text-neutral-500 dark:text-neutral-300 text-sm text-left mx-auto p-4 container w-full">
+              <Link to="/login/login" className={styles.btn}>
+                Anmelden
+              </Link>
+              <Link to="/login/register" className={styles.btn}>
+                Registrieren
+              </Link>
+            </div>
+          </div>
           <div className="flex flex-row justify-start items-end gap-4 text-neutral-500 dark:text-neutral-300 text-sm text-left mx-auto p-4 container w-full">
             <p className={pClassName}>
-              Bekommen Sie Echtzeit-Wetterdaten und Vorhersagen für jeden Standort
-              weltweit. Unser Dashboard liefert genaue und aktuelle Informationen, die
-              Ihnen helfen, Ihren Tag, Ihre Woche oder Ihren Monat zu planen. Geben Sie
-              einfach einen Standort ein und erhalten Sie detaillierte
-              Wetterinformationen, einschließlich Temperatur, Luftfeuchtigkeit,
-              Windgeschwindigkeit und mehr.
+              Bekomme Echtzeit-Wetterdaten und Vorhersagen für jeden Standort weltweit.
+              Unser Dashboard liefert genaue und aktuelle Informationen, die dir helfen,
+              deinen Tag, deine Woche oder deinen Monat zu planen. Gib einfach einen
+              Standort ein und erhalte detaillierte Wetterinformationen, einschließlich
+              Temperatur, Luftfeuchtigkeit, Windgeschwindigkeit und mehr.
             </p>
             <button
               className="cursor-pointer text-neutral-400 dark:text-neutral-400 italic hover:underline"
