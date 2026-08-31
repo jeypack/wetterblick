@@ -67,8 +67,8 @@ function getMappedWeatherDataForecast(location, weatherData, model) {
       const day = date.getDay();
       return {
         date: DAYS_OF_WEEK[day] + " " + date.getDate() + "." + (date.getMonth() + 1),
-        time: date.getHours() + ":00",
-        temperature: weatherData.hourly.temperature_2m[index],
+        time: (date.getHours() + 100).toString().slice(-2) + ":00",
+        temperature: weatherData.hourly.temperature_2m[index].toFixed(1),
         apparent: weatherData.hourly.apparent_temperature[index],
         relativeHumidity: weatherData.hourly.relative_humidity_2m[index],
         windSpeed: weatherData.hourly.wind_speed_10m[index],
@@ -194,7 +194,7 @@ export async function getWeatherListCurrent(geoCodings, model = "knmi_seamless")
       id: `${geoCoding.latitude}-${geoCoding.longitude}`,
       location: geoCoding,
       model: getWeatherModel(model),
-      temperature: data.current.temperature_2m,
+      temperature: data.current.temperature_2m.toFixed(1),
       apparentTemperature: data.current.apparent_temperature,
       relativeHumidity: data.current.relative_humidity_2m,
       windSpeed: data.current.windspeed_10m,

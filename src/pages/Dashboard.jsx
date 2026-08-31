@@ -7,8 +7,10 @@ import RecentLocations from "../components/dashboard/RecentLocations";
 import CityPanel from "../components/dashboard/CityPanel";
 import { Link } from "react-router-dom";
 import styles from "../Styles";
+import { useAuth } from "../hooks/useAuth";
 
 const Dashboard = () => {
+  const { user } = useAuth();
   const { getCity, model, recentList, searchLocations } = useWeather();
 
   const [textOpen, setTextOpen] = useState(true);
@@ -16,6 +18,10 @@ const Dashboard = () => {
   const pClassName =
     "max-w-2xl text-neutral-600 dark:text-neutral-300 " +
     (textOpen ? "" : "line-clamp-1");
+
+  const getFirstUpper = (str) => {
+    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+  };
 
   const handleUpdate = (location) => {
     getCity(location);
@@ -31,7 +37,7 @@ const Dashboard = () => {
             model={model}
             searchLocations={searchLocations}
           />
-          <RecentLocations recentList={recentList} onUpdate={handleUpdate} />
+          <RecentLocations recentList={recentList} onUpdate={handleUpdate} pageSize={8} />
         </Sidebar>
         <section className="w-full p-2">
           <CityPanel />
@@ -39,17 +45,25 @@ const Dashboard = () => {
             <h4 className="font-semibold text-neutral-500 dark:text-olive-400">
               Wettervorschau
             </h4>
-            <h5 className="font-medium text-neutral-600 dark:text-olive-300">
-              Melde dich an, um das volle Wettererlebnis zu nutzen
-            </h5>
-            <div className="flex flex-row justify-start items-center gap-4 text-neutral-500 dark:text-neutral-300 text-sm text-left mx-auto p-4 container w-full">
-              <Link to="/login/login" className={styles.btn}>
-                Anmelden
-              </Link>
-              <Link to="/login/register" className={styles.btn}>
-                Registrieren
-              </Link>
-            </div>
+            {!user ? (
+              <>
+                <h5 className="font-medium text-xl text-neutral-600 dark:text-olive-400">
+                  Melde dich an, um das volle Wettererlebnis zu nutzen
+                </h5>
+                <div className="flex flex-row justify-start items-center gap-4 text-neutral-500 dark:text-neutral-300 text-sm text-left mx-auto container w-full">
+                  <Link to="/login/login" className={styles.btn}>
+                    Anmelden
+                  </Link>
+                  <Link to="/login/register" className={styles.btn}>
+                    Registrieren
+                  </Link>
+                </div>
+              </>
+            ) : (
+              <h5 className="font-bold text-xl text-neutral-600 dark:text-olive-400">
+                Willkommen, {getFirstUpper(user.displayName)}!
+              </h5>
+            )}
           </div>
           <div className="flex flex-row justify-start items-end gap-4 text-neutral-500 dark:text-neutral-300 text-sm text-left mx-auto p-4 container w-full">
             <p className={pClassName}>
