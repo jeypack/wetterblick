@@ -34,7 +34,6 @@ const CityFavoriteCard = ({ active, mode, favorite, onChange, onEdit }) => {
   } = favorite ?? {};
   const navigate = useNavigate();
   const { updateFavorites } = useUserData();
-  const [enabled, setEnabled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   console.log("CityFavoriteCard: favorite", favorite);
 
@@ -179,9 +178,8 @@ const CityFavoriteCard = ({ active, mode, favorite, onChange, onEdit }) => {
           Löschen
         </Button>
         <Switch
-          checked={enabled}
+          checked={active}
           onChange={(checked) => {
-            setEnabled(checked);
             onChange(checked, favorite);
           }}
           className={

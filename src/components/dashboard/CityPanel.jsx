@@ -106,7 +106,7 @@ const CityPanel = ({ hasDetail = true }) => {
     <div
       className={
         styles.container +
-        " relative bg-cover bg-center w-full min-h-60 " +
+        " relative bg-cover bg-center w-full max-w-4xl min-h-60 " +
         (hasDetail ? styles.containerActive : "")
       }
       style={{ backgroundImage: `url(${getWeatherImage(lastCityData.weatherCode)})` }}
