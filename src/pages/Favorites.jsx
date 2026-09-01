@@ -8,6 +8,7 @@ import { CirclePlus, GitCompareArrows } from "lucide-react";
 import React, { useMemo, useState, useEffect } from "react";
 import AddCityDialog from "../components/dashboard/AddCityDialog";
 import EditCityDialog from "../components/dashboard/EditCityDialog";
+import { Field, Label, Switch } from "@headlessui/react";
 
 const dialogData = {
   title: "Ort finden und erstellen",
@@ -34,6 +35,7 @@ const Favorites = () => {
   const [favoriteMode, setFavoriteMode] = useState("read");
   const [currentFavorite, setCurrentFavorite] = useState(null);
   const [previewCityId, setPreviewCityId] = useState(null);
+  const [enabled, setEnabled] = useState(false);
 
   const selectedCitiesData = useMemo(
     () =>
@@ -89,6 +91,14 @@ const Favorites = () => {
     setFavoriteMode(mode);
   };
 
+  const handleSelectAll = () => {
+    if (compareList.length === favoriteList.length) {
+      setCompareList([]);
+    } else {
+      setCompareList(favoriteList);
+    }
+  };
+
   const handleCityChange = (checked, favorite) => {
     console.log("Favorites.jsx: handleCityChange", checked, favorite);
     if (checked) {
@@ -134,11 +144,44 @@ const Favorites = () => {
           >
             Orte vergleichen <GitCompareArrows size={20} className="inline ml-1" />
           </ThemeButton>
+          <Field as="div" className="flex flex-row justify-center items-center gap-2">
+            <Label
+              className={
+                "cursor-pointer text-neutral-500 dark:text-olive-300" +
+                (favoriteMode === "compare" ? "" : " invisible")
+              }
+            >
+              Alle auswählen
+            </Label>
+            <Switch
+              checked={enabled}
+              onChange={(checked) => {
+                setEnabled(checked);
+                handleSelectAll();
+              }}
+              className={
+                "group inline-flex h-6 w-11 items-center rounded-full bg-neutral-100 dark:bg-neutral-800 border-2 border-neutral-400 transition data-checked:bg-neutral-200 dark:data-checked:bg-neutral-800" +
+                (favoriteMode === "compare" ? "" : " invisible")
+              }
+            >
+              <span className="size-4 translate-x-1 rounded-full bg-neutral-400 dark:bg-neutral-500 group-data-checked:bg-neutral-500 dark:group-data-checked:bg-neutral-300 transition group-data-checked:translate-x-5.75" />
+            </Switch>
+          </Field>
         </div>
-        <div className="flex flex-wrap justify-center items-center sm:justify-start gap-4 w-full">
+        <div className="flex flex-wrap justify-center items-center mb-4 sm:justify-start gap-4 w-full">
+          {favoriteMode === "compare" && (
+            <div className="flex h-84">
+              <ComparePanel
+                selectedCitiesData={selectedCitiesData}
+                previewCityId={previewCityId}
+                setPreviewCityId={setPreviewCityId}
+              />
+            </div>
+          )}
           {favoriteList.map((result) => (
             <CityFavoriteCard
               key={result.id}
+              active={compareList.some((city) => city.id === result.id)}
               favorite={result}
               mode={favoriteMode}
               onChange={handleCityChange}
@@ -146,16 +189,6 @@ const Favorites = () => {
             />
           ))}
         </div>
-
-        {favoriteMode === "compare" && (
-          <div className="w-full mt-6">
-            <ComparePanel
-              selectedCitiesData={selectedCitiesData}
-              previewCityId={previewCityId}
-              setPreviewCityId={setPreviewCityId}
-            />
-          </div>
-        )}
       </main>
       <AddCityDialog
         data={dialogData}
