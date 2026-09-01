@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import CityCard from "./CityCard";
 import { RefreshCw } from "lucide-react";
+import Tooltip from "../ui/Tooltip";
 
 const DEFAULT_PAGE_SIZE = 8;
 
@@ -63,15 +64,16 @@ const RecentLocations = ({ recentList, onUpdate, pageSize = DEFAULT_PAGE_SIZE })
       <div className="flex flex-col justify-center items-center gap-3">
         {visibleList.map((result, index) => {
           return (
-            <CityCard
-              key={result.id}
-              active={index === 0}
-              weather={result}
-              onSelect={() => {
-                setStartIndex(0);
-                onUpdate(result.location);
-              }}
-            />
+            <Tooltip key={result.id} desc={<RefreshCw size={12} />}>
+              <CityCard
+                active={index === 0}
+                weather={result}
+                onSelect={() => {
+                  setStartIndex(0);
+                  onUpdate(result.location);
+                }}
+              />
+            </Tooltip>
           );
         })}
       </div>
