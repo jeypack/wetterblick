@@ -37,17 +37,17 @@ const Dashboard = () => {
             model={model}
             searchLocations={searchLocations}
           />
-          <RecentLocations recentList={recentList} onUpdate={handleUpdate} pageSize={8} />
+          <RecentLocations recentList={recentList} onUpdate={handleUpdate} maxCards={8} />
         </Sidebar>
         <section className="w-full p-2">
           <CityPanel />
           <div className="flex flex-col justify-start items-start gap-4 text-neutral-500 dark:text-neutral-300 text-sm text-left mx-auto p-4 container w-full">
-            <h4 className="font-semibold text-neutral-500 dark:text-olive-400">
+            <h4 className="font-semibold text-neutral-500 dark:text-olive-300">
               Wettervorschau
             </h4>
             {!user ? (
               <>
-                <h5 className="font-medium text-xl text-neutral-600 dark:text-olive-400">
+                <h5 className="font-medium text-xl text-neutral-600 dark:text-olive-300">
                   Melde dich an, um das volle Wettererlebnis zu nutzen
                 </h5>
                 <div className="flex flex-row justify-start items-center gap-4 text-neutral-500 dark:text-neutral-300 text-sm text-left mx-auto container w-full">
@@ -60,7 +60,7 @@ const Dashboard = () => {
                 </div>
               </>
             ) : (
-              <h5 className="font-bold text-xl text-neutral-600 dark:text-olive-400">
+              <h5 className="font-bold text-xl text-neutral-600 dark:text-olive-300">
                 Willkommen, {getFirstUpper(user.displayName)}!
               </h5>
             )}
