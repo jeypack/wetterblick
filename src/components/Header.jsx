@@ -2,7 +2,7 @@ import { Link, NavLink } from "react-router-dom";
 import styles from "../Styles";
 import { Menu, MenuButton, MenuItems, MenuItem, MenuSeparator } from "@headlessui/react";
 import { CheckIcon } from "@heroicons/react/20/solid";
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import { UserShield, ChevronDownIcon } from "lucide-react";
 import { Bars3Icon } from "@heroicons/react/24/outline";
 import { useOverlay } from "../hooks/useOverlay";
@@ -20,15 +20,14 @@ const navData = [
     path: "/city/",
     items: [],
   },
-  /* { id: 3, name: "User", path: "/user" },
-  {name: "Contact", path: "/contact"}, */
 ];
 
 export default function Header() {
   const { user } = useAuth();
   const { setToastMessage } = useOverlay();
   const { favoriteList, recentList } = useWeather();
-  const [isLoggIn, setIsLoggIn] = React.useState(null);
+  const [isLoggIn, setIsLoggIn] = useState(null);
+  const [detailsOpen, setDetailsOpen] = useState(false);
   // console.log("Header: user", user);
   navData[2].items = useMemo(() => {
     const list = [];
@@ -127,6 +126,7 @@ export default function Header() {
           ))}
         </div>
 
+        {/* User Menu */}
         <div className="flex flex-col justify-center items-start gap-2 z-50">
           <Menu>
             <MenuButton
@@ -220,23 +220,72 @@ export default function Header() {
             {navData.map((value, index) => {
               return (
                 <React.Fragment key={value.path}>
-                  <MenuItem>
-                    <NavLink
-                      to={value.path}
-                      className={({ isActive, isPending }) => {
-                        const baseClass =
-                          "block w-28 h-8 px-4 py-2 text-sm text-center font-bold";
-                        return isPending
-                          ? `${baseClass} pending bg-neutral-850 text-neutral-400`
-                          : isActive
-                            ? `${baseClass} bg-neutral-900 text-neutral-200`
-                            : `${baseClass} bg-neutral-900 text-neutral-400`;
-                      }}
-                    >
-                      {value.name}
-                    </NavLink>
-                  </MenuItem>
-                  {index < navData.length - 1 && (
+                  {value.items ? (
+                    // Details Button OHNE MenuItem wrapper
+                    <>
+                      <div
+                        onClick={() => setDetailsOpen((open) => !open)}
+                        className="block w-28 h-8 px-4 py-2 text-sm text-center font-bold bg-neutral-900 text-neutral-400 cursor-pointer hover:bg-neutral-800"
+                      >
+                        {value.name}
+                        <ChevronDownIcon
+                          className={`inline-block size-4 ml-1 transition-transform ${
+                            detailsOpen ? "rotate-180" : ""
+                          }`}
+                        />
+                      </div>
+
+                      {/* Sub-Items für Details-Menu */}
+                      {detailsOpen && (
+                        <>
+                          {value.items.map((subItem) => (
+                            <MenuItem key={subItem.key}>
+                              <NavLink
+                                to={subItem.path}
+                                className={({ isActive, isPending }) => {
+                                  const baseClass =
+                                    "block w-28 h-8 px-4 py-2 text-sm text-center font-bold pl-8";
+                                  return isPending
+                                    ? `${baseClass} pending bg-neutral-850 text-neutral-400`
+                                    : isActive
+                                      ? `${baseClass} bg-neutral-900 text-neutral-200`
+                                      : `${baseClass} bg-neutral-900 text-neutral-400`;
+                                }}
+                              >
+                                {subItem.name}
+                              </NavLink>
+                            </MenuItem>
+                          ))}
+                          {index < navData.length - 1 && (
+                            <MenuSeparator className="h-px bg-gray-400" />
+                          )}
+                        </>
+                      )}
+
+                      {index < navData.length - 1 && !detailsOpen && (
+                        <MenuSeparator className="h-px bg-gray-400" />
+                      )}
+                    </>
+                  ) : (
+                    <MenuItem>
+                      <NavLink
+                        to={value.path}
+                        className={({ isActive, isPending }) => {
+                          const baseClass =
+                            "block w-28 h-8 px-4 py-2 text-sm text-center font-bold";
+                          return isPending
+                            ? `${baseClass} pending bg-neutral-850 text-neutral-400`
+                            : isActive
+                              ? `${baseClass} bg-neutral-900 text-neutral-200`
+                              : `${baseClass} bg-neutral-900 text-neutral-400`;
+                        }}
+                      >
+                        {value.name}
+                      </NavLink>
+                    </MenuItem>
+                  )}
+
+                  {index < navData.length - 1 && !value.items && (
                     <MenuSeparator className="h-px bg-gray-400" />
                   )}
                 </React.Fragment>
