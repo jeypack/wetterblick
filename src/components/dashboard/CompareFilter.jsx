@@ -9,7 +9,7 @@ function CompareFilter({ options, selectedProp, setSelectedProp }) {
       : styles.compareFilterButton;
 
   return (
-    <div className="flex flex-col justify-start items-start gap-2 w-56">
+    <div className="flex flex-col justify-start items-start gap-2 w-53">
       {options.map((value) => {
         return (
           <Button

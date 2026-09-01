@@ -13,7 +13,6 @@ const metrics = [
 
 const ComparePanel = ({
   selectedCitiesData,
-  dailyData,
   previewCityId,
   setPreviewCityId,
 }) => {
