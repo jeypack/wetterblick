@@ -77,9 +77,41 @@ const RecentLocations = ({ recentList, onUpdate, pageSize = DEFAULT_PAGE_SIZE })
           );
         })}
       </div>
-      <div className="flex justify-center items-center w-full text-neutral-400 text-xs px-2">
-        {startIndex + 1} - {Math.min(startIndex + safePageSize, recentList.length)} von{" "}
-        {recentList.length}
+      <div className="flex justify-between items-center w-full text-neutral-400 text-xs px-2">
+        <span>
+          {startIndex + 1} - {Math.min(startIndex + safePageSize, recentList.length)} von{" "}
+          {recentList.length}
+        </span>
+        <div className="flex items-center gap-2 ml-auto ">
+          <button
+            type="button"
+            onClick={() => setStartIndex((current) => Math.max(0, current - 1))}
+            disabled={!hasPrevious}
+            className="cursor-pointer font-bold hover:underline px-1 py-1 rounded disabled:opacity-40 disabled:cursor-not-allowed"
+          >
+            Zurück
+          </button>
+          <button
+            type="button"
+            onClick={() =>
+              setStartIndex((current) => Math.min(maxStartIndex, current + 1))
+            }
+            disabled={!hasNext}
+            className="cursor-pointer font-bold hover:underline px-1 py-1 rounded disabled:opacity-40 disabled:cursor-not-allowed"
+          >
+            Weiter
+          </button>
+          <button
+            type="button"
+            onClick={() =>
+              onUpdate(recentList[startIndex]?.location || recentList[0].location)
+            }
+            className="cursor-pointer hover:underline flex justify-center items-center"
+          >
+            <RefreshCw size={16} />
+            <span className="font-bold p-1">Update</span>
+          </button>
+        </div>
       </div>
     </section>
   );
