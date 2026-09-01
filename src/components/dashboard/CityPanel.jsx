@@ -25,21 +25,17 @@ const CityPanel = ({ hasDetail = true }) => {
   const { setToastMessage } = useOverlay();
   const navigate = useNavigate();
 
-  //const lastDailyData = dailyData[dailyData.length - 1];
-  //console.log("lastDailyData", lastDailyData);
-  /* const dailyDataForPreviewCity = useMemo(() => {
-    return dailyData.find((city) => city.id === previewCityId);
-  }, [dailyData, previewCityId]); */
-  //console.log("dailyDataForPreviewCity", dailyDataForPreviewCity);
-  /* const lastCityData = useMemo(() => {
-    return selectedCitiesData.find((city) => city.id === previewCityId);
-  }, [selectedCitiesData, previewCityId]); */
   const lastCityData = recentList[0];
   //console.log("lastCityData", lastCityData);
-  //console.log("description", getWeatherDescription(lastCityData?.weatherCode));
   if (!lastCityData) {
     return (
-      <div className="bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-600 flex flex-col justify-start items-start gap-6 p-4 rounded-xl w-auto min-h-60 transition-shadow duration-200 ease-in-out shadow-md lg:flex-row">
+      <div
+        className={
+          styles.container +
+          " relative bg-cover bg-center w-full max-w-4xl min-h-60 " +
+          (hasDetail ? styles.containerActive : "")
+        }
+      >
         <div className="flex flex-col justify-start items-start gap-2 relative w-full">
           <h6 className="text-neutral-700 dark:text-neutral-300 text-lg pl-1">
             Keine Vorschau verfügbar

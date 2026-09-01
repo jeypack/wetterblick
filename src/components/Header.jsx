@@ -213,8 +213,8 @@ export default function Header() {
             <Bars3Icon className="h-6 w-6 text-gray-100" />
           </MenuButton>
           <MenuItems
-            anchor={{ to: "bottom end", gap: "4px" }}
-            className="mt-6 border border-neutral-600 rounded-md shadow-lg data-focus:outline-none z-50"
+            anchor={{ to: "bottom end", gap: "10px" }}
+            className="mt-6 border border-neutral-600 rounded-md shadow-lg data-focus:outline-none w-40 z-50"
             transition
           >
             {navData.map((value, index) => {
@@ -225,7 +225,7 @@ export default function Header() {
                     <>
                       <div
                         onClick={() => setDetailsOpen((open) => !open)}
-                        className="block w-28 h-8 px-4 py-2 text-sm text-center font-bold bg-neutral-900 text-neutral-400 cursor-pointer hover:bg-neutral-800"
+                        className="block w-full h-8 px-4 py-2 text-sm text-center font-bold bg-neutral-900 text-neutral-400 cursor-pointer hover:bg-neutral-800"
                       >
                         {value.name}
                         <ChevronDownIcon
@@ -244,7 +244,7 @@ export default function Header() {
                                 to={subItem.path}
                                 className={({ isActive, isPending }) => {
                                   const baseClass =
-                                    "block w-28 h-8 px-4 py-2 text-sm/5 text-left text-nowrap font-bold pl-3";
+                                    "block w-full h-8 px-4 py-2 text-sm/5 text-left text-nowrap font-bold pl-3";
                                   return isPending
                                     ? `${baseClass} pending bg-neutral-850 text-neutral-400`
                                     : isActive
@@ -272,7 +272,7 @@ export default function Header() {
                         to={value.path}
                         className={({ isActive, isPending }) => {
                           const baseClass =
-                            "block w-28 h-8 px-4 py-2 text-sm text-center font-bold";
+                            "block w-full h-8 px-4 py-2 text-sm text-center font-bold";
                           return isPending
                             ? `${baseClass} pending bg-neutral-850 text-neutral-400`
                             : isActive

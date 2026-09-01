@@ -46,8 +46,10 @@ const CityDetail = () => {
       return (
         <>
           <PageTitle title={"Stadt Detail wird geladen"} />
-          <main className="container flex-1 flex flex-col justify-start items-start mx-auto py-2 text-olive-400 dark:text-olive-200">
-            Stadt Detail wird geladen. Bitte warten Sie einen Moment.
+          <main className="container flex-1 flex flex-col justify-start items-start mx-auto py-2">
+            <section className="flex flex-col justify-center items-start p-2 w-auto">
+              Stadt Detail wird geladen. Bitte warten Sie einen Moment.
+            </section>
           </main>
         </>
       );
@@ -55,15 +57,17 @@ const CityDetail = () => {
     return (
       <>
         <PageTitle title={"Stadt Detail nicht gefunden"} />
-        <main className="container flex-1 flex flex-col justify-start items-start mx-auto py-2 text-olive-400 dark:text-olive-200">
-          Stadt Detail nicht gefunden. Bitte überprüfen Sie die URL oder kehren Sie zur
-          Startseite zurück.
-          <Link
-            to="/home"
-            className="text-neutral-500 dark:text-olive-400 hover:underline"
-          >
-            Zurück zur Startseite
-          </Link>
+        <main className="container flex-1 flex flex-col justify-start items-start mx-auto py-2">
+          <section className="flex flex-col justify-center items-start p-2 w-auto">
+            Stadt Detail nicht gefunden. Bitte überprüfen Sie die URL oder kehren Sie zur
+            Startseite zurück.
+            <Link
+              to="/home"
+              className="text-neutral-500 dark:text-olive-400 hover:underline"
+            >
+              Zurück zur Startseite
+            </Link>
+          </section>
         </main>
       </>
     );
@@ -105,20 +109,33 @@ const CityDetail = () => {
                 <button
                   onClick={handlePrevHour}
                   disabled={hourlyOffset === 0}
-                  className={styles.btnSimple + " disabled:opacity-50 disabled:cursor-not-allowed text-sm"}
+                  className={
+                    styles.btnSimple +
+                    " disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+                  }
                 >
                   ← Zurück
                 </button>
                 <span className="text-sm text-neutral-600 dark:text-neutral-400">
-                  {hourlyOffset + 1} - {Math.min(hourlyOffset + maxHourly, city.hourly.length)} von {city.hourly.length}
+                  {hourlyOffset + 1} -{" "}
+                  {Math.min(hourlyOffset + maxHourly, city.hourly.length)} von{" "}
+                  {city.hourly.length}
                 </span>
                 <span className="font-semibold text-sm text-neutral-600 dark:text-neutral-400">
-                  {city.hourly[hourlyOffset].time} - {city.hourly[Math.min(hourlyOffset + maxHourly - 1, city.hourly.length - 1)].time}
+                  {city.hourly[hourlyOffset].time} -{" "}
+                  {
+                    city.hourly[
+                      Math.min(hourlyOffset + maxHourly - 1, city.hourly.length - 1)
+                    ].time
+                  }
                 </span>
                 <button
                   onClick={handleNextHour}
                   disabled={hourlyOffset >= Math.max(city.hourly.length - maxHourly, 0)}
-                  className={styles.btnSimple + " disabled:opacity-50 disabled:cursor-not-allowed text-sm"}
+                  className={
+                    styles.btnSimple +
+                    " disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+                  }
                 >
                   Weiter →
                 </button>
