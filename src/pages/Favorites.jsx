@@ -170,7 +170,7 @@ const Favorites = () => {
         </div>
         <div className="flex flex-wrap justify-center items-center mb-4 sm:justify-start gap-4 w-full">
           {favoriteMode === "compare" && (
-            <div className="flex h-84">
+            <div className="flex">
               <ComparePanel
                 selectedCitiesData={selectedCitiesData}
                 previewCityId={previewCityId}

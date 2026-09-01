@@ -11,16 +11,12 @@ const metrics = [
   //{id: 5, name: "Wetter", filter: "weatherCode"},
 ];
 
-const ComparePanel = ({
-  selectedCitiesData,
-  previewCityId,
-  setPreviewCityId,
-}) => {
+const ComparePanel = ({ selectedCitiesData, previewCityId, setPreviewCityId }) => {
   const [selectedProp, setSelectedProp] = useState(metrics[0]);
 
   return (
-    <div className={styles.comparePanel + " min-h-60 w-fit"}>
-      <div className="flex flex-row justify-start items-start gap-2 w-fit">
+    <div className={styles.comparePanel + " w-fit"}>
+      <div className="flex flex-col md:flex-row min-h-80 justify-start items-start gap-2 w-fit">
         <CompareFilter
           options={metrics}
           selectedProp={selectedProp}

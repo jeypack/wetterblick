@@ -13,11 +13,11 @@ const Dashboard = () => {
   const { user } = useAuth();
   const { getCity, model, recentList, searchLocations } = useWeather();
 
-  const [textOpen, setTextOpen] = useState(true);
+  const [textOpen, setTextOpen] = useState(false);
 
   const pClassName =
     "max-w-2xl text-neutral-600 dark:text-neutral-300 " +
-    (textOpen ? "" : "line-clamp-1");
+    (textOpen ? "" : "line-clamp-4");
 
   const getFirstUpper = (str) => {
     return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
@@ -71,7 +71,7 @@ const Dashboard = () => {
               Unser Dashboard liefert genaue und aktuelle Informationen, die dir helfen,
               deinen Tag, deine Woche oder deinen Monat zu planen. Gib einfach einen
               Standort ein und erhalte detaillierte Wetterinformationen, einschließlich
-              Temperatur, Luftfeuchtigkeit, Windgeschwindigkeit und mehr.
+              Temperatur, Luftfeuchtigkeit, Windgeschwindigkeit und mehr. Wöhle aus verschiedenen Wettermodellen, um die Vorhersage zu vergleichen und die beste Entscheidung zu treffen. Mit unserem Dashboard bist du immer einen Schritt voraus, egal ob du reist, Outdoor-Aktivitäten planst oder einfach nur das Wetter im Auge behalten möchtest. Speichere deine Lieblingsorte, um schnell auf die Wetterinformationen zuzugreifen, die dir am wichtigsten sind. Unser benutzerfreundliches Interface macht es einfach, zwischen verschiedenen Standorten zu wechseln und die neuesten Wetterupdates zu erhalten. Bleibe informiert und vorbereitet mit unserem umfassenden Wetter-Dashboard.
             </p>
             <button
               className="cursor-pointer text-neutral-400 dark:text-neutral-400 italic hover:underline"
