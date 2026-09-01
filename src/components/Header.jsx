@@ -244,7 +244,7 @@ export default function Header() {
                                 to={subItem.path}
                                 className={({ isActive, isPending }) => {
                                   const baseClass =
-                                    "block w-28 h-8 px-4 py-2 text-sm text-center font-bold pl-8";
+                                    "block w-28 h-8 px-4 py-2 text-sm/5 text-left text-nowrap font-bold pl-3";
                                   return isPending
                                     ? `${baseClass} pending bg-neutral-850 text-neutral-400`
                                     : isActive
