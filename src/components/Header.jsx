@@ -71,7 +71,9 @@ export default function Header() {
       <div className="flex flex-row justify-start items-center gap-2 text-neutral-500 dark:text-olive-400">
         <ThemeMenu />
         <h1 className="text-xl font-bold uppercase truncate w-40 sm:w-full">
-          Wetterblick
+          <Link to="/" className="text-xl font-bold uppercase truncate w-40 sm:w-full">
+            Wetterblick
+          </Link>
         </h1>
       </div>
       <nav className="flex flex-row justify-end items-center gap-4 w-full">
@@ -208,9 +210,9 @@ export default function Header() {
         <Menu as="div" className="relative md:hidden z-50">
           <MenuButton
             role="nav-opener"
-            className="inline-flex justify-center data-focus:outline-none"
+            className="flex justify-center items-start data-focus:outline-none"
           >
-            <Bars3Icon className="h-6 w-6 text-gray-100" />
+            <Bars3Icon className="relative h-7 w-7 text-olive-300" />
           </MenuButton>
           <MenuItems
             anchor={{ to: "bottom end", gap: "10px" }}
