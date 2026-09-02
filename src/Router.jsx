@@ -1,9 +1,12 @@
-import {Routes, Route} from "react-router-dom";
+import { Suspense, lazy } from "react";
+import { Routes, Route } from "react-router-dom";
+
 import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
-import Login from "./pages/Login";
 import Favorites from "./pages/Favorites";
-import CityDetail from "./pages/CityDetail";
+
+const CityDetail = lazy(() => import("./pages/CityDetail"));
+const Login = lazy(() => import("./pages/Login"));
 
 export default function Router() {
   return (
@@ -11,8 +14,22 @@ export default function Router() {
       <Route path="/" element={<Dashboard />} />
       <Route path="/home" element={<Dashboard />} />
       <Route path="/favorites" element={<Favorites />} />
-      <Route path="/login/:type" element={<Login />} />
-      <Route path="/city/:id" element={<CityDetail />} />
+      <Route
+        path="/login/:type"
+        element={
+          <Suspense fallback={<div>Anmeldung wird geladen...</div>}>
+            <Login />
+          </Suspense>
+        }
+      />
+      <Route
+        path="/city/:id"
+        element={
+          <Suspense fallback={<div>Wetterdetails werden geladen...</div>}>
+            <CityDetail />
+          </Suspense>
+        }
+      />
       <Route path="/*" element={<NotFound />} />
     </Routes>
   );
