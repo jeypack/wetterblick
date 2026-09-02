@@ -11,10 +11,9 @@ import { useUserData } from "../hooks/useUserData";
  * Custom hook to manage weather data and user interactions.
  * Used in the WeatherDataContext to provide weather data and functions to components.
  * Do not use this hook directly in components; instead, use the WeatherDataContext useWeather hook.
- * @param {string} initialLocation - The initial location to fetch weather data for.
  * @returns {object} - An object containing weather data and functions to manage it.
  */
-export function useWeatherData(initialLocation = "") {
+export function useWeatherData() {
   const [model, setModel] = useState("knmi_seamless");
   const [previewCityId, setPreviewCityId] = useState(null);
   const [results, setResults] = useState([]);
