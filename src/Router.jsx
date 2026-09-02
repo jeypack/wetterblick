@@ -22,6 +22,7 @@ export default function Router() {
           </Suspense>
         }
       />
+      <Route path="/city" element={<Dashboard />} />
       <Route
         path="/city/:id"
         element={
