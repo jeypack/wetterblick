@@ -3,7 +3,7 @@ import { MapPinPen } from "lucide-react";
 import FavoriteForm from "../FavoriteForm";
 
 export default function EditCityDialog({ favorite, data, isOpen, setIsOpen, onConfirm }) {
-  console.log("EditCityDialog: favorite", favorite);
+  //console.log("EditCityDialog: favorite", favorite);
   return (
     <>
       <Dialog open={isOpen} onClose={() => setIsOpen(false)} className="relative z-50">
