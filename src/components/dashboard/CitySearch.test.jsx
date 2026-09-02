@@ -4,26 +4,46 @@ import userEvent from "@testing-library/user-event";
 import CitySearch from "./CitySearch";
 
 describe("CitySearch component", () => {
-  test("renders input field and button", () => {
-    render(<CitySearch getCity={vi.fn()} model="gfs" />);
-    const inputElement = screen.getByPlaceholderText(/Suche Standort.../i);
-    inputElement.scrollIntoView = vi.fn(); // Mock scrollIntoView to avoid errors in test environment
-    const buttonElement = screen.getByRole("button", {name: /Wetter suchen/i});
+  test("renders combobox and submit button", () => {
+    render(<CitySearch model="gfs" onSubmit={vi.fn()} searchLocations={vi.fn()} />);
+
+    const inputElement = screen.getByRole("combobox");
+    const buttonElement = screen.getByRole("button", {name: /Wetter anzeigen/i});
+
     expect(inputElement).toBeInTheDocument();
     expect(buttonElement).toBeInTheDocument();
   });
 
-  test("calls getCity with correct parameters on form submission", async () => {
+  test("calls onSubmit with the selected location and model", async () => {
     const user = userEvent.setup();
-    const getCity = vi.fn();
-    render(<CitySearch getCity={getCity} model="ecmwf_ifs" />);
-    const inputElement = screen.getByPlaceholderText(/Suche Standort.../i);
-    inputElement.scrollIntoView = vi.fn(); // Mock scrollIntoView to avoid errors in test environment
-    const buttonElement = screen.getByRole("button", {name: /Wetter suchen/i});
+    const onSubmit = vi.fn();
+    const searchLocations = vi.fn().mockResolvedValue([
+      {
+        id: "berlin",
+        name: "Berlin",
+        country: "DE",
+        latitude: 52.52,
+        longitude: 13.405,
+      },
+    ]);
 
+    render(
+      <CitySearch model="ecmwf_ifs" onSubmit={onSubmit} searchLocations={searchLocations} />,
+    );
+
+    const inputElement = screen.getByRole("combobox");
     await user.type(inputElement, "Berlin");
+
+    const option = await screen.findByRole("option", {name: /Berlin/i});
+    await user.click(option);
+
+    const buttonElement = screen.getByRole("button", {name: /Wetter anzeigen/i});
+    expect(buttonElement).not.toBeDisabled();
     await user.click(buttonElement);
 
-    expect(getCity).toHaveBeenCalledWith("Berlin", "ecmwf_ifs");
+    expect(onSubmit).toHaveBeenCalledWith(
+      expect.objectContaining({id: "berlin", name: "Berlin"}),
+      "ecmwf_ifs",
+    );
   });
 });

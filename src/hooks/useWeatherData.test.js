@@ -5,6 +5,18 @@ import {getWeatherForecast} from "../data/api";
 
 vi.mock("../data/api", () => ({
   getWeatherForecast: vi.fn(),
+  getGeocodingData: vi.fn(),
+  getWeather: vi.fn(),
+  getWeatherListCurrent: vi.fn(),
+}));
+
+vi.mock("../hooks/useUserData", () => ({
+  useUserData: () => ({
+    updateRecentLocations: vi.fn(),
+    favorites: [],
+    recentLocations: [],
+    isLoading: false,
+  }),
 }));
 
 describe("useWeatherData hook", () => {

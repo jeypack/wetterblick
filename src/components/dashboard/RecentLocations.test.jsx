@@ -26,13 +26,13 @@ describe("RecentLocations component", () => {
     expect(screen.getByText("City 8")).toBeInTheDocument();
     expect(screen.queryByText("City 9")).not.toBeInTheDocument();
 
-    await user.click(screen.getByRole("button", { name: /Weiter/i }));
+    await user.click(screen.getAllByRole("button", { name: /Weiter/i })[0]);
 
     expect(screen.queryByText("City 1")).not.toBeInTheDocument();
     expect(screen.getByText("City 2")).toBeInTheDocument();
     expect(screen.getByText("City 9")).toBeInTheDocument();
 
-    await user.click(screen.getByRole("button", { name: /Zurück/i }));
+    await user.click(screen.getAllByRole("button", { name: /Zurück/i })[0]);
 
     expect(screen.getByText("City 1")).toBeInTheDocument();
     expect(screen.getByText("City 8")).toBeInTheDocument();
@@ -49,7 +49,7 @@ describe("RecentLocations component", () => {
 
     render(<RecentLocations recentList={recentList} onUpdate={onUpdate} pageSize={8} />);
 
-    await user.click(screen.getByRole("button", { name: /Weiter/i }));
+    await user.click(screen.getAllByRole("button", { name: /Weiter/i })[0]);
     expect(screen.getByRole("button", { name: "City 9" })).toBeInTheDocument();
 
     await user.click(screen.getByRole("button", { name: "City 9" }));

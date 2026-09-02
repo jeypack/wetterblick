@@ -55,7 +55,7 @@ const CityFavoriteCard = ({ active, mode, favorite, onChange, onEdit }) => {
   const handleConfirm = () => {
     setIsOpen(false);
     console.log("CityFavoriteCard: handleConfirm: favorite", favorite);
-    updateFavorites({ location });
+    //updateFavorites({ location });
   };
 
   const classNameLocation = active

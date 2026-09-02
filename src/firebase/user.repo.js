@@ -41,7 +41,6 @@ export function createUserData(uid) {
   return setDoc(getUserDocument(uid), {
     favorites: [],
     recentLocations: [],
-    currentLocation: null,
   });
 }
 

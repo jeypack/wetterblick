@@ -2,27 +2,14 @@
 
 //https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&daily=weather_code&current=temperature_2m,relative_humidity_2m,wind_speed_10m,wind_direction_10m,apparent_temperature,weather_code&timezone=auto
 
+//https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&current=temperature_2m,relative_humidity_2m,apparent_temperature,is_day,weather_code,wind_speed_10m,wind_direction_10m,cloud_cover,surface_pressure&utm_source=chatgpt.com
+
 import { resolveLocalImage } from "../utils/assets";
 
 const GEOCODING_URL = "https://geocoding-api.open-meteo.com/v1/search";
 const OPEN_METEO_URL = "https://api.open-meteo.com/v1/forecast";
 
 const DAYS_OF_WEEK = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-
-export const weatherModels = [
-  { name: "ECMWF IFS", model: "ecmwf_ifs" },
-  { name: "UKMO Seamless", model: "ukmo_seamless" },
-  { name: "DWD ICON", model: "dwd_icon_seamless" },
-  { name: "CMC Gem", model: "cmc_gem_seamless" },
-  { name: "MeteoSwiss ICON", model: "meteoswiss_icon_seamless" },
-  { name: "Météo-France", model: "meteofrance_seamless" },
-  { name: "KNMI Forecast", model: "knmi_seamless" },
-];
-
-export const getWeatherModel = (modelName) => {
-  const model = weatherModels.find((item) => item.model === modelName);
-  return model ? model : null;
-};
 
 async function getGeocoding(location) {
   const url = new URL(GEOCODING_URL);
@@ -128,7 +115,6 @@ async function getWeatherDataForecast(latitude, longitude, model) {
   }
 }
 
-//https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&current=temperature_2m,relative_humidity_2m,apparent_temperature,is_day,weather_code,wind_speed_10m,wind_direction_10m,cloud_cover,surface_pressure&utm_source=chatgpt.com
 async function getWeatherDataListCurrent(latitudes, longitudes, model) {
   const url = new URL(OPEN_METEO_URL);
   url.searchParams.append("latitude", latitudes);
@@ -151,6 +137,21 @@ async function getWeatherDataListCurrent(latitudes, longitudes, model) {
     return {};
   }
 }
+
+export const weatherModels = [
+  { name: "ECMWF IFS", model: "ecmwf_ifs" },
+  { name: "UKMO Seamless", model: "ukmo_seamless" },
+  { name: "DWD ICON", model: "dwd_icon_seamless" },
+  { name: "CMC Gem", model: "cmc_gem_seamless" },
+  { name: "MeteoSwiss ICON", model: "meteoswiss_icon_seamless" },
+  { name: "Météo-France", model: "meteofrance_seamless" },
+  { name: "KNMI Forecast", model: "knmi_seamless" },
+];
+
+export const getWeatherModel = (modelName) => {
+  const model = weatherModels.find((item) => item.model === modelName);
+  return model ? model : null;
+};
 
 export async function getGeocodingData(location) {
   const geocodingResults = await getGeocoding(location);
@@ -234,16 +235,6 @@ export async function getWeatherForecast(location, model = "knmi_seamless") {
   return mappedWeatherData;
   // return weatherData;
 }
-
-/* 
-📍 Cities
-🇩🇪 Essen
-🇩🇪 Berlin
-🇩🇪 Hamburg
-🇫🇷 Paris
-🇪🇸 Madrid
-+ Add City
-*/
 
 /* 
 Code	Beschreibung
@@ -417,3 +408,13 @@ export const weatherCodes = [
     image: resolveLocalImage("thunderstorm.jpg"),
   },
 ];
+
+/* 
+📍 Cities
+🇩🇪 Essen
+🇩🇪 Berlin
+🇩🇪 Hamburg
+🇫🇷 Paris
+🇪🇸 Madrid
++ Add City
+*/

@@ -49,7 +49,8 @@ export default function AddCityDialog({ data, isOpen, setIsOpen, onConfirm }) {
                 }
 
                 setCityError("");
-                onConfirm({ title, note, location: currentLocation });
+                const id = currentLocation.latitude + "-" + currentLocation.longitude; 
+                onConfirm({ id, title, note, location: currentLocation });
                 return true;
               }}
               onCancel={() => setIsOpen(false)}

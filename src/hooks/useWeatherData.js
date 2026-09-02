@@ -53,6 +53,7 @@ export function useWeatherData() {
   };
 
   const getWeatherList = async (locations) => {
+    console.log("getWeatherList: locations", locations);
     const geoCodings = locations.map((location) => ({
       latitude: location.latitude,
       longitude: location.longitude,
@@ -61,9 +62,8 @@ export function useWeatherData() {
       state: location.state || "",
       id: location.id,
     }));
-    //console.log("getWeatherList: geoCodings", geoCodings);
     const weatherDataList = await getWeatherListCurrent(geoCodings, model);
-    //console.log("getWeatherList: weatherDataList", weatherDataList);
+    console.log("getWeatherList: weatherDataList", weatherDataList);
     return weatherDataList;
   };
 
@@ -143,7 +143,7 @@ export function useWeatherData() {
 
     const fetchData = async () => {
       const weatherDataList = await getWeatherList(recentLocations);
-      //console.log("useWeatherData: weatherDataList", weatherDataList);
+      console.log("useWeatherData: weatherDataList", weatherDataList);
       setRecentList(weatherDataList);
     };
     fetchData();
@@ -158,7 +158,7 @@ export function useWeatherData() {
       setFavoriteList([]);
       return;
     }
-
+    console.log("useWeatherData: favorites", favorites);
     const fetchData = async () => {
       const favoriteLocations = favorites.map((fav) => fav.location);
       const favoriteData = await getWeatherList(favoriteLocations);

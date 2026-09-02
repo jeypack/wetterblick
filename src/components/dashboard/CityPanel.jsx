@@ -55,9 +55,9 @@ const CityPanel = ({ hasDetail = true }) => {
 
   const handleFavoriteClick = () => {
     // set favorite city in context
-    //console.log("CityCard: handleFavoriteClick: lastCityData.id", lastCityData.id);
+    console.log("CityCard: handleFavoriteClick: lastCityData.id", lastCityData);
     const isFav = isFavorite(lastCityData.location);
-    //console.log("CityCard: handleFavoriteClick: isFav", isFav);
+    console.log("CityCard: handleFavoriteClick: isFav", isFav);
     if (isFav) {
       dialogData.title = "Favorit " + lastCityData.location.name + " entfernen?";
       setIsOpen(true);
@@ -65,6 +65,7 @@ const CityPanel = ({ hasDetail = true }) => {
     } else {
       setToastMessage("Favorit hinzugefügt: " + lastCityData.location.name);
       updateFavorites({
+        id: lastCityData.id,
         location: lastCityData.location,
         title: "Favorit " + lastCityData.location.name,
         note: "",
@@ -82,6 +83,7 @@ const CityPanel = ({ hasDetail = true }) => {
     setIsOpen(false);
     console.log("CityCard: handleConfirm: lastCityData.id", lastCityData.id);
     updateFavorites({
+      id: lastCityData.id,
       location: lastCityData.location,
       title: "Favorit " + lastCityData.location.name,
       note: "",

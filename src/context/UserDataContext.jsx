@@ -40,16 +40,24 @@ const UserDataProvider = ({ children }) => {
     }
   };
 
-  const updateFavorites = async (favorite) => {
+  const updateFavorites = async (favoriteObj) => {
+    if (!favoriteObj.id) {
+      favoriteObj.id = favoriteObj.location.latitude + "-" + favoriteObj.location.longitude;
+    }
+    favorites.forEach((fav) => {
+      if (!fav.id) {
+        fav.id = fav.location.latitude + "-" + fav.location.longitude;
+      }
+    });
     // Firestore aktualisieren
-    const hasFavorite = favorites.some((item) => item.location.id === favorite.location.id);
+    const hasFavorite = favorites.some((item) => item.id === favoriteObj.id);
     let updatedFavorites;
     if (hasFavorite) {
-      updatedFavorites = favorites.filter((fav) => fav.location.id !== favorite.location.id);
+      updatedFavorites = favorites.filter((fav) => fav.id !== favoriteObj.id);
     } else {
-      updatedFavorites = [...favorites, favorite];
+      updatedFavorites = [...favorites, favoriteObj];
     }
-    //console.log("UserDataProvider: favorite", favorite, "updatedFavorites", updatedFavorites);
+    console.log("UserDataProvider: favoriteObj", favoriteObj, "updatedFavorites", updatedFavorites);
     try {
       setFavorites(updatedFavorites);
       // Update Firestore
