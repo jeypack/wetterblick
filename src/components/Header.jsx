@@ -101,7 +101,7 @@ export default function Header() {
                   </NavLink>
                 )}
               </MenuButton>
-              {navItem.items && (
+              {navItem.items && navItem.items.length > 0 && (
                 <MenuItems
                   anchor="bottom end"
                   className="border border-neutral-400 bg-neutral-100 dark:border-neutral-500 dark:bg-neutral-900 flex flex-col focus-visible:outline-none mt-2 rounded-md w-fit min-w-30 py-2 z-50"
