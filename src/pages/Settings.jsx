@@ -29,8 +29,8 @@ const Settings = () => {
   return (
     <>
       <PageTitle title="User Einstellungen" />
-      <main className="container flex-1 flex flex-col justify-start items-start mx-auto py-2">
-        <div className="flex flex-col items-center justify-center gap-4 p-4 mb-6 w-full">
+      <main className="container flex-1 flex flex-col justify-start items-start mx-auto py-3">
+        <div className="flex flex-col items-start justify-center p-3 mb-6 w-full">
           <h1 className="text-xl font-bold text-nowrap">Einstellungen verwalten</h1>
         </div>
         {user && (
