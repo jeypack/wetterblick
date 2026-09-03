@@ -4,6 +4,7 @@ import { getUserData, saveRecentLocations, saveFavorites } from "../firebase/use
 import { useAuth } from "../hooks/useAuth";
 
 const UserDataContext = createContext(null);
+
 export { UserDataContext };
 
 const getFavoriteId = (favorite) => {
@@ -34,6 +35,7 @@ const UserDataProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [recentLocations, setRecentLocations] = useState([]);
   const [favorites, setFavorites] = useState([]);
+  const [isComparing, setIsComparing] = useState(true);
 
   const isFavorite = (location) => {
     return favorites.some((fav) => getFavoriteId(fav) === getFavoriteId({ location }));
@@ -139,6 +141,8 @@ const UserDataProvider = ({ children }) => {
         updateRecentLocations,
         updateFavorites,
         deleteFavorite,
+        isComparing,
+        setIsComparing,
       }}
     >
       {children}

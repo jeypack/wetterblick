@@ -30,9 +30,9 @@ const dialogDataEdit = {
 
 const Favorites = () => {
   const { favoriteList } = useWeather();
-  const { updateFavorites } = useUserData();
-  const [compareList, setCompareList] = useState([]);
-  const [favoriteMode, setFavoriteMode] = useState("read");
+  const { updateFavorites, isComparing, setIsComparing } = useUserData();
+  const [compareList, setCompareList] = useState(isComparing ? favoriteList : []);
+  const [favoriteMode, setFavoriteMode] = useState("compare");
   const [currentFavorite, setCurrentFavorite] = useState(null);
   const [previewCityId, setPreviewCityId] = useState(null);
   const [enabled, setEnabled] = useState(false);
@@ -59,6 +59,15 @@ const Favorites = () => {
   );
 
   useEffect(() => {
+    if (isComparing) {
+      setCompareList(favoriteList);
+    } else {
+      setCompareList([]);
+    }
+    setEnabled(isComparing);
+  }, [isComparing, favoriteList]);
+
+  useEffect(() => {
     if (compareList.length === 0) {
       setPreviewCityId(null);
       return;
@@ -77,12 +86,13 @@ const Favorites = () => {
     switch (mode) {
       case "create":
         setCompareList([]);
+        setIsComparing(true);
         break;
       case "compare":
-        //setCompareList([]);
+        setIsComparing(true);
         break;
       case "close":
-        //setCompareList([]);
+        setIsComparing(false);
         break;
       default:
         console.warn("Favorites.jsx: handleModeChange: unknown mode", mode);
@@ -106,6 +116,7 @@ const Favorites = () => {
     } else {
       setCompareList((prev) => prev.filter((item) => item.id !== favorite.id));
     }
+    setEnabled(checked);
   };
 
   const handleEditClick = (favorite) => {
