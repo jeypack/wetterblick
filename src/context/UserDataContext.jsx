@@ -6,6 +6,29 @@ import { useAuth } from "../hooks/useAuth";
 const UserDataContext = createContext(null);
 export { UserDataContext };
 
+const getFavoriteId = (favorite) => {
+  if (!favorite) {
+    return null;
+  }
+
+  if (typeof favorite === "string") {
+    return favorite;
+  }
+
+  if (favorite.id) {
+    return String(favorite.id);
+  }
+
+  if (favorite.location) {
+    const { latitude, longitude } = favorite.location;
+    if (latitude != null && longitude != null) {
+      return `${latitude}-${longitude}`;
+    }
+  }
+
+  return null;
+};
+
 const UserDataProvider = ({ children }) => {
   const { user } = useAuth();
   const [isLoading, setIsLoading] = useState(true);
@@ -13,7 +36,7 @@ const UserDataProvider = ({ children }) => {
   const [favorites, setFavorites] = useState([]);
 
   const isFavorite = (location) => {
-    return favorites.some((fav) => fav.location.id === location.id);
+    return favorites.some((fav) => getFavoriteId(fav) === getFavoriteId({ location }));
   };
 
   const updateRecentLocations = async (location) => {
@@ -41,26 +64,40 @@ const UserDataProvider = ({ children }) => {
   };
 
   const updateFavorites = async (favoriteObj) => {
-    if (!favoriteObj.id) {
-      favoriteObj.id = favoriteObj.location.latitude + "-" + favoriteObj.location.longitude;
+    const safeFavorite = { ...favoriteObj };
+    const favoriteId = getFavoriteId(safeFavorite);
+
+    if (!favoriteId) {
+      return;
     }
-    favorites.forEach((fav) => {
-      if (!fav.id) {
-        fav.id = fav.location.latitude + "-" + fav.location.longitude;
-      }
-    });
-    // Firestore aktualisieren
-    const hasFavorite = favorites.some((item) => item.id === favoriteObj.id);
-    let updatedFavorites;
-    if (hasFavorite) {
-      updatedFavorites = favorites.filter((fav) => fav.id !== favoriteObj.id);
-    } else {
-      updatedFavorites = [...favorites, favoriteObj];
-    }
-    console.log("UserDataProvider: favoriteObj", favoriteObj, "updatedFavorites", updatedFavorites);
+
+    safeFavorite.id = favoriteId;
+
+    const updatedFavorites = favorites.some((item) => getFavoriteId(item) === favoriteId)
+      ? favorites.map((item) => (getFavoriteId(item) === favoriteId ? { ...item, ...safeFavorite } : item))
+      : [...favorites, safeFavorite];
+
     try {
       setFavorites(updatedFavorites);
-      // Update Firestore
+      if (user) {
+        await saveFavorites(user.uid, updatedFavorites);
+      }
+    } catch (error) {
+      // ggf. State zurücksetzen / Toast anzeigen
+    }
+  };
+
+  const deleteFavorite = async (favorite) => {
+    const favoriteId = getFavoriteId(favorite);
+
+    if (!favoriteId) {
+      return;
+    }
+
+    const updatedFavorites = favorites.filter((item) => getFavoriteId(item) !== favoriteId);
+
+    try {
+      setFavorites(updatedFavorites);
       if (user) {
         await saveFavorites(user.uid, updatedFavorites);
       }
@@ -101,6 +138,7 @@ const UserDataProvider = ({ children }) => {
         favorites,
         updateRecentLocations,
         updateFavorites,
+        deleteFavorite,
       }}
     >
       {children}

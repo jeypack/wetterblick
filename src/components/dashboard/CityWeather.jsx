@@ -27,15 +27,25 @@ const CityWeather = ({ previewCityId, weather, setPreviewCityId }) => {
     windDirection: angle,
     weatherCode,
   } = weather?.current || {};
-  const { updateFavorites, isFavorite } = useUserData();
+  const { updateFavorites, deleteFavorite, isFavorite } = useUserData();
 
   /* const getFirstUpper = (str) => {
     return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
   }; */
   const handleFavoriteClick = () => {
-    // set favorite city in context
     console.log("CityWeather: handleFavoriteClick: weather.id", weather.id);
-    updateFavorites(weather.location);
+
+    if (isFavorite(weather.location)) {
+      deleteFavorite(weather.id || weather.location);
+      return;
+    }
+
+    updateFavorites({
+      id: weather.id,
+      location: weather.location,
+      title: "Favorit " + weather.location.name,
+      note: "",
+    });
   };
 
   const model = getWeatherModel(weather.model);

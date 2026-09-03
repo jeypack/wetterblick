@@ -1,4 +1,4 @@
-import { MapPin, CalendarRange } from "lucide-react";
+import { Moon, Eclipse, MapPin, CalendarRange } from "lucide-react";
 import { memo, useState } from "react";
 import { useWeather } from "../../hooks/useWeather";
 import { useUserData } from "../../hooks/useUserData";
@@ -21,7 +21,7 @@ const dialogData = {
 const CityPanel = ({ hasDetail = true }) => {
   const [isOpen, setIsOpen] = useState(false);
   const { recentList } = useWeather();
-  const { updateFavorites, isFavorite } = useUserData();
+  const { updateFavorites, deleteFavorite, isFavorite } = useUserData();
   const { setToastMessage } = useOverlay();
   const navigate = useNavigate();
 
@@ -63,7 +63,7 @@ const CityPanel = ({ hasDetail = true }) => {
       setIsOpen(true);
       //setToastMessage("Favorit entfernt: " + lastCityData.location.name);
     } else {
-      setToastMessage("Favorit hinzugefügt: " + lastCityData.location.name);
+      setToastMessage("✓ Favorit hinzugefügt: " + lastCityData.location.name);
       updateFavorites({
         id: lastCityData.id,
         location: lastCityData.location,
@@ -82,12 +82,7 @@ const CityPanel = ({ hasDetail = true }) => {
   const handleConfirm = () => {
     setIsOpen(false);
     console.log("CityCard: handleConfirm: lastCityData.id", lastCityData.id);
-    updateFavorites({
-      id: lastCityData.id,
-      location: lastCityData.location,
-      title: "Favorit " + lastCityData.location.name,
-      note: "",
-    });
+    deleteFavorite(lastCityData.id || lastCityData.location);
   };
 
   const isFavoriteCity = isFavorite(lastCityData.location);
@@ -141,6 +136,11 @@ const CityPanel = ({ hasDetail = true }) => {
           <CalendarRange size={15} />
           <span>{date}</span>
           <span className="font-bold">{time}</span>
+          {lastCityData.isDay ? (
+            <Eclipse className="self-center" size={16} />
+          ) : (
+            <Moon className="self-center" size={16} />
+          )}
           <span className="text-neutral-50 dark:text-neutral-300 text-xs ml-4">
             {lastCityData.model.name}
           </span>

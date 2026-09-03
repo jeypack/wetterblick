@@ -1,8 +1,10 @@
 import { Dialog, DialogPanel, DialogTitle, Description } from "@headlessui/react";
 import { MapPinPen } from "lucide-react";
 import FavoriteForm from "../FavoriteForm";
+import { useOverlay } from "../../hooks/useOverlay";
 
 export default function EditCityDialog({ favorite, data, isOpen, setIsOpen, onConfirm }) {
+  const { setToastMessage } = useOverlay();
   console.log("EditCityDialog: favorite", favorite);
   return (
     <>
@@ -18,9 +20,15 @@ export default function EditCityDialog({ favorite, data, isOpen, setIsOpen, onCo
             </Description>
             <FavoriteForm
               btnLabels={{ confirm: "Speichern", cancel: "Abbrechen" }}
-              onConfirm={({ title, note }) =>
-                onConfirm({ id: favorite?.id, title, note, location: favorite?.location })
-              }
+              onConfirm={({ title, note }) => {
+                onConfirm({
+                  id: favorite?.id,
+                  title,
+                  note,
+                  location: favorite?.location,
+                });
+                setToastMessage("✓ Erfolgreich gespeichert");
+              }}
               onCancel={() => setIsOpen(false)}
               formTitle={data.formtitle}
               formLocation={favorite?.location}

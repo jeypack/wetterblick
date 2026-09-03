@@ -1,5 +1,6 @@
 import { Dialog, DialogPanel, DialogTitle, Description } from "@headlessui/react";
 import { useState } from "react";
+import { useOverlay } from "../../hooks/useOverlay";
 import { useWeather } from "../../hooks/useWeather";
 import { MapPinPen } from "lucide-react";
 import FavoriteForm from "../FavoriteForm";
@@ -7,6 +8,7 @@ import CitySearch from "./CitySearch";
 
 export default function AddCityDialog({ data, isOpen, setIsOpen, onConfirm }) {
   const { model, searchLocations } = useWeather();
+  const { setToastMessage } = useOverlay();
   const [currentLocation, setCurrentLocation] = useState(null);
   const [cityError, setCityError] = useState("");
 
@@ -51,6 +53,7 @@ export default function AddCityDialog({ data, isOpen, setIsOpen, onConfirm }) {
                 setCityError("");
                 const id = currentLocation.latitude + "-" + currentLocation.longitude; 
                 onConfirm({ id, title, note, location: currentLocation });
+                setToastMessage("✓ Erfolgreich hinzugefügt");
                 return true;
               }}
               onCancel={() => setIsOpen(false)}
