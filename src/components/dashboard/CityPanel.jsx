@@ -1,4 +1,4 @@
-import { Moon, Eclipse, MapPin, CalendarRange } from "lucide-react";
+import { Brain, Moon, Eclipse, MapPin, CalendarRange } from "lucide-react";
 import { memo, useState } from "react";
 import { useWeather } from "../../hooks/useWeather";
 import { useUserData } from "../../hooks/useUserData";
@@ -141,10 +141,17 @@ const CityPanel = ({ hasDetail = true }) => {
           ) : (
             <Moon className="self-center" size={16} />
           )}
-          <span className="text-neutral-50 dark:text-neutral-300 text-xs ml-4">
-            {lastCityData.model.name}
-          </span>
+          {hasDetail && (
+            <span className="flex flex-row justify-start items-baseline text-neutral-50 dark:text-neutral-300 text-xs ml-4">
+              <Brain className="self-center mr-2" size={16} />{lastCityData.model.name}
+            </span>
+          )}
         </div>
+        {hasDetail === false && (
+          <div className="flex flex-row justify-start items-baseline text-neutral-50 dark:text-neutral-300 text-xs ml-0 mb-1">
+            <Brain className="self-center mr-2" size={16} />{lastCityData.model.name}
+          </div>
+        )}
       </div>
       {hasDetail && (
         <div

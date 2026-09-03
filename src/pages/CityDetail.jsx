@@ -7,12 +7,10 @@ import DailyChart from "../components/dashboard/DailyChart";
 import HourlyCard from "../components/dashboard/HourlyCard";
 import styles from "../Styles";
 
-const DAYS_OF_WEEK = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-
 const CityDetail = () => {
   const { id } = useParams();
   const { model, results, favoriteList, recentList, getCity } = useWeather();
-  const [maxHourly] = useState(9);
+  const [maxHourly] = useState(12);
   const [hourlyOffset, setHourlyOffset] = useState(0);
   const [loading, setLoading] = useState(false);
   //wenn wir die city in results finden, dann haben wir auch Details
@@ -96,17 +94,42 @@ const CityDetail = () => {
             Detaillierte Wetterinformationen für die ausgewählte Stadt.
           </p>
           <div className="flex flex-col sm:flex-row justify-start items-center sm:items-start gap-4 mt-2 p-2">
-            <div className="flex mt-2 mb-2 max-w-96">
+            <div className="flex mt-2 mb-2 w-full sm:w-80 lg:w-96">
               <CityPanel hasDetail={false} />
             </div>
             <div className="flex flex-col gap-2">
-              <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 max-w-lg p-2 w-full">
+              <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 p-2 w-full">
                 {displayedHours.map((hour, index) => (
                   <HourlyCard key={hourlyOffset + index} active={true} weather={hour} />
                 ))}
               </div>
-              <div className="flex gap-2 justify-between items-center px-2">
+              <div className="flex gap-1 justify-between items-center px-2">
                 <button
+                  type="button"
+                  onClick={() => setHourlyOffset(0)}
+                  disabled={hourlyOffset === 0}
+                  className={
+                    styles.btnSimple +
+                    " disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+                  }
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="currentColor"
+                    className="size-5"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="m18.75 4.5-7.5 7.5 7.5 7.5m-6-15L5.25 12l7.5 7.5"
+                    />
+                  </svg>
+                </button>
+                <button
+                  type="button"
                   onClick={handlePrevHour}
                   disabled={hourlyOffset === 0}
                   className={
@@ -116,12 +139,12 @@ const CityDetail = () => {
                 >
                   ← Zurück
                 </button>
-                <span className="text-sm text-neutral-600 dark:text-neutral-400">
+                <span className="text-sm text-center text-neutral-600 dark:text-neutral-400">
                   {hourlyOffset + 1} -{" "}
                   {Math.min(hourlyOffset + maxHourly, city.hourly.length)} von{" "}
                   {city.hourly.length}
                 </span>
-                <span className="font-semibold text-sm text-neutral-600 dark:text-neutral-400">
+                <span className="font-semibold text-center text-xs text-neutral-600 dark:text-neutral-400">
                   {city.hourly[hourlyOffset].time} -{" "}
                   {
                     city.hourly[
@@ -130,6 +153,7 @@ const CityDetail = () => {
                   }
                 </span>
                 <button
+                  type="button"
                   onClick={handleNextHour}
                   disabled={hourlyOffset >= Math.max(city.hourly.length - maxHourly, 0)}
                   className={
@@ -138,6 +162,30 @@ const CityDetail = () => {
                   }
                 >
                   Weiter →
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setHourlyOffset(city.hourly.length - maxHourly)}
+                  disabled={hourlyOffset >= Math.max(city.hourly.length - maxHourly, 0)}
+                  className={
+                    styles.btnSimple +
+                    " disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+                  }
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="currentColor"
+                    className="size-5"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="m5.25 4.5 7.5 7.5-7.5 7.5m6-15 7.5 7.5-7.5 7.5"
+                    />
+                  </svg>
                 </button>
               </div>
             </div>

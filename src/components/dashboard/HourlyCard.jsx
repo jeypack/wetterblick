@@ -9,7 +9,7 @@ const HourlyCard = ({ active, weather }) => {
   if (!weather) return null;
 
   return (
-    <div className={styles.container + " w-22"}>
+    <div className={styles.container + " w-27 sm:w-26 md:w-24 lg:w-22"}>
       <div className="flex flex-row justify-center items-center gap-1 text-neutral-400 dark:text-neutral-200 text-nowrap text-xs">
         {time} <span className="text-[10px]">Uhr</span>
       </div>
