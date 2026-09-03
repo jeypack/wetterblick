@@ -1,6 +1,13 @@
 import styles from "../../Styles.js";
 
-export default function ThemeButton({ onClick, active, className, children, size, ...rest }) {
+export default function ThemeButton({
+  onClick,
+  active,
+  className,
+  children,
+  size,
+  ...rest
+}) {
   //console.log("ThemeButton: active", active);
   const textSizeClass =
     size === "xs"
@@ -10,29 +17,14 @@ export default function ThemeButton({ onClick, active, className, children, size
         : size === "md"
           ? "text-md"
           : "text-base";
-  /* const baseClassName =
-    "cursor-pointer border focus:outline-2 focus:outline-offset-2 font-bold text-nowrap py-1 px-4 rounded-2xl ";
-  const btnClassName = 
-    baseClassName +
-    textSizeClass +
-    " cursor-pointer bg-neutral-100 text-neutral-500 border-neutral-400 hover:border-neutral-500 hover:text-neutral-400 dark:hover:text-olive-800 dark:bg-olive-500 focus:outline-2 focus:outline-neutral-500 active:bg-neutral-500 active:text-neutral-200 dark:bg-olive-500 dark:text-white";
-  const btnClassNameActive =
-    baseClassName +
-    textSizeClass +
-    " bg-neutral-400 text-neutral-50 border-neutral-500 hover:border-neutral-500 hover:text-neutral-50 dark:hover:border-neutral-500 dark:bg-olive-500 outline-2 outline-offset-2 outline-neutral-600 dark:outline-olive-600 dark:bg-olive-700 text-white"; */
+
   return (
     <button
       onClick={onClick}
       className={
         active
-          ? styles.btnActive +
-            " " +
-            textSizeClass +
-            (className ? " " + className : "")
-          : styles.btn +
-            " " +
-            textSizeClass +
-            (className ? " " + className : "")
+          ? styles.btnActive + " " + textSizeClass + (className ? " " + className : "")
+          : styles.btn + " " + textSizeClass + (className ? " " + className : "")
       }
       {...rest}
     >
