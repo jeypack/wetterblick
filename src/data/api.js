@@ -76,6 +76,7 @@ function getMappedWeatherDataForecast(location, weatherData, model) {
       time: weatherData.current.time,
       pressure: weatherData.current.surface_pressure,
       weatherCode: weatherData.current.weather_code,
+      isDay: weatherData.current.is_day,
     },
     daily: dailyData,
     hourly: hourlyData,
@@ -83,14 +84,14 @@ function getMappedWeatherDataForecast(location, weatherData, model) {
   //console.log("Weather mappedWeatherData:", mappedWeatherData);
   return mappedWeatherData;
 }
-
+//current=is_day
 async function getWeatherDataForecast(latitude, longitude, model) {
   const url = new URL(OPEN_METEO_URL);
   url.searchParams.append("latitude", latitude);
   url.searchParams.append("longitude", longitude);
   url.searchParams.append(
     "current",
-    "apparent_temperature,temperature_2m,relative_humidity_2m,weather_code,rain,snowfall,cloudcover,surface_pressure,windspeed_10m,winddirection_10m",
+    "apparent_temperature,temperature_2m,relative_humidity_2m,weather_code,rain,snowfall,cloudcover,surface_pressure,windspeed_10m,winddirection_10m,is_day",
   );
   url.searchParams.append(
     "daily",
@@ -121,7 +122,7 @@ async function getWeatherDataListCurrent(latitudes, longitudes, model) {
   url.searchParams.append("longitude", longitudes);
   url.searchParams.append(
     "current",
-    "apparent_temperature,temperature_2m,relative_humidity_2m,weather_code,rain,snowfall,cloudcover,surface_pressure,windspeed_10m,winddirection_10m",
+    "apparent_temperature,temperature_2m,relative_humidity_2m,weather_code,rain,snowfall,cloudcover,surface_pressure,windspeed_10m,winddirection_10m,is_day",
   );
   url.searchParams.append("timezone", "auto");
   //url.searchParams.append("models", model);
@@ -206,6 +207,7 @@ export async function getWeatherListCurrent(geoCodings, model = "knmi_seamless")
       cloudCover: data.current.cloudcover,
       rain: data.current.rain,
       snowfall: data.current.snowfall,
+      isDay: data.current.is_day,
     };
   });
   return mappedWeatherDataList;
