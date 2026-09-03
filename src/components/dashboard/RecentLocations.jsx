@@ -33,9 +33,30 @@ const RecentLocations = ({ recentList, onUpdate, pageSize = DEFAULT_PAGE_SIZE })
         <div className="flex items-center gap-2 ml-auto">
           <button
             type="button"
+            onClick={() => setStartIndex(0)}
+            disabled={!hasPrevious}
+            className="cursor-pointer font-bold hover:underline px-1 py-1 disabled:opacity-40 disabled:cursor-not-allowed"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="size-6"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="m18.75 4.5-7.5 7.5 7.5 7.5m-6-15L5.25 12l7.5 7.5"
+              />
+            </svg>
+          </button>
+          <button
+            type="button"
             onClick={() => setStartIndex((current) => Math.max(0, current - 1))}
             disabled={!hasPrevious}
-            className="cursor-pointer font-bold hover:underline px-1 py-1 rounded disabled:opacity-40 disabled:cursor-not-allowed"
+            className="cursor-pointer font-bold hover:underline px-1 py-1 disabled:opacity-40 disabled:cursor-not-allowed"
           >
             Zurück
           </button>
@@ -45,7 +66,7 @@ const RecentLocations = ({ recentList, onUpdate, pageSize = DEFAULT_PAGE_SIZE })
               setStartIndex((current) => Math.min(maxStartIndex, current + 1))
             }
             disabled={!hasNext}
-            className="cursor-pointer font-bold hover:underline px-1 py-1 rounded disabled:opacity-40 disabled:cursor-not-allowed"
+            className="cursor-pointer font-bold hover:underline px-1 py-1 disabled:opacity-40 disabled:cursor-not-allowed"
           >
             Weiter
           </button>
@@ -85,9 +106,30 @@ const RecentLocations = ({ recentList, onUpdate, pageSize = DEFAULT_PAGE_SIZE })
         <div className="flex items-center gap-2 ml-auto ">
           <button
             type="button"
+            onClick={() => setStartIndex(0)}
+            disabled={!hasPrevious}
+            className="cursor-pointer font-bold hover:underline px-1 py-1 disabled:opacity-40 disabled:cursor-not-allowed"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="size-6"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="m18.75 4.5-7.5 7.5 7.5 7.5m-6-15L5.25 12l7.5 7.5"
+              />
+            </svg>
+          </button>
+          <button
+            type="button"
             onClick={() => setStartIndex((current) => Math.max(0, current - 1))}
             disabled={!hasPrevious}
-            className="cursor-pointer font-bold hover:underline px-1 py-1 rounded disabled:opacity-40 disabled:cursor-not-allowed"
+            className="cursor-pointer font-bold hover:underline px-1 py-1 disabled:opacity-40 disabled:cursor-not-allowed"
           >
             Zurück
           </button>
@@ -97,7 +139,7 @@ const RecentLocations = ({ recentList, onUpdate, pageSize = DEFAULT_PAGE_SIZE })
               setStartIndex((current) => Math.min(maxStartIndex, current + 1))
             }
             disabled={!hasNext}
-            className="cursor-pointer font-bold hover:underline px-1 py-1 rounded disabled:opacity-40 disabled:cursor-not-allowed"
+            className="cursor-pointer font-bold hover:underline px-1 py-1 disabled:opacity-40 disabled:cursor-not-allowed"
           >
             Weiter
           </button>
