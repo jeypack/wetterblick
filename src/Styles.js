@@ -41,22 +41,22 @@ const compareFilterButtonActiveClassName =
   "w-auto text-nowrap rounded-2xl border cursor-pointer focus:ring-neutral-500 focus:outline-none focus-visible:outline-none text-sm overflow-hidden whitespace-nowrap bg-neutral-100 text-neutral-600 border-neutral-500 dark:bg-neutral-950 dark:border-neutral-300 dark:text-neutral-200";
 
 const compareBarClassName =
-  "relative flex w-46 sm:w-80 cursor-pointer items-center justify-between gap-4 overflow-hidden rounded-2xl border border-neutral-200/80 bg-[linear-gradient(135deg,rgba(255,255,255,0.98),rgba(244,244,245,0.92)_38%,rgba(228,228,231,0.84))] px-3 py-1 text-sm text-neutral-600 shadow-[inset_1px_1px_0_rgba(255,255,255,0.96),inset_-1px_-1px_0_rgba(113,113,122,0.12),0_12px_20px_rgba(15,23,42,0.08)] transition-all duration-300 ease-out hover:shadow-[inset_1px_1px_0_rgba(255,255,255,0.96),inset_-1px_-1px_0_rgba(113,113,122,0.15),0_16px_28px_rgba(15,23,42,0.12)] dark:border-neutral-600/70 dark:bg-[linear-gradient(135deg,rgba(58,58,60,0.96),rgba(28,28,30,0.96)_38%,rgba(10,10,10,0.98))] dark:text-neutral-200 dark:shadow-[inset_1px_1px_0_rgba(255,255,255,0.08),inset_-1px_-1px_0_rgba(0,0,0,0.82),0_18px_30px_rgba(2,6,23,0.52)]";
+  "relative flex w-46 h-9 sm:w-80 cursor-pointer items-center justify-between gap-4 overflow-hidden rounded-2xl border border-neutral-200/80 bg-[linear-gradient(135deg,rgba(255,255,255,0.98),rgba(244,244,245,0.92)_38%,rgba(228,228,231,0.84))] px-3 py-1 text-sm text-neutral-600 shadow-[inset_1px_1px_0_rgba(255,255,255,0.96),inset_-1px_-1px_0_rgba(113,113,122,0.12),0_12px_20px_rgba(15,23,42,0.08)] transition-all duration-300 ease-out hover:shadow-[inset_1px_1px_0_rgba(255,255,255,0.96),inset_-1px_-1px_0_rgba(113,113,122,0.15),0_16px_28px_rgba(15,23,42,0.12)] dark:border-neutral-600/70 dark:bg-[linear-gradient(135deg,rgba(58,58,60,0.96),rgba(28,28,30,0.96)_38%,rgba(10,10,10,0.98))] dark:text-neutral-200 dark:shadow-[inset_1px_1px_0_rgba(255,255,255,0.08),inset_-1px_-1px_0_rgba(0,0,0,0.82),0_18px_30px_rgba(2,6,23,0.52)]";
 
 const compareBarSelectedClassName =
-  "relative flex w-46 sm:w-80 cursor-pointer items-center justify-between gap-4 overflow-hidden rounded-2xl border border-neutral-300/80 border-l-white/80 bg-[linear-gradient(135deg,rgba(255,255,255,1),rgba(240,240,242,0.96)_35%,rgba(226,226,229,0.9))] px-3 py-1 text-sm font-semibold text-neutral-700 shadow-[inset_1px_1px_0_rgba(255,255,255,0.96),inset_-1px_-1px_0_rgba(113,113,122,0.15),0_16px_28px_rgba(15,23,42,0.12)] transition-all duration-300 ease-out dark:border-neutral-500/60 dark:border-l-white/15 dark:bg-[linear-gradient(135deg,rgba(68,68,72,0.96),rgba(30,30,32,0.96)_34%,rgba(9,9,11,0.99))] dark:text-neutral-100 dark:shadow-[inset_1px_1px_0_rgba(255,255,255,0.96),inset_-1px_-1px_0_rgba(113,113,122,0.12),0_12px_20px_rgba(15,23,42,0.08)]";
+  "relative flex w-46 h-9 sm:w-80 cursor-pointer items-center justify-between gap-4 overflow-hidden rounded-2xl border border-neutral-300/80 border-l-white/80 bg-[linear-gradient(135deg,rgba(255,255,255,1),rgba(240,240,242,0.96)_35%,rgba(226,226,229,0.9))] px-3 py-1 text-sm font-semibold text-neutral-700 shadow-[inset_1px_1px_0_rgba(255,255,255,0.96),inset_-1px_-1px_0_rgba(113,113,122,0.15),0_16px_28px_rgba(15,23,42,0.12)] transition-all duration-300 ease-out dark:border-neutral-500/60 dark:border-l-white/15 dark:bg-[linear-gradient(135deg,rgba(68,68,72,0.96),rgba(30,30,32,0.96)_34%,rgba(9,9,11,0.99))] dark:text-neutral-100 dark:shadow-[inset_1px_1px_0_rgba(255,255,255,0.96),inset_-1px_-1px_0_rgba(113,113,122,0.12),0_12px_20px_rgba(15,23,42,0.08)]";
 
 const compareBarFillClassName =
-  "absolute inset-y-0 left-0 z-0 rounded-r-2xl bg-[linear-gradient(90deg,rgba(117,129,105,0.21),rgba(117,129,105,0.34))] transition-all duration-500 dark:bg-[linear-gradient(90deg,rgba(117,129,105,0.19),rgba(117,129,105,0.32))]";
+  "absolute inset-y-0 left-0 z-0 rounded-r-2xl bg-[linear-gradient(90deg,rgba(69, 76, 61, 0.21),rgba(58, 64, 52, 0.34))] transition-all duration-500 dark:bg-[linear-gradient(90deg,rgba(56, 64, 50, 0.75),rgba(35, 40, 31, 0.75))]";
 
 const compareBarFillSelectedClassName =
-  "absolute inset-y-0 left-0 z-0 rounded-r-2xl bg-[linear-gradient(90deg,rgba(102,116,92,0.25),rgba(102,116,92,0.38))] transition-all duration-500 dark:bg-[linear-gradient(90deg,rgba(102,116,92,0.22),rgba(102,116,92,0.36))]";
+  "absolute inset-y-0 left-0 z-0 rounded-r-2xl bg-[linear-gradient(90deg,rgba(102,116,92,0.25),rgba(102,116,92,0.38))] transition-all duration-500 dark:bg-[linear-gradient(90deg,rgba(56, 64, 50, 0.75),rgba(35, 40, 31, 0.75))]";
 
 const compareBarGlassTopClassName =
-  "absolute inset-x-0 top-0 z-[1] h-6 bg-[linear-gradient(180deg,rgba(255,255,255,0.72)_5%,rgba(255,255,255,0.24)_36%,rgba(255,255,255,0)_100%)]";
+  "absolute inset-x-0 top-0 z-1 h-3.5 bg-[linear-gradient(180deg,rgba(255,255,255,0.02)_0%,rgba(255,255,255,0.42)_27%,rgba(255,255,255,0.5)_76%,rgba(255,255,255,0.0)_100%)]";
 
 const compareBarGlassBottomClassName =
-  "absolute inset-x-0 bottom-0 z-[1] h-3 bg-[linear-gradient(0deg,rgba(255,255,255,0.18)_0%,rgba(255,255,255,0.03)_30%,rgba(255,255,255,0)_100%)]";
+  "absolute inset-x-0 bottom-0 z-2 h-3 bg-[linear-gradient(0deg,rgba(255,255,255,0.18)_0%,rgba(255,255,255,0.3)_30%,rgba(255,255,255,0.07)_100%)]";
 
 const styles = {
   input: inputClassName,
