@@ -1,7 +1,7 @@
 import { Link, NavLink } from "react-router-dom";
 import styles from "../Styles";
 import { Menu, MenuButton, MenuItems, MenuItem, MenuSeparator } from "@headlessui/react";
-import { CheckIcon } from "@heroicons/react/20/solid";
+//import { CheckIcon } from "@heroicons/react/20/solid";
 import React, { useMemo, useState } from "react";
 import { UserShield, ChevronDownIcon } from "lucide-react";
 import { Bars3Icon } from "@heroicons/react/24/outline";
@@ -60,7 +60,7 @@ export default function Header() {
     try {
       await signOut(auth);
       console.log("User logged out successfully");
-      setToastMessage("Erfolgreich abgemeldet");
+      setToastMessage("✓ Erfolgreich abgemeldet");
     } catch (error) {
       console.error("Error logging out:", error);
     }
@@ -77,7 +77,7 @@ export default function Header() {
         </h1>
       </div>
       <nav className="flex flex-row justify-end items-center gap-4 w-full">
-        <div className="hidden md:flex md:justify-end w-full">
+        <div className="hidden md:flex md:justify-end items-center w-full">
           {navData.map((navItem) => (
             <Menu as="div" key={navItem.id} className="relative inline-block text-left">
               <MenuButton className={"focus-within:outline-none"}>
@@ -148,22 +148,38 @@ export default function Header() {
               className="border border-neutral-400 bg-neutral-100 dark:border-olive-500 dark:bg-olive-800 focus-visible:outline-none mt-2 rounded-md w-fit min-w-30 z-50"
             >
               <MenuItem disabled>
-                <p className="block px-2 py-1 bg-neutral-50 border-neutral-500 dark:border-neutral-500 dark:bg-neutral-900 dark:text-neutral-400 data-disabled:bg-neutral-400 dark:data-disabled:bg-neutral-700">
-                  {user ? user?.email : "Nicht angemeldet"}
+                <p className="block px-2 py-1 bg-neutral-50 border-neutral-500 text-neutral-800 dark:border-neutral-500 dark:bg-neutral-900 dark:text-neutral-300 data-disabled:bg-neutral-400 dark:data-disabled:bg-neutral-700">
+                  {user ? "Benutzer" : "Nicht angemeldet"}
                 </p>
               </MenuItem>
               <MenuSeparator className="h-px bg-neutral-700 dark:bg-neutral-400" />
               {user ? (
-                <MenuItem>
-                  <button
-                    onClick={handleLogout}
-                    className={
-                      "block cursor-pointer w-full px-2 py-1 text-left bg-neutral-50 border-neutral-500 dark:border-neutral-500 dark:bg-neutral-900 dark:text-neutral-400 data-focus:text-neutral-900 data-focus:bg-neutral-200 dark:data-focus:text-neutral-200 dark:data-focus:bg-neutral-700"
-                    }
-                  >
-                    Abmelden
-                  </button>
-                </MenuItem>
+                <>
+                  <MenuItem>
+                    <Link
+                      className={
+                        "flex items-center px-2 py-1 data-focus:text-neutral-900 data-focus:bg-neutral-200 dark:data-focus:text-neutral-200 dark:data-focus:bg-neutral-700 " +
+                        (isLoggIn === false
+                          ? "bg-neutral-200 dark:text-neutral-200 dark:bg-neutral-700"
+                          : "bg-neutral-50 border-neutral-500 dark:border-neutral-500 dark:bg-neutral-900 dark:text-neutral-400")
+                      }
+                      to="/settings"
+                    >
+                      Einstellungen
+                    </Link>
+                  </MenuItem>
+                  <MenuItem>
+                    <button
+                     type="button"
+                      onClick={handleLogout}
+                      className={
+                        "block cursor-pointer w-full px-2 py-1 text-left bg-neutral-50 border-neutral-500 dark:border-neutral-500 dark:bg-neutral-900 dark:text-neutral-400 data-focus:text-neutral-900 data-focus:bg-neutral-200 dark:data-focus:text-neutral-200 dark:data-focus:bg-neutral-700"
+                      }
+                    >
+                      Abmelden
+                    </button>
+                  </MenuItem>
+                </>
               ) : (
                 <>
                   <MenuItem>
@@ -178,9 +194,6 @@ export default function Header() {
                       onClick={() => setIsLoggIn(false)}
                     >
                       Anmelden
-                      {/* <CheckIcon
-                        className={"ml-2 size-5 " + (isLoggIn === false ? "visible" : "invisible")}
-                      /> */}
                     </Link>
                   </MenuItem>
                   <MenuItem>
