@@ -47,8 +47,9 @@ const CityDetail = () => {
         <>
           <PageTitle title={"Stadt Detail wird geladen"} />
           <main className="container flex-1 flex flex-col justify-start items-start mx-auto py-2">
-            <section className="flex flex-col justify-center items-start p-2 w-auto">
+            <section className="flex flex-row justify-center items-start p-2 w-auto">
               Stadt Detail wird geladen. Bitte warten Sie einen Moment.
+              <span id="search-spinner" className="ml-2 self-baseline" />
             </section>
           </main>
         </>
@@ -92,10 +93,9 @@ const CityDetail = () => {
       <main className="container flex-1 flex flex-col justify-start items-start mx-auto py-2">
         <section className="flex flex-col justify-center items-start p-2 w-auto">
           <p className="text-neutral-600 dark:text-neutral-300 text-left">
-            Detaillierte Wetterinformationen für die ausgewählte Stadt werden hier
-            angezeigt.
+            Detaillierte Wetterinformationen für die ausgewählte Stadt.
           </p>
-          <div className="flex flex-col sm:flex-row justify-start items-center sm:items-start gap-4 p-2">
+          <div className="flex flex-col sm:flex-row justify-start items-center sm:items-start gap-4 mt-2 p-2">
             <div className="flex mt-2 mb-2 max-w-96">
               <CityPanel hasDetail={false} />
             </div>
