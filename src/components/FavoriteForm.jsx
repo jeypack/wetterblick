@@ -35,7 +35,7 @@ const FavoriteForm = ({
       if (confirmed === false) {
         return;
       }
-      reset();
+      //reset();
     } catch (err) {
       setError("Favorite form submission failed");
     }
