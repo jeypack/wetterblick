@@ -33,11 +33,8 @@ export default function LoginForm({ onSwitch }) {
 
   async function onSubmit(data) {
     const { email, password } = data;
-    console.log("email:", email);
-    console.log("password:", password);
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      console.log("Login erfolgreich!");
       //const userData = await getUserData(auth.currentUser.uid);
       const userName = auth.currentUser.displayName || "Unbekannt";
       console.log("User displayName:", auth.currentUser.displayName);
@@ -82,32 +79,7 @@ export default function LoginForm({ onSwitch }) {
       >
         Registrieren
       </Button>
+      {error && <p className="text-red-500 text-sm">{error}</p>}
     </form>
   );
 }
-
-// src/components/Login.jsx
-/* 
-export default function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-
-  async function handleSubmit(e) {
-    e.preventDefault();
-    setError("");
-
-    try {
-      await signInWithEmailAndPassword(auth, email, password);
-      console.log("Login erfolgreich!")
-    } catch (err) {
-      setError("Login fehlgeschlagen");
-    }
-  }
-
-  return (
-    <form onSubmit={handleSubmit}>
-      // ...
-    </form>
-  );
-} */
