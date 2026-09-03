@@ -65,6 +65,7 @@ const Favorites = () => {
       setCompareList([]);
     }
     setEnabled(isComparing);
+    setFavoriteMode(isComparing ? "compare" : "close");
   }, [isComparing, favoriteList]);
 
   useEffect(() => {
@@ -86,7 +87,7 @@ const Favorites = () => {
     switch (mode) {
       case "create":
         setCompareList([]);
-        setIsComparing(true);
+        setIsComparing(false);
         break;
       case "compare":
         setIsComparing(true);
@@ -104,8 +105,10 @@ const Favorites = () => {
   const handleSelectAll = () => {
     if (compareList.length === favoriteList.length) {
       setCompareList([]);
+      setIsComparing(false);
     } else {
       setCompareList(favoriteList);
+      setIsComparing(true);
     }
   };
 
