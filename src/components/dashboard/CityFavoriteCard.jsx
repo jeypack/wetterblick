@@ -33,7 +33,7 @@ const CityFavoriteCard = ({ active, mode, favorite, onChange, onEdit }) => {
     location,
   } = favorite ?? {};
   const navigate = useNavigate();
-  const { updateFavorites } = useUserData();
+  const { deleteFavorite } = useUserData();
   const [isOpen, setIsOpen] = useState(false);
   //console.log("CityFavoriteCard: favorite", favorite);
 
@@ -55,7 +55,7 @@ const CityFavoriteCard = ({ active, mode, favorite, onChange, onEdit }) => {
   const handleConfirm = () => {
     setIsOpen(false);
     console.log("CityFavoriteCard: handleConfirm: favorite", favorite);
-    //updateFavorites({ location });
+    deleteFavorite(favorite);
   };
 
   const classNameLocation = active
