@@ -82,7 +82,7 @@ const RecentLocations = ({ recentList, onUpdate, pageSize = DEFAULT_PAGE_SIZE })
           </button>
         </div>
       </div>
-      <div className="flex flex-col justify-center items-center gap-3">
+      <div className="flex flex-col justify-center items-center gap-3 w-full ">
         {visibleList.map((result, index) => {
           return (
             <Tooltip key={result.id} desc={<RefreshCw size={12} />}>
