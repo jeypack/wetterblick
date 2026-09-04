@@ -53,10 +53,10 @@ const compareBarFillSelectedClassName =
   "absolute inset-y-0 left-0 z-0 rounded-r-2xl bg-[linear-gradient(90deg,rgba(102,116,92,0.25),rgba(102,116,92,0.38))] transition-all duration-500 dark:bg-[linear-gradient(90deg,rgba(56, 64, 50, 0.75),rgba(35, 40, 31, 0.75))]";
 
 const compareBarGlassTopClassName =
-  "absolute inset-x-0 top-0 z-1 h-3.5 bg-[linear-gradient(180deg,rgba(255,255,255,0.02)_0%,rgba(255,255,255,0.42)_27%,rgba(255,255,255,0.5)_76%,rgba(255,255,255,0.0)_100%)]";
+  "absolute inset-x-0 top-0 z-1 h-3.5 bg-[linear-gradient(180deg,rgba(255,255,255,0.02)_0%,rgba(255,255,255,0.2)_37%,rgba(255,255,255,0.5)_76%,rgba(255,255,255,0.0)_100%)]";
 
 const compareBarGlassBottomClassName =
-  "absolute inset-x-0 bottom-0 z-2 h-3 bg-[linear-gradient(0deg,rgba(255,255,255,0.18)_0%,rgba(255,255,255,0.3)_30%,rgba(255,255,255,0.07)_100%)]";
+  "absolute inset-x-0 bottom-0 z-2 h-3 bg-[linear-gradient(0deg,rgba(255,255,255,0.18)_0%,rgba(255,255,255,0.4)_30%,rgba(255,255,255,0.07)_100%)]";
 
 const styles = {
   input: inputClassName,
