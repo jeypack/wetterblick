@@ -23,7 +23,7 @@ const CityCard = ({ active, weather, onSelect }) => {
 
   return (
     <div
-      className={`${styles.container} min-w-xs ${active ? styles.containerActive : ""}`}
+      className={`${styles.container} w-full min-w-xs ${active ? styles.containerActive : ""}`}
       onClick={handleCityUpdate}
     >
       <div className="w-full">
