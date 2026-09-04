@@ -4,6 +4,7 @@
 
 :root {
   scroll-behavior: smooth;
+  color:hsl(0, 0%, 9%)
 }
 
 body::-webkit-scrollbar {
@@ -11,11 +12,11 @@ body::-webkit-scrollbar {
   height: 8px;
 }
 body::-webkit-scrollbar-thumb {
-  background-color: hsl(90, 12%, 20%);
+  background-color: hsl(0, 0%, 15%);
   border-radius: 3px;
 }
 body::-webkit-scrollbar-track {
-  background: hsl(67, 11%, 15%);
+  background: hsl(0, 0%, 9%);
   color: rgb(245, 245, 245);
 }
 /* 
