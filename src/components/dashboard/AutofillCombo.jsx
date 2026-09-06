@@ -18,7 +18,7 @@ const AutofillCombo = ({ options, onInput, onChange, onFocus, filterOptions = tr
       : options;
 
   const handleChange = (selected) => {
-    console.log("AutofillCombo: handleChange: selected", selected);
+    //console.log("AutofillCombo: handleChange: selected", selected);
     setSelectedLocation(selected);
     onChange(selected);
   };
@@ -29,7 +29,7 @@ const AutofillCombo = ({ options, onInput, onChange, onFocus, filterOptions = tr
     setQuery(value);
     onInput(event);
   };
-  console.log("AutofillCombo: options", options, "filteredOptions", filteredOptions);
+  //console.log("AutofillCombo: options", options, "filteredOptions", filteredOptions);
   return (
     <Combobox
       as="div"

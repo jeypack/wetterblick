@@ -30,20 +30,20 @@ const CitySearch = ({
   };
 
   const handleChange = async (selected) => {
-    console.log("handleChange: selected", selected);
+    //console.log("handleChange: selected", selected);
     setLocation(selected);
   };
 
   const handleInput = async (event) => {
     const value = event.target.value;
     setInputValue(value);
-    console.log("handleInput: inputValue", value);
+    //console.log("handleInput: inputValue", value);
     //if (inputValue.length < 2 || locations.length > 0) {
     if (value.length < 2 || value.length > 5) {
       return;
     }
     const newLocations = await searchLocations(value);
-    console.log("handleInput: locations", newLocations);
+    //console.log("handleInput: locations", newLocations);
     setLocations(newLocations);
   };
 

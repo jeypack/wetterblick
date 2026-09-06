@@ -81,9 +81,9 @@ export function useWeatherData() {
 
   const getCity = async (location, modelParam) => {
     const modelToUse = modelParam || model;
-    console.log("getCity location", location);
+    //console.log("getCity location", location);
     const weatherData = await getCityWeather(location, modelToUse);
-    console.log("getCity weatherData", weatherData);
+    //console.log("getCity weatherData", weatherData);
     await updateRecentLocations(location);
   };
 
