@@ -1,9 +1,26 @@
 import React from "react";
 import {render} from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import {vi, beforeEach} from "vitest";
 import {ThemeProvider, ThemeContext} from "../context/ThemeContext";
 
 describe("ThemeContext component", () => {
+  beforeEach(() => {
+    Object.defineProperty(window, "matchMedia", {
+      writable: true,
+      value: vi.fn().mockImplementation((query) => ({
+        matches: query.includes("dark"),
+        media: query,
+        onchange: null,
+        addListener: vi.fn(),
+        removeListener: vi.fn(),
+        addEventListener: vi.fn(),
+        removeEventListener: vi.fn(),
+        dispatchEvent: vi.fn(),
+      })),
+    });
+  });
+
   test("renders without crashing", () => {
     // Render the ThemeContext component and check if it renders without errors
     render(

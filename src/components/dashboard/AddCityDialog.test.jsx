@@ -3,6 +3,12 @@ import userEvent from "@testing-library/user-event";
 import { vi } from "vitest";
 import AddCityDialog from "./AddCityDialog";
 
+vi.mock("../../hooks/useOverlay", () => ({
+  useOverlay: () => ({
+    setToastMessage: vi.fn(),
+  }),
+}));
+
 vi.mock("../../hooks/useWeather", () => ({
   useWeather: () => ({
     model: "knmi_seamless",
@@ -12,7 +18,18 @@ vi.mock("../../hooks/useWeather", () => ({
 
 vi.mock("./CitySearch", () => ({
   default: ({ onSubmit }) => (
-    <button type="button" onClick={() => onSubmit({ id: "berlin", name: "Berlin", country: "DE" })}>
+    <button
+      type="button"
+      onClick={() =>
+        onSubmit({
+          id: "berlin",
+          name: "Berlin",
+          country: "DE",
+          latitude: 52.52,
+          longitude: 13.405,
+        })
+      }
+    >
       City auswählen
     </button>
   ),
@@ -63,9 +80,16 @@ describe("AddCityDialog", () => {
     await user.click(screen.getByRole("button", { name: "Hinzufügen" }));
 
     expect(onConfirm).toHaveBeenCalledWith({
+      id: "52.52-13.405",
       title: "Mein Titel",
       note: "Meine Notiz",
-      location: { id: "berlin", name: "Berlin", country: "DE" },
+      location: {
+        id: "berlin",
+        name: "Berlin",
+        country: "DE",
+        latitude: 52.52,
+        longitude: 13.405,
+      },
     });
   });
 });
