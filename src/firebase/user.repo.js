@@ -37,10 +37,10 @@ export async function getUserRecentLocations(uid) {
 }
 
 // User-Daten initial anlegen
-export function createUserData(uid) {
+export function createUserData(uid, favorites = [], recentLocations = []) {
   return setDoc(getUserDocument(uid), {
-    favorites: [],
-    recentLocations: [],
+    favorites,
+    recentLocations,
   });
 }
 

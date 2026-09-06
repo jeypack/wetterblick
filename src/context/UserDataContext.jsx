@@ -150,8 +150,21 @@ const UserDataProvider = ({ children }) => {
         ...persistedRecentLocations,
       ];
 
+      const persistedFavorites = userData?.favorites || [];
+      const mergedFavorites = [
+        ...favorites.filter(
+          (favorite) => !persistedFavorites.some((item) => getFavoriteId(item) === getFavoriteId(favorite)),
+        ),
+        ...persistedFavorites,
+      ];
+
       setRecentLocations(mergedRecentLocations);
-      setFavorites(userData?.favorites || []);
+      setFavorites(mergedFavorites);
+
+      if (JSON.stringify(mergedFavorites) !== JSON.stringify(persistedFavorites)) {
+        await saveFavorites(user.uid, mergedFavorites);
+      }
+
       setIsLoading(false);
       previousUserRef.current = user;
     }

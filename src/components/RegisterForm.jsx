@@ -5,6 +5,7 @@ import { auth } from "../firebase/config";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { schemaRegister } from "../schemas/user";
+import { useUserData } from "../hooks/useUserData";
 import styles from "../Styles";
 import InputField from "./InputField";
 import Button from "./ui/Button";
@@ -15,6 +16,7 @@ import Button from "./ui/Button";
  */
 export default function RegisterForm({ onSwitch }) {
   const [error, setError] = useState("");
+  const { favorites } = useUserData();
   const {
     register,
     handleSubmit,
@@ -40,8 +42,8 @@ export default function RegisterForm({ onSwitch }) {
       await createUserWithEmailAndPassword(auth, email, password);
       console.log("Registrierung erfolgreich!");
       await updateProfile(auth.currentUser, { displayName: username });
-      // Create user data in Firestore without username, since it's already set in the auth profile
-      await createUserData(auth.currentUser.uid);
+      // Preserve any favorites that already exist locally before the first Firestore sync.
+      await createUserData(auth.currentUser.uid, favorites, []);
     } catch (err) {
       setError("Registrierung fehlgeschlagen");
     }

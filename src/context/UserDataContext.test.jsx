@@ -4,12 +4,13 @@ import userEvent from "@testing-library/user-event";
 import { vi } from "vitest";
 import UserDataProvider, { UserDataContext } from "./UserDataContext";
 
-const { mockSaveFavorites, mockSaveRecentLocations, mockGetUserData, mockUser } = vi.hoisted(() => ({
+const { mockSaveFavorites, mockSaveRecentLocations, mockGetUserData } = vi.hoisted(() => ({
   mockSaveFavorites: vi.fn(() => Promise.resolve()),
   mockSaveRecentLocations: vi.fn(() => Promise.resolve()),
   mockGetUserData: vi.fn(() => Promise.resolve({ recentLocations: [], favorites: [] })),
-  mockUser: { uid: "user-123" },
 }));
+
+let mockUser = null;
 
 vi.mock("../hooks/useAuth", () => ({
   useAuth: () => ({
@@ -68,6 +69,13 @@ function TestConsumer() {
 }
 
 describe("UserDataContext favorites", () => {
+  beforeEach(() => {
+    mockUser = { uid: "user-123" };
+    mockGetUserData.mockResolvedValue({ recentLocations: [], favorites: [] });
+    mockSaveFavorites.mockClear();
+    mockSaveRecentLocations.mockClear();
+  });
+
   test("upserts a favorite and deletes it explicitly", async () => {
     const user = userEvent.setup();
 
@@ -90,5 +98,40 @@ describe("UserDataContext favorites", () => {
     await user.click(screen.getByRole("button", { name: "remove" }));
     await waitFor(() => expect(screen.getByTestId("count")).toHaveTextContent("0"));
     expect(mockSaveFavorites).toHaveBeenCalledWith("user-123", []);
+  });
+
+  test("keeps local favorites when a user logs in", async () => {
+    mockUser = null;
+    mockGetUserData.mockResolvedValue({
+      recentLocations: [],
+      favorites: [{
+        id: "city-2",
+        location: { id: "city-2", latitude: 48.8566, longitude: 2.3522, name: "Paris" },
+        title: "Paris",
+        note: "Server",
+      }],
+    });
+
+    const { rerender } = render(
+      <UserDataProvider>
+        <TestConsumer />
+      </UserDataProvider>,
+    );
+
+    await waitFor(() => expect(screen.getByTestId("count")).toHaveTextContent("0"));
+
+    await userEvent.click(screen.getByRole("button", { name: "add" }));
+    await waitFor(() => expect(screen.getByTestId("count")).toHaveTextContent("1"));
+
+    mockUser = { uid: "user-123" };
+    rerender(
+      <UserDataProvider>
+        <TestConsumer />
+      </UserDataProvider>,
+    );
+
+    await waitFor(() => expect(screen.getByTestId("count")).toHaveTextContent("2"));
+    expect(screen.getByText("Berlin")).toBeInTheDocument();
+    expect(screen.getByText("Paris")).toBeInTheDocument();
   });
 });
