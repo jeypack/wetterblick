@@ -22,7 +22,7 @@ const navData = [
   },
 ];
 
-export default function Header() {
+const Header = () => {
   const { user } = useAuth();
   const { setToastMessage } = useOverlay();
   const { favoriteList, recentList } = useWeather();
@@ -53,7 +53,7 @@ export default function Header() {
     );
     return uniqueList;
   }, [recentList, favoriteList]);
-  console.log("Header: navData", navData);
+  //console.log("Header: navData", navData);
 
   const handleLogout = async () => {
     const auth = getAuth();
@@ -158,10 +158,7 @@ export default function Header() {
                   <MenuItem>
                     <Link
                       className={
-                        "flex items-center px-2 py-1 data-focus:text-neutral-900 data-focus:bg-neutral-200 dark:data-focus:text-neutral-200 dark:data-focus:bg-neutral-700 " +
-                        (isLoggIn === false
-                          ? "bg-neutral-200 dark:text-neutral-200 dark:bg-neutral-700"
-                          : "bg-neutral-50 border-neutral-500 dark:border-neutral-500 dark:bg-neutral-900 dark:text-neutral-400")
+                        "flex items-center w-full px-2 py-1 text-left bg-neutral-50 border-neutral-500 dark:border-neutral-500 dark:bg-neutral-900 dark:text-neutral-400 data-focus:text-neutral-900 data-focus:bg-neutral-200 dark:data-focus:text-neutral-200 dark:data-focus:bg-neutral-700"
                       }
                       to="/settings"
                     >
@@ -170,7 +167,7 @@ export default function Header() {
                   </MenuItem>
                   <MenuItem>
                     <button
-                     type="button"
+                      type="button"
                       onClick={handleLogout}
                       className={
                         "block cursor-pointer w-full px-2 py-1 text-left bg-neutral-50 border-neutral-500 dark:border-neutral-500 dark:bg-neutral-900 dark:text-neutral-400 data-focus:text-neutral-900 data-focus:bg-neutral-200 dark:data-focus:text-neutral-200 dark:data-focus:bg-neutral-700"
@@ -311,4 +308,6 @@ export default function Header() {
       </nav>
     </header>
   );
-}
+};
+
+export default React.memo(Header);

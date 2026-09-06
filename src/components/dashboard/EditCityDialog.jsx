@@ -2,10 +2,11 @@ import { Dialog, DialogPanel, DialogTitle, Description } from "@headlessui/react
 import { MapPinPen } from "lucide-react";
 import FavoriteForm from "../FavoriteForm";
 import { useOverlay } from "../../hooks/useOverlay";
+import React from "react";
 
-export default function EditCityDialog({ favorite, data, isOpen, setIsOpen, onConfirm }) {
+const EditCityDialog = ({ favorite, data, isOpen, setIsOpen, onConfirm }) => {
   const { setToastMessage } = useOverlay();
-  console.log("EditCityDialog: favorite", favorite);
+  //console.log("EditCityDialog: favorite", favorite);
   return (
     <>
       <Dialog open={isOpen} onClose={() => setIsOpen(false)} className="relative z-50">
@@ -43,4 +44,6 @@ export default function EditCityDialog({ favorite, data, isOpen, setIsOpen, onCo
       </Dialog>
     </>
   );
-}
+};
+
+export default React.memo(EditCityDialog);
