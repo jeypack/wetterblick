@@ -21,6 +21,7 @@ export function useWeatherData() {
   const [recentList, setRecentList] = useState([]);
   const [selectedCities, setSelectedCities] = useState(new Set());
   const {
+    user,
     updateRecentLocations,
     favorites,
     recentLocations,
@@ -82,7 +83,7 @@ export function useWeatherData() {
     const modelToUse = modelParam || model;
     console.log("getCity location", location);
     const weatherData = await getCityWeather(location, modelToUse);
-    
+    console.log("getCity weatherData", weatherData);
     await updateRecentLocations(location);
   };
 

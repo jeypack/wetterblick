@@ -1,5 +1,5 @@
 // src/context/UserDataContext.jsx
-import { createContext, useEffect, useState } from "react";
+import { createContext, useEffect, useRef, useState } from "react";
 import { getUserData, saveRecentLocations, saveFavorites } from "../firebase/user.repo";
 import { useAuth } from "../hooks/useAuth";
 
@@ -30,8 +30,25 @@ const getFavoriteId = (favorite) => {
   return null;
 };
 
+const getLocationKey = (location) => {
+  if (!location) {
+    return null;
+  }
+
+  if (location.id) {
+    return String(location.id);
+  }
+
+  if (location.latitude != null && location.longitude != null) {
+    return `${location.latitude}-${location.longitude}`;
+  }
+
+  return null;
+};
+
 const UserDataProvider = ({ children }) => {
   const { user } = useAuth();
+  const previousUserRef = useRef(null);
   const [isLoading, setIsLoading] = useState(true);
   const [recentLocations, setRecentLocations] = useState([]);
   const [favorites, setFavorites] = useState([]);
@@ -110,22 +127,33 @@ const UserDataProvider = ({ children }) => {
 
   // useEffect to fetch user data when the user changes
   useEffect(() => {
-    //console.log("UserDataProvider: user", user);
     async function fetchUserData() {
-      // If no user is logged in, reset the state to default values
+      const previousUser = previousUserRef.current;
+
       if (!user) {
-        setRecentLocations([]);
-        setFavorites([]);
+        if (previousUser) {
+          setRecentLocations([]);
+          setFavorites([]);
+        }
+        previousUserRef.current = null;
         setIsLoading(false);
         return;
       }
 
       setIsLoading(true);
       const userData = await getUserData(user.uid);
-      //console.log("UserDataProvider: userData", userData);
-      setRecentLocations(userData?.recentLocations || []);
+      const persistedRecentLocations = userData?.recentLocations || [];
+      const mergedRecentLocations = [
+        ...recentLocations.filter(
+          (location) => !persistedRecentLocations.some((item) => getLocationKey(item) === getLocationKey(location)),
+        ),
+        ...persistedRecentLocations,
+      ];
+
+      setRecentLocations(mergedRecentLocations);
       setFavorites(userData?.favorites || []);
       setIsLoading(false);
+      previousUserRef.current = user;
     }
 
     fetchUserData();
@@ -134,6 +162,7 @@ const UserDataProvider = ({ children }) => {
   return (
     <UserDataContext.Provider
       value={{
+        user,
         isFavorite,
         isLoading,
         recentLocations,
