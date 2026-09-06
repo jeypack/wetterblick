@@ -32,7 +32,7 @@ const Favorites = () => {
   const { favoriteList } = useWeather();
   const { updateFavorites, isComparing, setIsComparing } = useUserData();
   const [compareList, setCompareList] = useState(isComparing ? favoriteList : []);
-  const [favoriteMode, setFavoriteMode] = useState("compare");
+  const [favoriteMode, setFavoriteMode] = useState("close");
   const [currentFavorite, setCurrentFavorite] = useState(null);
   const [previewCityId, setPreviewCityId] = useState(null);
   const [enabled, setEnabled] = useState(false);
@@ -79,9 +79,8 @@ const Favorites = () => {
     }
   }, [compareList, previewCityId]);
 
-  console.log("Favorites.jsx: favoriteList", favoriteList);
-  //(!favoriteList || favoriteList.length === 0)
-
+  //console.log("Favorites.jsx: favoriteList", favoriteList);
+  
   const handleModeChange = (mode) => {
     console.log("Favorites.jsx: handleModeChange", mode);
     switch (mode) {
@@ -113,7 +112,7 @@ const Favorites = () => {
   };
 
   const handleCityChange = (checked, favorite) => {
-    console.log("Favorites.jsx: handleCityChange", checked, favorite);
+    //console.log("Favorites.jsx: handleCityChange", checked, favorite);
     if (checked) {
       setCompareList((prev) => [...prev, favorite]);
     } else {
@@ -123,13 +122,13 @@ const Favorites = () => {
   };
 
   const handleEditClick = (favorite) => {
-    console.log("Favorites.jsx: handleEditClick", favorite);
+    //console.log("Favorites.jsx: handleEditClick", favorite);
     setCurrentFavorite(favorite);
     setFavoriteMode("edit");
   };
 
   const handleConfirm = (favorite) => {
-    console.log("Favorites.jsx: handleConfirm", favorite);
+    //console.log("Favorites.jsx: handleConfirm", favorite);
     updateFavorites(favorite);
     setTimeout(() => {
       setFavoriteMode("close");

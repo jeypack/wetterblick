@@ -52,7 +52,7 @@ const UserDataProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [recentLocations, setRecentLocations] = useState([]);
   const [favorites, setFavorites] = useState([]);
-  const [isComparing, setIsComparing] = useState(true);
+  const [isComparing, setIsComparing] = useState(false);
 
   const isFavorite = (location) => {
     return favorites.some((fav) => getFavoriteId(fav) === getFavoriteId({ location }));
