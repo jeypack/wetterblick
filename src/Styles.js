@@ -6,7 +6,7 @@ const checkboxClassName =
   "min-w-8 min-h-8 accent-olive-800 bg-olive-900 rounded backdrop:blur-sm outline outline-olive-700 autofill:shadow-[inset_0_0_0_1000px_var(--color-olive-800)]";
 
 const navlinkClassName =
-  "relative cursor-pointer text-md font-bold text-neutral-500 dark:text-olive-400 transition-colors duration-200 mx-4 p-px my-px data-active:text-olive-300 data-hover:text-olive-600 dark:data-hover:text-olive-600 after:absolute after:bottom-0 after:left-0 after:h-px after:w-full after:origin-left after:scale-x-0 after:bg-olive-600 dark:after:bg-olive-300 after:transition-transform after:duration-300 after:ease-out hover:after:scale-x-100 data-hover:after:scale-x-100";
+  "relative cursor-pointer text-md font-bold text-neutral-500 dark:text-olive-400 transition-colors duration-200 mx-4 p-px my-px data-active:text-olive-500 data-hover:text-olive-500 dark:data-hover:text-olive-600 after:absolute after:bottom-0 after:left-0 after:h-px after:w-full after:origin-left after:scale-x-0 after:bg-olive-600 dark:after:bg-olive-300 after:transition-transform after:duration-300 after:ease-out hover:after:scale-x-100 data-hover:after:scale-x-100";
 const navlinkClassNameActive =
   "relative cursor-pointer text-md font-bold text-olive-600 dark:text-olive-400 transition-colors duration-200 mx-4 p-px my-px data-active:text-olive-300 data-hover:text-olive-300 after:absolute after:bottom-0 after:left-0 after:h-px after:w-full after:origin-left after:scale-x-100 after:bg-olive-600 dark:after:bg-olive-400";
 
@@ -53,10 +53,10 @@ const compareBarFillSelectedClassName =
   "absolute inset-y-0 left-0 z-0 rounded-r-2xl bg-[linear-gradient(90deg,rgba(102,116,92,0.25),rgba(102,116,92,0.38))] transition-all duration-500 dark:bg-[linear-gradient(90deg,rgba(56, 64, 50, 0.75),rgba(35, 40, 31, 0.75))]";
 
 const compareBarGlassTopClassName =
-  "absolute inset-x-0 top-0 z-1 h-3.5 bg-[linear-gradient(180deg,rgba(255,255,255,0.02)_0%,rgba(255,255,255,0.2)_37%,rgba(255,255,255,0.5)_76%,rgba(255,255,255,0.0)_100%)]";
+  "absolute inset-x-0 top-0 z-1 h-3.5 bg-[linear-gradient(180deg,rgba(255,255,255,0.02)_0%,rgba(255,255,255,0.2)_37%,rgba(255,255,255,0.56)_76%,rgba(255,255,255,0.0)_100%)]";
 
 const compareBarGlassBottomClassName =
-  "absolute inset-x-0 bottom-0 z-2 h-3 bg-[linear-gradient(0deg,rgba(255,255,255,0.18)_0%,rgba(255,255,255,0.4)_30%,rgba(255,255,255,0.07)_100%)]";
+  "absolute inset-x-0 bottom-1 z-2 h-2 bg-[linear-gradient(0deg,rgba(255,255,255,0.01)_0%,rgba(255,255,255,0.45)_50%,rgba(255,255,255,0.35)_60%,rgba(255,255,255,0.01)_100%)]";
 
 const styles = {
   input: inputClassName,

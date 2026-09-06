@@ -135,7 +135,7 @@ export function useWeatherData() {
     if (isUserDataLoading) {
       return;
     }
-
+    console.log("useWeatherData: recentList", recentList);
     if (recentLocations.length === 0) {
       setRecentList([]);
       return;

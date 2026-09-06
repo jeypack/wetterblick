@@ -59,8 +59,8 @@ const CityFavoriteCard = ({ active, mode, favorite, onChange, onEdit }) => {
   };
 
   const classNameLocation = active
-    ? "text-neutral-600 dark:text-olive-50"
-    : "text-neutral-500 dark:text-neutral-200";
+    ? "text-neutral-700 dark:text-olive-50"
+    : "text-neutral-600 dark:text-neutral-200";
 
   //const model = getWeatherModel(favorite.model);
   const direction = directions[Math.round(angle / 45) % 8];
