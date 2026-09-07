@@ -125,7 +125,7 @@ async function getWeatherDataListCurrent(latitudes, longitudes, model) {
     "apparent_temperature,temperature_2m,relative_humidity_2m,weather_code,rain,snowfall,cloudcover,surface_pressure,windspeed_10m,winddirection_10m,is_day",
   );
   url.searchParams.append("timezone", "auto");
-  //url.searchParams.append("models", model);
+  url.searchParams.append("models", model);
   try {
     const response = await fetch(url.toString());
     if (!response.ok) {
