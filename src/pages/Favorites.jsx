@@ -80,7 +80,7 @@ const Favorites = () => {
   }, [compareList, previewCityId]);
 
   //console.log("Favorites.jsx: favoriteList", favoriteList);
-  
+
   const handleModeChange = (mode) => {
     console.log("Favorites.jsx: handleModeChange", mode);
     switch (mode) {
@@ -140,7 +140,9 @@ const Favorites = () => {
       <PageTitle title="Meine Orte" />
       <main className="container flex-1 flex flex-col justify-start items-start mx-auto py-2">
         <div className="flex flex-col sm:flex-row items-baseline justify-center gap-4 p-4 mb-8">
-          <h1 className="text-xl text-neutral-400 font-bold mr-4 text-nowrap">Meine Orte verwalten</h1>
+          <h1 className="text-xl text-neutral-400 font-bold mr-4 text-nowrap">
+            Meine Orte verwalten
+          </h1>
           <ThemeButton
             active={favoriteMode === "create"}
             onClick={() => handleModeChange("create")}
