@@ -19,7 +19,7 @@ export function useWeatherData() {
   const [results, setResults] = useState([]);
   const [favoriteList, setFavoriteList] = useState([]);
   const [recentList, setRecentList] = useState([]);
-  const [selectedCities, setSelectedCities] = useState(new Set());
+  //const [selectedCities, setSelectedCities] = useState(new Set());
   const {
     user,
     updateRecentLocations,
@@ -30,13 +30,13 @@ export function useWeatherData() {
 
   const update = (modelToUse, weatherData) => {
     setModel(modelToUse);
-    setSelectedCities((prev) => {
+    /* setSelectedCities((prev) => {
       if (prev.has(weatherData.id)) return prev;
 
       const next = new Set(prev);
       next.add(weatherData.id);
       return next;
-    });
+    }); */
 
     setResults((prev) => {
       const index = prev.findIndex((city) => city.location === weatherData.location);
@@ -134,7 +134,7 @@ export function useWeatherData() {
   };
 
   const refreshFavorites = async (favoriteItems, modelOverride = model) => {
-    console.log("refreshFavorites: favoriteItems", favoriteItems, "modelOverride", modelOverride);
+    //console.log("refreshFavorites: favoriteItems", favoriteItems, "modelOverride", modelOverride);
     if (!favoriteItems?.length) return;
     setModel(modelOverride);
     const refreshed = await getWeatherList(
@@ -202,7 +202,6 @@ export function useWeatherData() {
 
   return {
     getCity,
-    getWeatherList,
     model,
     results,
     previewCityId,
