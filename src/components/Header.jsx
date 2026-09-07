@@ -139,7 +139,7 @@ const Header = () => {
             >
               <UserShield className="mr-2" />
               <div className="flex text-md font-bold text-neutral-500 dark:text-olive-400">
-                {user ? user.displayName : "Guest"}
+                {user ? user.displayName : "Gast"}
                 <ChevronDownIcon className="inline-block size-5 ml-1" />
               </div>
             </MenuButton>
@@ -148,7 +148,7 @@ const Header = () => {
               className="border border-neutral-400 bg-neutral-100 dark:border-olive-500 dark:bg-olive-800 focus-visible:outline-none mt-2 rounded-md w-fit min-w-30 z-50"
             >
               <MenuItem disabled>
-                <p className="block px-2 py-1 bg-neutral-50 border-neutral-500 text-neutral-800 dark:border-neutral-500 dark:bg-neutral-900 dark:text-neutral-300 data-disabled:bg-neutral-400 dark:data-disabled:bg-neutral-700">
+                <p className="block px-2 py-1 bg-neutral-50 border-neutral-500 text-neutral-800 dark:border-neutral-500 dark:bg-neutral-900 dark:text-neutral-300 data-disabled:bg-neutral-400 dark:data-disabled:bg-neutral-700 text-sm">
                   {user ? "Benutzer" : "Nicht angemeldet"}
                 </p>
               </MenuItem>

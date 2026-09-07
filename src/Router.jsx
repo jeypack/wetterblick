@@ -21,8 +21,8 @@ export default function Router() {
           <Suspense
             fallback={
               <main className="container flex-1 flex flex-row justify-start items-start mx-auto py-2">
-                Anmeldung wird geladen...
-                <span id="search-spinner" className="ml-2 self-center" />
+                <span>Anmeldung wird geladen...</span>
+                <span id="search-spinner" className="ml-2" />
               </main>
             }
           >
@@ -37,8 +37,8 @@ export default function Router() {
           <Suspense
             fallback={
               <main className="container flex-1 flex flex-row justify-start items-start mx-auto py-2">
-                Wetterdetails werden geladen...
-                <span id="search-spinner" className="ml-2 self-center" />
+                <span>Wetterdetails werden geladen...</span>
+                <span id="search-spinner" className="ml-2" />
               </main>
             }
           >
