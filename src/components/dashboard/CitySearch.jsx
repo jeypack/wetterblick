@@ -39,7 +39,7 @@ const CitySearch = ({
     setInputValue(value);
     //console.log("handleInput: inputValue", value);
     //if (inputValue.length < 2 || locations.length > 0) {
-    if (value.length < 2 || value.length > 5) {
+    if (value.length < 2 || value.length > 10) {
       return;
     }
     const newLocations = await searchLocations(value);
