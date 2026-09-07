@@ -82,7 +82,7 @@ const Favorites = () => {
   //console.log("Favorites.jsx: favoriteList", favoriteList);
 
   const handleModeChange = (mode) => {
-    console.log("Favorites.jsx: handleModeChange", mode);
+    //console.log("Favorites.jsx: handleModeChange", mode);
     switch (mode) {
       case "create":
         setCompareList([]);

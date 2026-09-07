@@ -7,7 +7,7 @@ function Toast() {
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    console.log("Toast: useEffect triggered with toastMessage", toastMessage);
+    //console.log("Toast: useEffect triggered with toastMessage", toastMessage);
     if (!toastMessage.text) return;
 
     setIsOpen(true);
@@ -19,7 +19,7 @@ function Toast() {
 
     return () => clearTimeout(timer);
   }, [toastMessage.id, toastMessage.text]);
-  console.log("Toast: toastMessage", toastMessage, "isOpen", isOpen);
+  
   if (!isOpen) return null;
 
   return (

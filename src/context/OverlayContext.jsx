@@ -13,7 +13,7 @@ export const OverlayProvider = ({ children }) => {
   const [toast, setToast] = useState({ id: 0, text: "" });
 
   const setToastMessage = (text) => {
-    console.log("OverlayContext: setToastMessage", text);
+    //console.log("OverlayContext: setToastMessage", text);
     setToast({ id: Date.now(), text });
   };
 

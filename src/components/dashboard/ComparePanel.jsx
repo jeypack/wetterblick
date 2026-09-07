@@ -21,11 +21,10 @@ const ComparePanel = ({ selectedCitiesData, previewCityId, setPreviewCityId }) =
   const [selectedProp, setSelectedProp] = useState(metrics[0]);
   const weatherModel = weatherModels.find((m) => m.model === model) || weatherModels[0];
   const [selectedModel, setSelectedModel] = useState(weatherModel);
-  
 
   const handleApply = async () => {
-    console.log("ComparePanel.jsx: selectedModel", selectedModel);
-    console.log("ComparePanel.jsx: selectedCitiesData", selectedCitiesData);
+    //console.log("ComparePanel.jsx: selectedModel", selectedModel);
+    //console.log("ComparePanel.jsx: selectedCitiesData", selectedCitiesData);
     const locations = selectedCitiesData.map((city) => city.location);
     if (!locations.length) return;
 
