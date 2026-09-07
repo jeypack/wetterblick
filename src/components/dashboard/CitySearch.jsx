@@ -38,7 +38,10 @@ const CitySearch = ({
     const value = event.target.value;
     setInputValue(value);
     //console.log("handleInput: inputValue", value);
-    //if (inputValue.length < 2 || locations.length > 0) {
+    if (value.length === 0) {
+      setLocations([]);
+      return;
+    }
     if (value.length < 2 || value.length > 10) {
       return;
     }
