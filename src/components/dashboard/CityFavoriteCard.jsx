@@ -75,7 +75,7 @@ const CityFavoriteCard = ({ active, mode, favorite, onChange, onEdit }) => {
 
   const handleDetailClick = () => {
     // route to city detail page with lastCityData.location
-    console.log("CityCard: handleDetailClick: id", id);
+    console.log("CityFavoriteCard: handleDetailClick: id", id);
     navigate(`/city/${encodeURIComponent(id)}`);
   };
 
