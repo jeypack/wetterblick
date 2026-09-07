@@ -54,6 +54,20 @@ const UserDataProvider = ({ children }) => {
   const [favorites, setFavorites] = useState([]);
   const [isComparing, setIsComparing] = useState(false);
 
+  const persistFavorites = async (nextFavorites) => {
+    try {
+      setFavorites(nextFavorites);
+
+      if (user) {
+        await saveFavorites(user.uid, nextFavorites);
+      }
+    } catch (error) {
+      console.error("Favorites persist failed:", error);
+      // optional: vorherigen State wiederherstellen
+      // setFavorites(previousFavorites);
+    }
+  };
+
   const isFavorite = (location) => {
     return favorites.some((fav) => getFavoriteId(fav) === getFavoriteId({ location }));
   };
@@ -93,17 +107,12 @@ const UserDataProvider = ({ children }) => {
     safeFavorite.id = favoriteId;
 
     const updatedFavorites = favorites.some((item) => getFavoriteId(item) === favoriteId)
-      ? favorites.map((item) => (getFavoriteId(item) === favoriteId ? { ...item, ...safeFavorite } : item))
+      ? favorites.map((item) =>
+          getFavoriteId(item) === favoriteId ? { ...item, ...safeFavorite } : item,
+        )
       : [...favorites, safeFavorite];
 
-    try {
-      setFavorites(updatedFavorites);
-      if (user) {
-        await saveFavorites(user.uid, updatedFavorites);
-      }
-    } catch (error) {
-      // ggf. State zurücksetzen / Toast anzeigen
-    }
+    await persistFavorites(updatedFavorites);
   };
 
   const deleteFavorite = async (favorite) => {
@@ -113,16 +122,11 @@ const UserDataProvider = ({ children }) => {
       return;
     }
 
-    const updatedFavorites = favorites.filter((item) => getFavoriteId(item) !== favoriteId);
+    const updatedFavorites = favorites.filter(
+      (item) => getFavoriteId(item) !== favoriteId,
+    );
 
-    try {
-      setFavorites(updatedFavorites);
-      if (user) {
-        await saveFavorites(user.uid, updatedFavorites);
-      }
-    } catch (error) {
-      // ggf. State zurücksetzen / Toast anzeigen
-    }
+    await persistFavorites(updatedFavorites);
   };
 
   // useEffect to fetch user data when the user changes
@@ -145,7 +149,10 @@ const UserDataProvider = ({ children }) => {
       const persistedRecentLocations = userData?.recentLocations || [];
       const mergedRecentLocations = [
         ...recentLocations.filter(
-          (location) => !persistedRecentLocations.some((item) => getLocationKey(item) === getLocationKey(location)),
+          (location) =>
+            !persistedRecentLocations.some(
+              (item) => getLocationKey(item) === getLocationKey(location),
+            ),
         ),
         ...persistedRecentLocations,
       ];
@@ -153,7 +160,10 @@ const UserDataProvider = ({ children }) => {
       const persistedFavorites = userData?.favorites || [];
       const mergedFavorites = [
         ...favorites.filter(
-          (favorite) => !persistedFavorites.some((item) => getFavoriteId(item) === getFavoriteId(favorite)),
+          (favorite) =>
+            !persistedFavorites.some(
+              (item) => getFavoriteId(item) === getFavoriteId(favorite),
+            ),
         ),
         ...persistedFavorites,
       ];
