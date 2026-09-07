@@ -28,7 +28,7 @@ const EditCityDialog = ({ favorite, data, isOpen, setIsOpen, onConfirm }) => {
                   note,
                   location: favorite?.location,
                 });
-                setToastMessage("✓ Erfolgreich gespeichert");
+                setToastMessage("✓ " + favorite?.location.name + " erfolgreich gespeichert");
               }}
               onCancel={() => setIsOpen(false)}
               formTitle={data.formtitle}

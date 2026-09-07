@@ -1,4 +1,4 @@
-import {createContext, useState} from "react";
+import { createContext, useState } from "react";
 
 export const OverlayContext = createContext();
 
@@ -8,12 +8,17 @@ export const OverlayContext = createContext();
     confirm: ConfirmModal,
 }; */
 
-export const OverlayProvider = ({children}) => {
-  const [modal, setModal] = useState({type: null, props: {}});
-  const [toastMessage, setToastMessage] = useState(null);
+export const OverlayProvider = ({ children }) => {
+  const [modal, setModal] = useState({ type: null, props: {} });
+  const [toast, setToast] = useState({ id: 0, text: "" });
 
-  const openModal = (type, props = {}) => setModal({type, props});
-  const closeModal = () => setModal({type: null, props: {}});
+  const setToastMessage = (text) => {
+    console.log("OverlayContext: setToastMessage", text);
+    setToast({ id: Date.now(), text });
+  };
+
+  const openModal = (type, props = {}) => setModal({ type, props });
+  const closeModal = () => setModal({ type: null, props: {} });
 
   return (
     <OverlayContext.Provider
@@ -21,7 +26,7 @@ export const OverlayProvider = ({children}) => {
         modal,
         openModal,
         closeModal,
-        toastMessage,
+        toastMessage: toast,
         setToastMessage,
       }}
     >

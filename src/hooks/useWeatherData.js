@@ -88,7 +88,7 @@ export function useWeatherData() {
     await updateRecentLocations(location);
   };
 
-  const removeCity = (id) => {
+  /* const removeCity = (id) => {
     setResults((prev) => prev.filter((city) => city.id !== id));
 
     setSelectedCities((prev) => {
@@ -116,9 +116,9 @@ export function useWeatherData() {
     });
   };
 
-  /* const updateCities = (id) => {
+  const updateCities = (id) => {
     // Implement the updateCity logic here
-  }; */
+  };
 
   const toggleCities = (checked) => {
     if (checked) {
@@ -127,13 +127,14 @@ export function useWeatherData() {
     } else {
       setSelectedCities(new Set());
     }
-  };
+  }; */
 
   const searchLocations = async (location) => {
     return await getGeocodingData(location);
   };
 
   const refreshFavorites = async (favoriteItems, modelOverride = model) => {
+    console.log("refreshFavorites: favoriteItems", favoriteItems, "modelOverride", modelOverride);
     if (!favoriteItems?.length) return;
     setModel(modelOverride);
     const refreshed = await getWeatherList(
