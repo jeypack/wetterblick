@@ -53,8 +53,9 @@ export function useWeatherData() {
     setPreviewCityId(weatherData.id);
   };
 
-  const getWeatherList = async (locations) => {
+  const getWeatherList = async (locations, modelOverride = model) => {
     console.log("getWeatherList: locations", locations);
+    setModel(modelOverride);
     const geoCodings = locations.map((location) => ({
       latitude: location.latitude,
       longitude: location.longitude,
@@ -63,7 +64,7 @@ export function useWeatherData() {
       state: location.state || "",
       id: location.id,
     }));
-    const weatherDataList = await getWeatherListCurrent(geoCodings, model);
+    const weatherDataList = await getWeatherListCurrent(geoCodings, modelOverride);
     console.log("getWeatherList: weatherDataList", weatherDataList);
     return weatherDataList;
   };
@@ -132,6 +133,22 @@ export function useWeatherData() {
     return await getGeocodingData(location);
   };
 
+  const refreshFavorites = async (favoriteItems, modelOverride = model) => {
+    if (!favoriteItems?.length) return;
+    setModel(modelOverride);
+    const refreshed = await getWeatherList(
+      favoriteItems.map((item) => item.location),
+      modelOverride,
+    );
+
+    setFavoriteList((prev) =>
+      prev.map((city) => {
+        const match = refreshed.find((item) => item.id === city.id);
+        return match ? { ...city, ...match } : city;
+      }),
+    );
+  };
+
   useEffect(() => {
     if (isUserDataLoading) {
       return;
@@ -162,7 +179,7 @@ export function useWeatherData() {
     console.log("useWeatherData: favorites", favorites);
     const fetchData = async () => {
       const favoriteLocations = favorites.map((fav) => fav.location);
-      const favoriteData = await getWeatherList(favoriteLocations);
+      const favoriteData = await getWeatherList(favoriteLocations, model);
       // hier müssen wir die Titel und Notizen aus den Favoriten hinzufügen
       const favoriteDataWithNotes = favoriteData.map((data) => {
         const fav = favorites.find((f) => {
@@ -180,20 +197,18 @@ export function useWeatherData() {
       setFavoriteList(favoriteDataWithNotes);
     };
     fetchData();
-  }, [isUserDataLoading, favorites]);
+  }, [isUserDataLoading, favorites, model]);
 
   return {
     getCity,
+    getWeatherList,
     model,
     results,
-    removeCity,
     previewCityId,
     recentList,
     favoriteList,
-    selectedCities,
     searchLocations,
     setPreviewCityId,
-    toggleCity,
-    toggleCities,
+    refreshFavorites,
   };
 }

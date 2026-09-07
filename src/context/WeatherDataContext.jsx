@@ -7,34 +7,30 @@ export { WeatherDataContext };
 const WeatherDataProvider = ({ children }) => {
   const {
     getCity,
+    getWeatherList,
     model,
     results,
-    removeCity,
     previewCityId,
     recentList,
     favoriteList,
-    selectedCities,
     searchLocations,
     setPreviewCityId,
-    toggleCity,
-    toggleCities,
+    refreshFavorites,
   } = useWeatherData();
 
   return (
     <WeatherDataContext.Provider
       value={{
         getCity,
+        getWeatherList,
         model,
         results,
-        removeCity,
         previewCityId,
         recentList,
         favoriteList,
-        selectedCities,
         searchLocations,
         setPreviewCityId,
-        toggleCity,
-        toggleCities,
+        refreshFavorites,
       }}
     >
       {children}
