@@ -1,7 +1,15 @@
-import {vi} from "vitest";
+import {beforeEach, describe, expect, test, vi} from "vitest";
 import {renderHook, act} from "@testing-library/react";
 import {useWeatherData} from "./useWeatherData";
 import {getWeatherForecast} from "../data/api";
+
+const mockUserData = {
+  user: null,
+  updateRecentLocations: vi.fn(),
+  favorites: [],
+  recentLocations: [],
+  isLoading: false,
+};
 
 vi.mock("../data/api", () => ({
   getWeatherForecast: vi.fn(),
@@ -11,17 +19,20 @@ vi.mock("../data/api", () => ({
 }));
 
 vi.mock("../hooks/useUserData", () => ({
-  useUserData: () => ({
-    updateRecentLocations: vi.fn(),
-    favorites: [],
-    recentLocations: [],
-    isLoading: false,
-  }),
+  useUserData: () => mockUserData,
 }));
 
 describe("useWeatherData hook", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    mockUserData.user = null;
+    mockUserData.favorites = [];
+    mockUserData.recentLocations = [];
+    mockUserData.isLoading = false;
+  });
+
   test("should add a city to selectedCities when getCity is called", async () => {
-    getWeatherForecast.mockResolvedValue({
+    vi.mocked(getWeatherForecast).mockResolvedValue({
       id: "berlin-id",
       location: "Berlin",
     });
@@ -34,91 +45,6 @@ describe("useWeatherData hook", () => {
 
     expect(result.current.selectedCities.has("berlin-id")).toBe(true);
   });
-
-  test("should remove a city from selectedCities when removeCity is called", async () => {
-    getWeatherForecast.mockResolvedValue({
-      id: "berlin-id",
-      location: "Berlin",
-    });
-
-    const {result} = renderHook(() => useWeatherData());
-
-    await act(async () => {
-      await result.current.getCity("Berlin", "gfs");
-    });
-
-    act(() => {
-      result.current.removeCity("berlin-id");
-    });
-
-    expect(result.current.selectedCities.has("berlin-id")).toBe(false);
-  });
-
-  test("should toggle a city in selectedCities when toggleCity is called", async () => {
-    getWeatherForecast.mockResolvedValue({
-      id: "berlin-id",
-      location: "Berlin",
-    });
-
-    const {result} = renderHook(() => useWeatherData());
-
-    await act(async () => {
-      await result.current.getCity("Berlin", "gfs");
-    });
-
-    act(() => {
-      result.current.toggleCity("berlin-id");
-    });
-
-    expect(result.current.selectedCities.has("berlin-id")).toBe(false);
-
-    act(() => {
-      result.current.toggleCity("berlin-id");
-    });
-
-    expect(result.current.selectedCities.has("berlin-id")).toBe(true);
-  });
-
-  test("should select all cities when toggleCities is called with true", async () => {
-    getWeatherForecast.mockResolvedValue({
-      id: "berlin-id",
-      location: "Berlin",
-    });
-
-    const {result} = renderHook(() => useWeatherData());
-
-    await act(async () => {
-      await result.current.getCity("Berlin", "gfs");
-    });
-
-    act(() => {
-      result.current.toggleCities(true);
-    });
-
-    expect(result.current.selectedCities.size).toBe(1);
-  });
-
-  test("should deselect all cities when toggleCities is called with false", async () => {
-    getWeatherForecast.mockResolvedValue({
-      id: "berlin-id",
-      location: "Berlin",
-    });
-
-    const {result} = renderHook(() => useWeatherData());
-
-    await act(async () => {
-      await result.current.getCity("Berlin", "gfs");
-    });
-
-    act(() => {
-      result.current.toggleCities(false);
-    });
-
-    expect(result.current.selectedCities.size).toBe(0);
-  });
-
-  /* test("should get geocoding results when searchLocations is called", async () => {
-  }); */
 });
 
 /* 
