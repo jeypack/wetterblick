@@ -50,10 +50,10 @@ const compareBarFillClassName =
   "absolute inset-y-0 left-0 z-0 rounded-r-2xl bg-[linear-gradient(90deg,rgba(69, 76, 61, 0.21),rgba(58, 64, 52, 0.34))] transition-all duration-500 dark:bg-[linear-gradient(90deg,rgba(56, 64, 50, 0.75),rgba(35, 40, 31, 0.75))]";
 
 const compareBarFillSelectedClassName =
-  "absolute inset-y-0 left-0 z-0 rounded-r-2xl bg-[linear-gradient(90deg,rgba(102,116,92,0.25),rgba(102,116,92,0.38))] transition-all duration-500 dark:bg-[linear-gradient(90deg,rgba(56, 64, 50, 0.75),rgba(35, 40, 31, 0.75))]";
+  "absolute border-2 border-olive-500 inset-y-0.5 left-0 z-0 rounded-r-2xl bg-olive-200 transition-all duration-500 dark:bg-olive-700";
 
 const compareBarGlassTopClassName =
-  "absolute inset-x-0 top-0 z-1 h-3.5 bg-[linear-gradient(180deg,rgba(255,255,255,0.0)_10%,rgba(255,255,255,0.2)_37%,rgba(255,255,255,0.4)_60%,rgba(255,255,255,0.0)_100%)]";
+  "absolute inset-x-0 top-0 z-1 h-3 bg-[linear-gradient(0deg,rgba(255,255,255,0.0)_15%,rgba(255,255,255,0.85)_35%,rgba(255,255,255,0.2)_52%,rgba(255,255,255,0.00)_80%,rgba(255,255,255,0.47)_100%)]";
 
 const compareBarGlassBottomClassName =
   "absolute inset-x-0 bottom-1 z-2 h-2 bg-[linear-gradient(0deg,rgba(255,255,255,0.01)_0%,rgba(255,255,255,0.3)_50%,rgba(255,255,255,0.2)_60%,rgba(255,255,255,0.01)_100%)]";
