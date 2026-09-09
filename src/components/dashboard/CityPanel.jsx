@@ -156,7 +156,7 @@ const CityPanel = ({ hasDetail = true }) => {
       {hasDetail && (
         <div
           onClick={handleDetailClick}
-          className="cursor-pointer text-white absolute bottom-6 right-6 hover:scale-105 transition-transform duration-200 ease-in-out group"
+          className="cursor-pointer text-white absolute bottom-6 right-6 hover:scale-105 transition-transform duration-200 ease-in-out group z-10"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -177,7 +177,7 @@ const CityPanel = ({ hasDetail = true }) => {
 
       <div
         onClick={handleFavoriteClick}
-        className="cursor-pointer text-white absolute top-6 right-6 hover:scale-105 transition-transform duration-200 ease-in-out group"
+        className="cursor-pointer text-white absolute top-6 right-6 hover:scale-105 transition-transform duration-200 ease-in-out group z-10"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
