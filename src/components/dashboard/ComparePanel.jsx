@@ -32,7 +32,7 @@ const ComparePanel = ({ selectedCitiesData, previewCityId, setPreviewCityId }) =
   };
 
   return (
-    <div className={styles.comparePanel + " w-fit"}>
+    <div className={styles.container + " w-fit"}>
       <div className="flex flex-col md:flex-row min-h-80 justify-start items-start gap-3 w-fit">
         <div className="flex flex-col gap-2 w-fit">
           <CompareFilter

@@ -30,9 +30,9 @@ const renderCompactTooltip = ({ label, payload }) => {
       style={{ padding: "4px 8px", lineHeight: 1.1 }}
       className="bg-white dark:bg-neutral-800 text-neutral-400 rounded shadow"
     >
-      <div style={{ fontSize: 11, marginBottom: 2 }}>{label}</div>
+      <div className="font-bold text-sm mb-0.5">{label}</div>
       {items.map((item) => (
-        <div key={item.dataKey} style={{ fontSize: 11 }}>
+        <div key={item.dataKey} className="text-xs">
           {item.name}: {item.value}°
         </div>
       ))}

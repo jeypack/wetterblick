@@ -53,10 +53,10 @@ const compareBarFillSelectedClassName =
   "absolute border-2 border-olive-500 inset-y-0.5 left-0 z-0 rounded-r-2xl bg-olive-200 transition-all duration-500 dark:bg-olive-700";
 
 const compareBarGlassTopClassName =
-  "absolute inset-x-0 top-0 z-1 h-3 bg-[linear-gradient(0deg,rgba(255,255,255,0.0)_15%,rgba(255,255,255,0.85)_35%,rgba(255,255,255,0.2)_52%,rgba(255,255,255,0.00)_80%,rgba(255,255,255,0.47)_100%)]";
+  "absolute inset-x-0 top-0 z-1 h-2.5 bg-[linear-gradient(0deg,rgba(255,255,255,0.0)_15%,rgba(255,255,255,0.45)_35%,rgba(255,255,255,0.12)_52%,rgba(255,255,255,0.00)_80%,rgba(255,255,255,0.47)_100%)]";
 
 const compareBarGlassBottomClassName =
-  "absolute inset-x-0 bottom-1 z-2 h-2 bg-[linear-gradient(0deg,rgba(255,255,255,0.01)_0%,rgba(255,255,255,0.3)_50%,rgba(255,255,255,0.2)_60%,rgba(255,255,255,0.01)_100%)]";
+  "absolute inset-x-0 bottom-1 z-2 h-2 bg-[linear-gradient(0deg,rgba(255,255,255,0.0)_0%,rgba(255,255,255,0.2)_50%,rgba(255,255,255,0.2)_60%,rgba(255,255,255,0.01)_100%)]";
 
 const styles = {
   input: inputClassName,
