@@ -22,6 +22,24 @@ const renderLegendWithoutTemp = ({ payload, ...rest }) => {
   return <DefaultLegendContent payload={newPayload} {...rest} />;
 };
 
+const renderCompactTooltip = ({ label, payload }) => {
+  const items = payload?.filter((x) => x.dataKey !== "temperature") ?? [];
+
+  return (
+    <div
+      style={{ padding: "4px 8px", lineHeight: 1.1 }}
+      className="bg-white dark:bg-neutral-800 text-neutral-400 rounded shadow"
+    >
+      <div style={{ fontSize: 11, marginBottom: 2 }}>{label}</div>
+      {items.map((item) => (
+        <div key={item.dataKey} style={{ fontSize: 11 }}>
+          {item.name}: {item.value}°
+        </div>
+      ))}
+    </div>
+  );
+};
+
 const DailyChart = ({ chartData, isAnimationActive = true }) => {
   //console.log("DailyChart: chartData", chartData);
   if (!chartData || chartData.length === 0) {
@@ -163,7 +181,7 @@ const DailyChart = ({ chartData, isAnimationActive = true }) => {
         cursor={{
           stroke: "var(--color-neutral-200)",
         }}
-        content={renderTooltipWithoutTemp}
+        content={renderCompactTooltip}
         contentStyle={{
           backgroundColor: "var(--color-neutral-100)",
           borderColor: "var(--color-neutral-400)",
