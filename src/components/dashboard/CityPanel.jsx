@@ -83,6 +83,7 @@ const CityPanel = ({ hasDetail = true }) => {
     setIsOpen(false);
     console.log("CityCard: handleConfirm: lastCityData.id", lastCityData.id);
     deleteFavorite(lastCityData.id || lastCityData.location);
+    setToastMessage("✓ Favorit " + lastCityData.location.name + " entfernt!");
   };
 
   const isFavoriteCity = isFavorite(lastCityData.location);
@@ -143,13 +144,15 @@ const CityPanel = ({ hasDetail = true }) => {
           )}
           {hasDetail && (
             <span className="flex flex-row justify-start items-baseline text-neutral-50 dark:text-neutral-300 text-xs ml-4">
-              <Brain className="self-center mr-2" size={16} />{lastCityData.model.name}
+              <Brain className="self-center mr-2" size={16} />
+              {lastCityData.model.name}
             </span>
           )}
         </div>
         {hasDetail === false && (
           <div className="flex flex-row justify-start items-baseline text-neutral-50 dark:text-neutral-300 text-xs ml-0 mb-1">
-            <Brain className="self-center mr-2" size={16} />{lastCityData.model.name}
+            <Brain className="self-center mr-2" size={16} />
+            {lastCityData.model.name}
           </div>
         )}
       </div>
