@@ -9,6 +9,7 @@ import WeatherIcon from "./WeatherIcon";
 import { Button } from "@headlessui/react";
 import RemoveCityDialog from "./RemoveCityDialog";
 import styles from "../../Styles";
+import { useOverlay } from "../../hooks/useOverlay";
 
 const dialogData = {
   title: "Stadt entfernen",
@@ -22,6 +23,7 @@ const dialogData = {
 const directions = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"];
 
 const CityFavoriteCard = ({ active, mode, favorite, onChange, onEdit }) => {
+  const { setToastMessage } = useOverlay();
   const {
     id,
     time,
@@ -56,6 +58,7 @@ const CityFavoriteCard = ({ active, mode, favorite, onChange, onEdit }) => {
     setIsOpen(false);
     console.log("CityFavoriteCard: handleConfirm: favorite", favorite);
     deleteFavorite(favorite);
+    setToastMessage("✓ " + favorite.location.name +" erfolgreich entfernt!");
   };
 
   const classNameLocation = active
