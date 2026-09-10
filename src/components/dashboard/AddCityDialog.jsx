@@ -46,7 +46,7 @@ export default function AddCityDialog({ data, isOpen, setIsOpen, onConfirm }) {
               btnLabels={{ confirm: "Hinzufügen", cancel: "Abbrechen" }}
               onConfirm={({ title, note }) => {
                 if (!currentLocation) {
-                  setCityError("Bitte wähle zuerst eine Stadt aus.");
+                  setCityError("Der Ort muss noch hinzugefügt werden.");
                   return false;
                 }
 
