@@ -2,7 +2,7 @@
   "name": "wetterblick",
   "description": "A weather forecast application built with React, Tailwind CSS, Meteo API, Firebase and Vite.",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.1.1",
   "type": "module",
   "scripts": {
     "start": "vite",

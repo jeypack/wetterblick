@@ -20,6 +20,7 @@ export default defineConfig({
     setupFiles: "./src/test/setup.js",
   },
   build: {
+    chunkSizeWarningLimit: 600,
     rollupOptions: {
       output: {
         manualChunks(id) {
