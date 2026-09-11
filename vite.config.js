@@ -36,5 +36,5 @@ export default defineConfig({
       },
     },
   },
-  /* base: "/demos/weather/", */
+  base: "/demos/weather/",
 });

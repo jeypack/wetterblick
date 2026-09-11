@@ -12,7 +12,7 @@ createRoot(document.getElementById("root")).render(
     <AuthProvider>
       <UserDataProvider>
         <WeatherDataProvider>
-          <BrowserRouter>
+          <BrowserRouter basename="demos/weather/">
             <App />
           </BrowserRouter>
         </WeatherDataProvider>

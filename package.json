@@ -1,7 +1,8 @@
 {
-  "name": "abschluss-modul3-jp",
+  "name": "wetterblick",
+  "description": "A weather forecast application built with React, Tailwind CSS, Meteo API, Firebase and Vite.",
   "private": true,
-  "version": "0.0.4",
+  "version": "0.1.0",
   "type": "module",
   "scripts": {
     "start": "vite",
