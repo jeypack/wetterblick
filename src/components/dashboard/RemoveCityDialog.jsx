@@ -1,7 +1,18 @@
-import {Dialog, DialogPanel, DialogTitle, Description} from "@headlessui/react";
+import { Dialog, DialogPanel, DialogTitle, Description } from "@headlessui/react";
 import ThemeButton from "../ui/ThemeButton";
 
-export default function RemoveCityDialog({data, isOpen, setIsOpen, onConfirm}) {
+/**
+ * RemoveCityDialog component for confirming the removal of a city.
+ *
+ * @param {Object} props - The component props.
+ * @param {Object} props.data - The dialog content data.
+ * @param {boolean} props.isOpen - Flag indicating if the dialog is open.
+ * @param {Function} props.setIsOpen - Callback function to set the dialog open state.
+ * @param {Function} props.onConfirm - Callback function when the removal is confirmed.
+ * @see {@link https://headlessui.dev/react/dialog Dialog} for more information on the Dialog component.
+ * @returns {JSX.Element} The rendered remove city dialog component.
+ */
+export default function RemoveCityDialog({ data, isOpen, setIsOpen, onConfirm }) {
   // const [isOpen, setIsOpen] = useState(false);
   const baseClassName =
     "w-30 text-nowrap rounded-2xl border cursor-pointer focus:ring-sky-500 focus:outline-none focus-visible:outline-none text-sm";
@@ -10,11 +21,7 @@ export default function RemoveCityDialog({data, isOpen, setIsOpen, onConfirm}) {
     baseClassName;
   return (
     <>
-      <Dialog
-        open={isOpen}
-        onClose={() => setIsOpen(false)}
-        className="relative z-50"
-      >
+      <Dialog open={isOpen} onClose={() => setIsOpen(false)} className="relative z-50">
         <div className="fixed inset-0 flex w-screen items-center justify-center p-4">
           <DialogPanel className="max-w-lg space-y-4 border bg-neutral-50 p-8 rounded-xl border-neutral-600 dark:bg-neutral-800 dark:border-neutral-600">
             <DialogTitle className="flex justify-start items-center text-2xl font-bold text-neutral-600 dark:text-neutral-200">
@@ -38,9 +45,7 @@ export default function RemoveCityDialog({data, isOpen, setIsOpen, onConfirm}) {
             <Description className={"text-neutral-600 dark:text-neutral-400"}>
               {data.description}
             </Description>
-            <p className="text-neutral-600 dark:text-neutral-400">
-              {data.text}
-            </p>
+            <p className="text-neutral-600 dark:text-neutral-400">{data.text}</p>
             <div className="flex gap-4">
               <ThemeButton onClick={onConfirm}>{data.confirmText}</ThemeButton>
               <ThemeButton onClick={() => setIsOpen(false)}>

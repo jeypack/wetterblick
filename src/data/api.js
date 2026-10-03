@@ -11,6 +11,11 @@ const OPEN_METEO_URL = "https://api.open-meteo.com/v1/forecast";
 
 const DAYS_OF_WEEK = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
+/**
+ * Fetch geocoding data for a given location.
+ * @param {string} location - The name of the location to geocode.
+ * @returns {Promise<Array>} A promise that resolves to an array of geocoding results.
+ */
 async function getGeocoding(location) {
   const url = new URL(GEOCODING_URL);
   url.searchParams.append("name", location);
@@ -28,11 +33,18 @@ async function getGeocoding(location) {
   }
 }
 
+/**
+ * Map raw weather data to a structured format for a given location and model.
+ * @param {object} location - The location object containing latitude and longitude.
+ * @param {object} weatherData - The raw weather data from the API.
+ * @param {string} model - The weather model used for the forecast.
+ * @returns {object|null} The mapped weather data or null if no data is available.
+ */
 function getMappedWeatherDataForecast(location, weatherData, model) {
   if (!weatherData) {
     return null;
   }
-  
+
   const dailyData =
     weatherData.daily.time.map((t, index) => {
       const date = new Date(t);
@@ -41,13 +53,16 @@ function getMappedWeatherDataForecast(location, weatherData, model) {
         date: DAYS_OF_WEEK[day] + " " + date.getDate() + "." + (date.getMonth() + 1),
         temperatureMax: weatherData.daily.temperature_2m_max[index],
         temperatureMin: weatherData.daily.temperature_2m_min[index],
-        temperature: [weatherData.daily.temperature_2m_min[index], weatherData.daily.temperature_2m_max[index]],
+        temperature: [
+          weatherData.daily.temperature_2m_min[index],
+          weatherData.daily.temperature_2m_max[index],
+        ],
         apparentMax: weatherData.daily.apparent_temperature_max[index],
         apparentMin: weatherData.daily.apparent_temperature_min[index],
         weatherCode: weatherData.daily.weather_code[index],
       };
     }) || [];
- 
+
   const hourlyData =
     weatherData.hourly.time.map((t, index) => {
       const date = new Date(t);
@@ -62,7 +77,7 @@ function getMappedWeatherDataForecast(location, weatherData, model) {
         weatherCode: weatherData.hourly.weather_code[index],
       };
     }) || [];
- 
+
   const mappedWeatherData = {
     id: `${location.latitude}-${location.longitude}`,
     location: location,
@@ -84,8 +99,15 @@ function getMappedWeatherDataForecast(location, weatherData, model) {
   //console.log("Weather mappedWeatherData:", mappedWeatherData);
   return mappedWeatherData;
 }
-//current=is_day
+/**
+ * Fetch weather forecast data for a specific location and model.
+ * @param {number} latitude - The latitude of the location.
+ * @param {number} longitude - The longitude of the location.
+ * @param {string} model - The weather model to use for the forecast.
+ * @returns {Promise<object>} A promise that resolves to the weather forecast data.
+ */
 async function getWeatherDataForecast(latitude, longitude, model) {
+  //current=is_day
   const url = new URL(OPEN_METEO_URL);
   url.searchParams.append("latitude", latitude);
   url.searchParams.append("longitude", longitude);
@@ -100,7 +122,10 @@ async function getWeatherDataForecast(latitude, longitude, model) {
   url.searchParams.append("forecast_days", "15");
   url.searchParams.append("forecast_hours", "24");
   //url.searchParams.append("current_weather", "true");
-  url.searchParams.append("hourly", "temperature_2m,relative_humidity_2m,precipitation,weather_code,wind_speed_10m,apparent_temperature");
+  url.searchParams.append(
+    "hourly",
+    "temperature_2m,relative_humidity_2m,precipitation,weather_code,wind_speed_10m,apparent_temperature",
+  );
   url.searchParams.append("timezone", "auto");
   url.searchParams.append("models", model);
   try {
@@ -116,6 +141,13 @@ async function getWeatherDataForecast(latitude, longitude, model) {
   }
 }
 
+/**
+ * Fetch current weather data for a list of locations.
+ * @param {Array<number>} latitudes - The latitudes of the locations.
+ * @param {Array<number>} longitudes - The longitudes of the locations.
+ * @param {string} model - The weather model to use for the forecast.
+ * @returns {Promise<object>} A promise that resolves to the current weather data for the locations.
+ */
 async function getWeatherDataListCurrent(latitudes, longitudes, model) {
   const url = new URL(OPEN_METEO_URL);
   url.searchParams.append("latitude", latitudes);
@@ -139,6 +171,9 @@ async function getWeatherDataListCurrent(latitudes, longitudes, model) {
   }
 }
 
+/**
+ * List of available weather models with their display names and model identifiers.
+ */
 export const weatherModels = [
   { name: "ECMWF IFS", model: "ecmwf_ifs" },
   { name: "UKMO Seamless", model: "ukmo_seamless" },
@@ -149,11 +184,23 @@ export const weatherModels = [
   { name: "KNMI Forecast", model: "knmi_seamless" },
 ];
 
+/**
+ * Get the weather model object by its model identifier.
+ * @param {string} modelName - The model identifier.
+ * @returns {object|null} The weather model object or null if not found.
+ * @see {@link ./api.js weatherModels} for the list of available weather models.
+ */
 export const getWeatherModel = (modelName) => {
   const model = weatherModels.find((item) => item.model === modelName);
   return model ? model : null;
 };
 
+/**
+ * Fetch geocoding data for a given location.
+ * @param {string} location - The location to geocode.
+ * @see {@link ./api.js getGeocoding} for the function that performs the actual geocoding request.
+ * @returns {Promise<Array<object>>} A promise that resolves to an array of geocoding results.
+ */
 export async function getGeocodingData(location) {
   const geocodingResults = await getGeocoding(location);
   console.log("getGeocodingData: geocodingResults", geocodingResults);
@@ -171,6 +218,14 @@ export async function getGeocodingData(location) {
   return mappedResults;
 }
 
+/**
+ * Fetch weather forecast data for a specific location and model.
+ * @param {object} geoCoding - The geocoding information of the location.
+ * @param {string} model - The weather model to use for the forecast.
+ * @see {@link ./api.js getWeatherDataForecast} for the function that performs the actual weather data request.
+ * @see {@link ./api.js getMappedWeatherDataForecast} for the function that maps the raw weather data to the desired format.
+ * @returns {Promise<object>} A promise that resolves to the mapped weather forecast data.
+ */
 export async function getWeather(geoCoding, model = "knmi_seamless") {
   const { latitude, longitude } = geoCoding;
   const weatherData = await getWeatherDataForecast(latitude, longitude, model);
@@ -180,6 +235,14 @@ export async function getWeather(geoCoding, model = "knmi_seamless") {
   return mappedWeatherData;
 }
 
+/**
+ * Fetch current weather data for a list of locations.
+ * @param {Array<object>} geoCodings - The geocoding information of the locations.
+ * @param {string} model - The weather model to use for the forecast.
+ * @see {@link ./api.js getWeatherDataListCurrent} for the function that performs the actual weather data request.
+ * @see {@link ./api.js getMappedWeatherDataListCurrent} for the function that maps the raw weather data to the desired format.
+ * @returns {Promise<Array<object>>} A promise that resolves to an array of mapped current weather data.
+ */
 export async function getWeatherListCurrent(geoCodings, model = "knmi_seamless") {
   const latitudes = geoCodings.map(({ latitude }) => latitude).join(",");
   const longitudes = geoCodings.map(({ longitude }) => longitude).join(",");
@@ -213,6 +276,15 @@ export async function getWeatherListCurrent(geoCodings, model = "knmi_seamless")
   return mappedWeatherDataList;
 }
 
+/**
+ * Fetch weather forecast data for a specific location.
+ * @param {string} location - The location to fetch the forecast for.
+ * @param {string} model - The weather model to use for the forecast.
+ * @see {@link ./api.js getGeocoding} for the function that performs the actual geocoding request.
+ * @see {@link ./api.js getWeatherDataForecast} for the function that performs the actual weather data request.
+ * @see {@link ./api.js getMappedWeatherDataForecast} for the function that maps the raw weather data to the desired format.
+ * @returns {Promise<object|null>} A promise that resolves to the mapped weather forecast data or null if the location is not found.
+ */
 export async function getWeatherForecast(location, model = "knmi_seamless") {
   const geocodingResults = await getGeocoding(location);
   if (geocodingResults.length === 0) {
@@ -238,23 +310,25 @@ export async function getWeatherForecast(location, model = "knmi_seamless") {
   // return weatherData;
 }
 
-/* 
-Code	Beschreibung
-0	Klarer Himmel
-1, 2, 3	Überwiegend klar, teils bewölkt und bedeckt
-45, 48	Nebel und sich ablagernder Raureifnebel
-51, 53, 55	Nieselregen: Leichte, mittlere und starke Intensität
-56, 57	Gefrierender Nieselregen: Leichte und dichte Intensität
-61, 63, 65	Regen: Leichte, mäßige und starke Intensität
-66, 67	Gefrierender Regen: Leichte und starke Intensität
-71, 73, 75	Schneefall: Leichte, mäßige und starke Intensität
-77	Schneekörner
-80, 81, 82	Regenschauer: Leicht, mäßig und heftig
-85, 86	Leichte und starke Schneeschauer
-95 *	Gewitter: Leicht bis mäßig
-96, 99 *	Gewitter mit leichtem und schwerem Hagel
+/**
+ * List of weather codes with their English and German descriptions and associated images.
+ * Weather Codes (WMO)
+ * Code	Beschreibung
+ * 0	Klarer Himmel
+ * 1, 2, 3	Überwiegend klar, teils bewölkt und bedeckt
+ * 45, 48	Nebel und sich ablagernder Raureifnebel
+ * 51, 53, 55	Nieselregen: Leichte, mittlere und starke Intensität
+ * 56, 57	Gefrierender Nieselregen: Leichte und dichte Intensität
+ * 61, 63, 65	Regen: Leichte, mäßige und starke Intensität
+ * 66, 67	Gefrierender Regen: Leichte und starke Intensität
+ * 71, 73, 75	Schneefall: Leichte, mäßige und starke Intensität
+ * 77	Schneekörner
+ * 80, 81, 82	Regenschauer: Leicht, mäßig und heftig
+ * 85, 86	Leichte und starke Schneeschauer
+ * 95 *	Gewitter: Leicht bis mäßig
+ * 96, 99 *	Gewitter mit leichtem und schwerem Hagel
+ * @see {@link ./api.js weatherCodes} for the list of weather codes with their descriptions and associated images.
 */
-/* Weather Codes (WMO)*/
 export const weatherCodes = [
   { code: 0, name: "Sunny", de: "Klarer Himmel", image: resolveLocalImage("sunny.jpg") },
   {

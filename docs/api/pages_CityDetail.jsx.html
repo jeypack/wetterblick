@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: pages/CityDetail.jsx</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: pages/CityDetail.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, { useState, useMemo, useEffect } from "react";
+import PageTitle from "../components/PageTitle";
+import { useWeather } from "../hooks/useWeather";
+import { Link, useParams } from "react-router-dom";
+import CityPanel from "../components/dashboard/CityPanel";
+import DailyChart from "../components/dashboard/DailyChart";
+import HourlyCard from "../components/dashboard/HourlyCard";
+import styles from "../Styles";
+
+/**
+ * CityDetail page component.
+ * Displays detailed weather information for a specific city.
+ * Fetches city details from the weather API if not already available in the results, recent list, or favorite list.
+ * Handles loading state and displays appropriate messages if the city is not found.
+ *
+ * @returns {JSX.Element} The city detail page component.
+ */
+const CityDetail = () => {
+  const { id } = useParams();
+  const { model, results, favoriteList, recentList, getCity } = useWeather();
+  const [maxHourly] = useState(12);
+  const [hourlyOffset, setHourlyOffset] = useState(0);
+  const [loading, setLoading] = useState(false);
+  //wenn wir die city in results finden, dann haben wir auch Details
+  //ansonsten schauen wir in recentList und auch favoriteList nach, ob
+  // wir die city dort finden und dann die details laden
+  let city = results.find((item) => item.id === id);
+  //console.log("CityDetail: id", id, "city", city, "model", model);
+
+  useEffect(() => {
+    let location;
+    if (city) return;
+    city =
+      recentList.find((item) => item.id === id) ||
+      favoriteList.find((item) => item.id === id);
+    if (city) {
+      location = city.location;
+    } else {
+      console.log("CityDetail: city not found in results, recentList or favoriteList");
+      return;
+    }
+    const fetchCity = async () => {
+      await getCity(location, model);
+      setLoading(false);
+    };
+    fetchCity();
+    setLoading(true);
+  }, [city, recentList, model]);
+
+  if (!city) {
+    if (loading) {
+      return (
+        &lt;>
+          &lt;PageTitle title={"Stadt Detail wird geladen"} />
+          &lt;main className="container flex-1 flex flex-col justify-start items-start mx-auto py-2">
+            &lt;section className="flex flex-row justify-center items-start p-2 w-auto">
+              Stadt Detail wird geladen. Bitte warten Sie einen Moment.
+              &lt;span id="search-spinner" className="ml-2 self-baseline" />
+            &lt;/section>
+          &lt;/main>
+        &lt;/>
+      );
+    }
+    return (
+      &lt;>
+        &lt;PageTitle title={"Stadt Detail nicht gefunden"} />
+        &lt;main className="container flex-1 flex flex-col justify-start items-start mx-auto py-2">
+          &lt;section className="flex flex-col justify-center items-start p-2 w-auto">
+            Stadt Detail nicht gefunden. Bitte überprüfen Sie die URL oder kehren Sie zur
+            Startseite zurück.
+            &lt;Link
+              to="/home"
+              className="text-neutral-500 dark:text-olive-400 hover:underline"
+            >
+              Zurück zur Startseite
+            &lt;/Link>
+          &lt;/section>
+        &lt;/main>
+      &lt;/>
+    );
+  }
+
+  //console.log("CityDetail:", "city.daily", city.daily);
+
+  const handlePrevHour = () => {
+    setHourlyOffset((prev) => Math.max(prev - 1, 0));
+  };
+
+  const handleNextHour = () => {
+    const maxOffset = Math.max(city.hourly.length - maxHourly, 0);
+    setHourlyOffset((prev) => Math.min(prev + 1, maxOffset));
+  };
+
+  const displayedHours = city.hourly.slice(hourlyOffset, hourlyOffset + maxHourly);
+
+  return (
+    &lt;>
+      &lt;PageTitle title={"Wetter Details " + city.location?.name} />
+      &lt;main className="container flex-1 flex flex-col justify-start items-start mx-auto py-2">
+        &lt;section className="flex flex-col justify-center items-start p-2 w-auto">
+          &lt;p className="text-neutral-600 dark:text-neutral-300 text-left">
+            Detaillierte Wetterinformationen für die ausgewählte Stadt.
+          &lt;/p>
+          &lt;div className="flex flex-col sm:flex-row justify-start items-center sm:items-start gap-4 mt-2 p-2">
+            &lt;div className="flex mt-2 mb-2 w-full sm:w-80 lg:w-96">
+              &lt;CityPanel hasDetail={false} />
+            &lt;/div>
+            &lt;div className="flex flex-col gap-2">
+              &lt;div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 p-2 w-full">
+                {displayedHours.map((hour, index) => (
+                  &lt;HourlyCard key={hourlyOffset + index} active={true} weather={hour} />
+                ))}
+              &lt;/div>
+              &lt;div className="flex gap-1 justify-between items-center px-2">
+                &lt;button
+                  type="button"
+                  onClick={() => setHourlyOffset(0)}
+                  disabled={hourlyOffset === 0}
+                  className={
+                    styles.btnSimple +
+                    " disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+                  }
+                >
+                  &lt;svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="currentColor"
+                    className="size-5"
+                  >
+                    &lt;path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="m18.75 4.5-7.5 7.5 7.5 7.5m-6-15L5.25 12l7.5 7.5"
+                    />
+                  &lt;/svg>
+                &lt;/button>
+                &lt;button
+                  type="button"
+                  onClick={handlePrevHour}
+                  disabled={hourlyOffset === 0}
+                  className={
+                    styles.btnSimple +
+                    " disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+                  }
+                >
+                  ← Zurück
+                &lt;/button>
+                &lt;span className="text-sm text-center text-neutral-600 dark:text-neutral-400">
+                  {hourlyOffset + 1} -{" "}
+                  {Math.min(hourlyOffset + maxHourly, city.hourly.length)} von{" "}
+                  {city.hourly.length}
+                &lt;/span>
+                &lt;span className="font-semibold text-center text-xs text-neutral-600 dark:text-neutral-400">
+                  {city.hourly[hourlyOffset].time} -{" "}
+                  {
+                    city.hourly[
+                      Math.min(hourlyOffset + maxHourly - 1, city.hourly.length - 1)
+                    ].time
+                  }
+                &lt;/span>
+                &lt;button
+                  type="button"
+                  onClick={handleNextHour}
+                  disabled={hourlyOffset >= Math.max(city.hourly.length - maxHourly, 0)}
+                  className={
+                    styles.btnSimple +
+                    " disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+                  }
+                >
+                  Weiter →
+                &lt;/button>
+                &lt;button
+                  type="button"
+                  onClick={() => setHourlyOffset(city.hourly.length - maxHourly)}
+                  disabled={hourlyOffset >= Math.max(city.hourly.length - maxHourly, 0)}
+                  className={
+                    styles.btnSimple +
+                    " disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+                  }
+                >
+                  &lt;svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="currentColor"
+                    className="size-5"
+                  >
+                    &lt;path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="m5.25 4.5 7.5 7.5-7.5 7.5m6-15 7.5 7.5-7.5 7.5"
+                    />
+                  &lt;/svg>
+                &lt;/button>
+              &lt;/div>
+            &lt;/div>
+          &lt;/div>
+        &lt;/section>
+        &lt;section className="flex flex-col justify-start items-start p-2 w-full">
+          &lt;p className="text-neutral-600 dark:text-neutral-300 text-left">
+            Vorhersage für die nächsten Tage
+          &lt;/p>
+          &lt;div className="h-100 w-full p-2">
+            &lt;DailyChart chartData={city.daily} />
+          &lt;/div>
+        &lt;/section>
+      &lt;/main>
+    &lt;/>
+  );
+};
+
+export default React.memo(CityDetail);
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#App">App</a></li><li><a href="global.html#AutofillCombo">AutofillCombo</a></li><li><a href="global.html#ChartDaysArea">ChartDaysArea</a></li><li><a href="global.html#CityCard">CityCard</a></li><li><a href="global.html#CityDetail">CityDetail</a></li><li><a href="global.html#CityFavoriteCard">CityFavoriteCard</a></li><li><a href="global.html#CityPanel">CityPanel</a></li><li><a href="global.html#CitySearch">CitySearch</a></li><li><a href="global.html#CityWeather">CityWeather</a></li><li><a href="global.html#CompareBar">CompareBar</a></li><li><a href="global.html#CompareBarContainer">CompareBarContainer</a></li><li><a href="global.html#CompareFilter">CompareFilter</a></li><li><a href="global.html#ComparePanel">ComparePanel</a></li><li><a href="global.html#DailyChart">DailyChart</a></li><li><a href="global.html#Dashboard">Dashboard</a></li><li><a href="global.html#EditCityDialog">EditCityDialog</a></li><li><a href="global.html#FavoriteForm">FavoriteForm</a></li><li><a href="global.html#Favorites">Favorites</a></li><li><a href="global.html#Footer">Footer</a></li><li><a href="global.html#Header">Header</a></li><li><a href="global.html#HourlyCard">HourlyCard</a></li><li><a href="global.html#ListBox">ListBox</a></li><li><a href="global.html#OverlayProvider">OverlayProvider</a></li><li><a href="global.html#RecentLocations">RecentLocations</a></li><li><a href="global.html#Settings">Settings</a></li><li><a href="global.html#The">The</a></li><li><a href="global.html#ThemeMenu">ThemeMenu</a></li><li><a href="global.html#ThemeProvider">ThemeProvider</a></li><li><a href="global.html#Toast">Toast</a></li><li><a href="global.html#UserDataProvider">UserDataProvider</a></li><li><a href="global.html#WeatherDataProvider">WeatherDataProvider</a></li><li><a href="global.html#WeatherIcon">WeatherIcon</a></li><li><a href="global.html#getGeocoding">getGeocoding</a></li><li><a href="global.html#getGeocodingData">getGeocodingData</a></li><li><a href="global.html#getMappedWeatherDataForecast">getMappedWeatherDataForecast</a></li><li><a href="global.html#getUserDocument">getUserDocument</a></li><li><a href="global.html#getWeather">getWeather</a></li><li><a href="global.html#getWeatherDataForecast">getWeatherDataForecast</a></li><li><a href="global.html#getWeatherDataListCurrent">getWeatherDataListCurrent</a></li><li><a href="global.html#getWeatherForecast">getWeatherForecast</a></li><li><a href="global.html#getWeatherListCurrent">getWeatherListCurrent</a></li><li><a href="global.html#getWeatherModel">getWeatherModel</a></li><li><a href="global.html#metrics">metrics</a></li><li><a href="global.html#ranges">ranges</a></li><li><a href="global.html#styles">styles</a></li><li><a href="global.html#useAuth">useAuth</a></li><li><a href="global.html#useOverlay">useOverlay</a></li><li><a href="global.html#useTheme">useTheme</a></li><li><a href="global.html#useUserData">useUserData</a></li><li><a href="global.html#useWeather">useWeather</a></li><li><a href="global.html#useWeatherData">useWeatherData</a></li><li><a href="global.html#weatherCodes">weatherCodes</a></li><li><a href="global.html#weatherModels">weatherModels</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Sat Oct 03 2026 13:57:17 GMT+0200 (Central European Summer Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

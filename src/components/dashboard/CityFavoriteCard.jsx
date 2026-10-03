@@ -22,6 +22,18 @@ const dialogData = {
 
 const directions = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"];
 
+/**
+ * CityFavoriteCard component for displaying a favorite city with weather information and actions.
+ *
+ * @param {Object} props - The component props.
+ * @param {boolean} props.active - Whether the city card is active.
+ * @param {string} props.mode - The display mode of the card.
+ * @param {Object} props.favorite - The favorite city data.
+ * @param {Function} props.onChange - Callback function when the favorite city is changed.
+ * @param {Function} props.onEdit - Callback function when the favorite city is edited.
+ * @see {@link ../../hooks/useUserData useUserData} for more information on the custom hook used to manage user data.
+ * @see {@link ../../hooks/useOverlay useOverlay} for more information on the custom hook used to manage overlay messages.
+ */
 const CityFavoriteCard = ({ active, mode, favorite, onChange, onEdit }) => {
   const { setToastMessage } = useOverlay();
   const {

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/dashboard/ChartDaysArea.jsx</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/dashboard/ChartDaysArea.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  AreaChart,
+  Area,
+} from "recharts";
+
+/* 
+var(--color-surface-raised) --color-amber-500
+stroke="var(--color-chart-1)" --color-sky-500
+activeDot={{r: 8, stroke: "var(--color-surface-base)"}} --color-amber-700
+stroke="var(--color-chart-2)" --color-green-500
+*/
+
+/**
+ * ChartDaysArea component for displaying temperature data over multiple days using an area chart.
+ *
+ * @param {Object} props - The component props.
+ * @param {Object} props.chartData - The data for the chart, including an array of temperature readings.
+ * @param {boolean} [props.isAnimationActive=true] - Whether the chart animation is active.
+ */
+const ChartDaysArea = ({ chartData, isAnimationActive = true }) => {
+  const areaChartData = chartData?.data;
+  console.log("ChartDaysArea: areaChartData", areaChartData);
+  return (
+    &lt;AreaChart
+      style={{
+        width: "100%",
+        maxWidth: "700px",
+        height: "100%",
+        maxHeight: "70vh",
+        aspectRatio: 1.618,
+      }}
+      responsive
+      data={areaChartData}
+      margin={{
+        top: 5,
+        right: 0,
+        left: 0,
+        bottom: 5,
+      }}
+    >
+      &lt;defs>
+        &lt;linearGradient id="colorTemperature" x1="0" y1="0" x2="0" y2="1">
+          &lt;stop offset="5%" stopColor="#E25C2F" stopOpacity={0.95} />
+          &lt;stop offset="95%" stopColor="#E2972F" stopOpacity={0.85} />
+        &lt;/linearGradient>
+      &lt;/defs>
+      &lt;CartesianGrid strokeDasharray="3 3" />
+      &lt;XAxis
+        dataKey="date"
+        stroke="var(--color-slate-400)"
+        padding={{ left: 30, right: 30, top: 10 }}
+      />
+      &lt;YAxis width="auto" stroke="var(--color-slate-400)" unit="°" />
+      &lt;Area
+        dataKey="temperature"
+        dot={{
+          fill: "var(--color-amber-700)",
+        }}
+        activeDot={{ r: 4, stroke: "var(--color-amber-700)", unit: "°" }}
+        label={{
+          position: "bottom",
+          fill: "var(--color-amber-200)",
+          fontSize: 12,
+        }}
+        stroke="#E25C2F"
+        fill="url(#colorTemperature)"
+        isAnimationActive={isAnimationActive}
+        unit={["°"]}
+      />
+      &lt;Tooltip
+        cursor={{
+          stroke: "var(--color-slate-200)",
+        }}
+        contentStyle={{
+          backgroundColor: "var(--color-slate-900)",
+          borderColor: "var(--color-slate-200)",
+        }}
+      />
+      &lt;Legend />
+    &lt;/AreaChart>
+  );
+};
+
+export default ChartDaysArea;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#App">App</a></li><li><a href="global.html#AutofillCombo">AutofillCombo</a></li><li><a href="global.html#ChartDaysArea">ChartDaysArea</a></li><li><a href="global.html#CityCard">CityCard</a></li><li><a href="global.html#CityDetail">CityDetail</a></li><li><a href="global.html#CityFavoriteCard">CityFavoriteCard</a></li><li><a href="global.html#CityPanel">CityPanel</a></li><li><a href="global.html#CitySearch">CitySearch</a></li><li><a href="global.html#CityWeather">CityWeather</a></li><li><a href="global.html#CompareBar">CompareBar</a></li><li><a href="global.html#CompareBarContainer">CompareBarContainer</a></li><li><a href="global.html#CompareFilter">CompareFilter</a></li><li><a href="global.html#ComparePanel">ComparePanel</a></li><li><a href="global.html#DailyChart">DailyChart</a></li><li><a href="global.html#Dashboard">Dashboard</a></li><li><a href="global.html#EditCityDialog">EditCityDialog</a></li><li><a href="global.html#FavoriteForm">FavoriteForm</a></li><li><a href="global.html#Favorites">Favorites</a></li><li><a href="global.html#Footer">Footer</a></li><li><a href="global.html#Header">Header</a></li><li><a href="global.html#HourlyCard">HourlyCard</a></li><li><a href="global.html#ListBox">ListBox</a></li><li><a href="global.html#OverlayProvider">OverlayProvider</a></li><li><a href="global.html#RecentLocations">RecentLocations</a></li><li><a href="global.html#Settings">Settings</a></li><li><a href="global.html#The">The</a></li><li><a href="global.html#ThemeMenu">ThemeMenu</a></li><li><a href="global.html#ThemeProvider">ThemeProvider</a></li><li><a href="global.html#Toast">Toast</a></li><li><a href="global.html#UserDataProvider">UserDataProvider</a></li><li><a href="global.html#WeatherDataProvider">WeatherDataProvider</a></li><li><a href="global.html#WeatherIcon">WeatherIcon</a></li><li><a href="global.html#getGeocoding">getGeocoding</a></li><li><a href="global.html#getGeocodingData">getGeocodingData</a></li><li><a href="global.html#getMappedWeatherDataForecast">getMappedWeatherDataForecast</a></li><li><a href="global.html#getUserDocument">getUserDocument</a></li><li><a href="global.html#getWeather">getWeather</a></li><li><a href="global.html#getWeatherDataForecast">getWeatherDataForecast</a></li><li><a href="global.html#getWeatherDataListCurrent">getWeatherDataListCurrent</a></li><li><a href="global.html#getWeatherForecast">getWeatherForecast</a></li><li><a href="global.html#getWeatherListCurrent">getWeatherListCurrent</a></li><li><a href="global.html#getWeatherModel">getWeatherModel</a></li><li><a href="global.html#metrics">metrics</a></li><li><a href="global.html#ranges">ranges</a></li><li><a href="global.html#styles">styles</a></li><li><a href="global.html#useAuth">useAuth</a></li><li><a href="global.html#useOverlay">useOverlay</a></li><li><a href="global.html#useTheme">useTheme</a></li><li><a href="global.html#useUserData">useUserData</a></li><li><a href="global.html#useWeather">useWeather</a></li><li><a href="global.html#useWeatherData">useWeatherData</a></li><li><a href="global.html#weatherCodes">weatherCodes</a></li><li><a href="global.html#weatherModels">weatherModels</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Sat Oct 03 2026 13:57:17 GMT+0200 (Central European Summer Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

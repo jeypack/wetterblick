@@ -12,6 +12,15 @@ const dialogData = {
   cancelText: "Abbrechen",
 };
 
+/**
+ * CityList component for displaying a list of cities with checkboxes and actions.
+ *
+ * @param {Object} props - The component props.
+ * @param {Array} props.cities - The list of cities to display.
+ * @param {Set} props.selectedCities - The set of selected city IDs.
+ * @param {Function} props.onChange - Callback function when the selection changes.
+ * @see {@link ../../hooks/useUserData useUserData} for more information on the custom hook used to manage user data.
+ */
 export default function CityList({ cities, selectedCities, onChange }) {
   const [isOpen, setIsOpen] = useState(false);
   const [idToRemove, setIdToRemove] = useState(null);

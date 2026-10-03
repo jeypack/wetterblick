@@ -2,6 +2,15 @@ import { Button } from "@headlessui/react";
 import RippleFX from "../ui/RippleFX";
 import styles from "../../Styles";
 
+/**
+ * CompareFilter component for selecting a property to compare.
+ *
+ * @param {Object} props - The component props.
+ * @param {Array} props.options - The available comparison options.
+ * @param {Object} props.selectedProp - The currently selected property.
+ * @see {@link https://headlessui.dev/react/button Button} for more information on the Button component.
+ * @param {Function} props.setSelectedProp - Callback function to set the selected property.
+ */
 function CompareFilter({ options, selectedProp, setSelectedProp }) {
   const getClassName = (value) =>
     value.id === selectedProp.id

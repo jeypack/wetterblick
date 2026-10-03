@@ -4,6 +4,17 @@ import FavoriteForm from "../FavoriteForm";
 import { useOverlay } from "../../hooks/useOverlay";
 import React from "react";
 
+/**
+ * EditCityDialog component for editing a city's favorite details.
+ *
+ * @param {Object} props - The component props.
+ * @param {Object} props.favorite - The favorite city data.
+ * @param {Object} props.data - The dialog content data.
+ * @param {boolean} props.isOpen - Flag indicating if the dialog is open.
+ * @param {Function} props.setIsOpen - Callback function to set the dialog open state.
+ * @see {@link https://headlessui.dev/react/dialog Dialog} for more information on the Dialog component.
+ * @param {Function} props.onConfirm - Callback function when the form is confirmed.
+ */
 const EditCityDialog = ({ favorite, data, isOpen, setIsOpen, onConfirm }) => {
   const { setToastMessage } = useOverlay();
   //console.log("EditCityDialog: favorite", favorite);
@@ -28,7 +39,9 @@ const EditCityDialog = ({ favorite, data, isOpen, setIsOpen, onConfirm }) => {
                   note,
                   location: favorite?.location,
                 });
-                setToastMessage("✓ " + favorite?.location.name + " erfolgreich gespeichert");
+                setToastMessage(
+                  "✓ " + favorite?.location.name + " erfolgreich gespeichert",
+                );
               }}
               onCancel={() => setIsOpen(false)}
               formTitle={data.formtitle}

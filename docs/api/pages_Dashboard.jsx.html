@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: pages/Dashboard.jsx</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: pages/Dashboard.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, { useState } from "react";
+import PageTitle from "../components/PageTitle";
+import { useWeather } from "../hooks/useWeather";
+import CitySearch from "../components/dashboard/CitySearch";
+import Sidebar from "../components/dashboard/Sidebar";
+import RecentLocations from "../components/dashboard/RecentLocations";
+import CityPanel from "../components/dashboard/CityPanel";
+import { Link } from "react-router-dom";
+import styles from "../Styles";
+import { useAuth } from "../hooks/useAuth";
+
+/**
+ * Dashboard page component.
+ * Displays the main dashboard for weather search and user interactions.
+ * Allows users to search for cities, view recent locations, and see detailed weather information.
+ * Provides a personalized experience based on user authentication status.
+ * Integrates various components like CitySearch, RecentLocations, and CityPanel to create a cohesive user interface.
+ * Handles both authenticated and unauthenticated user states.
+ * Manages the state and behavior of the dashboard components.
+ * Provides a responsive layout for different screen sizes.
+ */
+const Dashboard = () => {
+  const { user } = useAuth();
+  const { getCity, model, recentList, searchLocations } = useWeather();
+
+  const [textOpen, setTextOpen] = useState(false);
+
+  const pClassName =
+    "max-w-2xl text-neutral-600 dark:text-neutral-300 " +
+    (textOpen ? "" : "line-clamp-4");
+
+  const getFirstUpper = (str) => {
+    if (!str) return "";
+    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+  };
+
+  const handleUpdate = (location) => {
+    getCity(location);
+  };
+
+  return (
+    &lt;>
+      &lt;PageTitle title="Wetter Suche" />
+      &lt;main className="flex-1 flex flex-col justify-between items-start gap-2 md:p-8 w-full md:flex-row">
+        &lt;Sidebar>
+          &lt;CitySearch
+            onSubmit={getCity}
+            model={model}
+            searchLocations={searchLocations}
+          />
+          &lt;RecentLocations recentList={recentList} onUpdate={handleUpdate} maxCards={8} />
+        &lt;/Sidebar>
+        &lt;section className="w-full p-2">
+          &lt;CityPanel />
+          &lt;div className="flex flex-col justify-start items-start gap-4 text-neutral-500 dark:text-neutral-300 text-sm text-left mx-auto p-4 container w-full">
+            &lt;h4 className="font-semibold text-neutral-500 dark:text-olive-300">
+              Wettervorschau
+            &lt;/h4>
+            {!user ? (
+              &lt;>
+                &lt;h5 className="font-medium text-xl text-neutral-600 dark:text-olive-300">
+                  Melde dich an, um das volle Wettererlebnis zu nutzen
+                &lt;/h5>
+                &lt;div className="flex flex-row justify-start items-center gap-4 text-neutral-500 dark:text-neutral-300 text-sm text-left mx-auto container w-full">
+                  &lt;Link to="/login/login" className={styles.btn}>
+                    Anmelden
+                  &lt;/Link>
+                  &lt;Link to="/login/register" className={styles.btn}>
+                    Registrieren
+                  &lt;/Link>
+                &lt;/div>
+              &lt;/>
+            ) : (
+              &lt;h5 className="font-bold text-xl text-neutral-600 dark:text-olive-300">
+                Willkommen, {getFirstUpper(user.displayName)}!
+              &lt;/h5>
+            )}
+          &lt;/div>
+          &lt;div className="flex flex-row justify-start items-end gap-4 text-neutral-500 dark:text-neutral-300 text-sm text-left mx-auto p-4 container w-full">
+            &lt;p className={pClassName}>
+              Bekomme Echtzeit-Wetterdaten und Vorhersagen für jeden Standort weltweit.
+              Unser Dashboard liefert genaue und aktuelle Informationen, die dir helfen,
+              deinen Tag, deine Woche oder deinen Monat zu planen. Gib einfach einen
+              Standort ein und erhalte detaillierte Wetterinformationen, einschließlich
+              Temperatur, Luftfeuchtigkeit, Windgeschwindigkeit und mehr. Wöhle aus verschiedenen Wettermodellen, um die Vorhersage zu vergleichen und die beste Entscheidung zu treffen. Mit unserem Dashboard bist du immer einen Schritt voraus, egal ob du reist, Outdoor-Aktivitäten planst oder einfach nur das Wetter im Auge behalten möchtest. Speichere deine Lieblingsorte, um schnell auf die Wetterinformationen zuzugreifen, die dir am wichtigsten sind. Unser benutzerfreundliches Interface macht es einfach, zwischen verschiedenen Standorten zu wechseln und die neuesten Wetterupdates zu erhalten. Bleibe informiert und vorbereitet mit unserem umfassenden Wetter-Dashboard.
+            &lt;/p>
+            &lt;button
+              className="cursor-pointer text-neutral-400 dark:text-neutral-400 italic hover:underline"
+              onClick={() => setTextOpen(!textOpen)}
+            >
+              {textOpen ? "[weniger]" : "[mehr]"}
+            &lt;/button>
+          &lt;/div>
+        &lt;/section>
+      &lt;/main>
+    &lt;/>
+  );
+};
+
+export default React.memo(Dashboard);
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#App">App</a></li><li><a href="global.html#AutofillCombo">AutofillCombo</a></li><li><a href="global.html#ChartDaysArea">ChartDaysArea</a></li><li><a href="global.html#CityCard">CityCard</a></li><li><a href="global.html#CityDetail">CityDetail</a></li><li><a href="global.html#CityFavoriteCard">CityFavoriteCard</a></li><li><a href="global.html#CityPanel">CityPanel</a></li><li><a href="global.html#CitySearch">CitySearch</a></li><li><a href="global.html#CityWeather">CityWeather</a></li><li><a href="global.html#CompareBar">CompareBar</a></li><li><a href="global.html#CompareBarContainer">CompareBarContainer</a></li><li><a href="global.html#CompareFilter">CompareFilter</a></li><li><a href="global.html#ComparePanel">ComparePanel</a></li><li><a href="global.html#DailyChart">DailyChart</a></li><li><a href="global.html#Dashboard">Dashboard</a></li><li><a href="global.html#EditCityDialog">EditCityDialog</a></li><li><a href="global.html#FavoriteForm">FavoriteForm</a></li><li><a href="global.html#Favorites">Favorites</a></li><li><a href="global.html#Footer">Footer</a></li><li><a href="global.html#Header">Header</a></li><li><a href="global.html#HourlyCard">HourlyCard</a></li><li><a href="global.html#ListBox">ListBox</a></li><li><a href="global.html#OverlayProvider">OverlayProvider</a></li><li><a href="global.html#RecentLocations">RecentLocations</a></li><li><a href="global.html#Settings">Settings</a></li><li><a href="global.html#The">The</a></li><li><a href="global.html#ThemeMenu">ThemeMenu</a></li><li><a href="global.html#ThemeProvider">ThemeProvider</a></li><li><a href="global.html#Toast">Toast</a></li><li><a href="global.html#UserDataProvider">UserDataProvider</a></li><li><a href="global.html#WeatherDataProvider">WeatherDataProvider</a></li><li><a href="global.html#WeatherIcon">WeatherIcon</a></li><li><a href="global.html#getGeocoding">getGeocoding</a></li><li><a href="global.html#getGeocodingData">getGeocodingData</a></li><li><a href="global.html#getMappedWeatherDataForecast">getMappedWeatherDataForecast</a></li><li><a href="global.html#getUserDocument">getUserDocument</a></li><li><a href="global.html#getWeather">getWeather</a></li><li><a href="global.html#getWeatherDataForecast">getWeatherDataForecast</a></li><li><a href="global.html#getWeatherDataListCurrent">getWeatherDataListCurrent</a></li><li><a href="global.html#getWeatherForecast">getWeatherForecast</a></li><li><a href="global.html#getWeatherListCurrent">getWeatherListCurrent</a></li><li><a href="global.html#getWeatherModel">getWeatherModel</a></li><li><a href="global.html#metrics">metrics</a></li><li><a href="global.html#ranges">ranges</a></li><li><a href="global.html#styles">styles</a></li><li><a href="global.html#useAuth">useAuth</a></li><li><a href="global.html#useOverlay">useOverlay</a></li><li><a href="global.html#useTheme">useTheme</a></li><li><a href="global.html#useUserData">useUserData</a></li><li><a href="global.html#useWeather">useWeather</a></li><li><a href="global.html#useWeatherData">useWeatherData</a></li><li><a href="global.html#weatherCodes">weatherCodes</a></li><li><a href="global.html#weatherModels">weatherModels</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Sat Oct 03 2026 13:57:17 GMT+0200 (Central European Summer Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

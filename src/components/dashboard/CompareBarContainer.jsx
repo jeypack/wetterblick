@@ -1,6 +1,9 @@
-import React, { useMemo } from "react";
+import React from "react";
 import CompareBar from "./CompareBar";
 
+/**
+ * Ranges for different weather properties used to calculate the percentage width of comparison bars.
+ */
 const ranges = {
   temperature: {
     min: -20,
@@ -24,9 +27,14 @@ const ranges = {
 };
 
 /**
+ * CompareBarContainer component for displaying a list of comparison bars for selected cities.
  *
- * @param {{selectedCitiesData: Array, selectedProp: Object}} param0
- * @returns {JSX.Element}
+ * @param {Object} props - The component props.
+ * @param {Array} props.selectedCitiesData - The data for the selected cities.
+ * @param {Object} props.selectedProp - The selected property to compare.
+ * @param {Function} props.onClick - Callback function when a comparison bar is clicked.
+ * @see {@link ./CompareBar CompareBar} for more information on the CompareBar component.
+ * @param {string} props.previewCityId - The ID of the city currently being previewed.
  */
 const CompareBarContainer = ({
   selectedCitiesData,
@@ -36,11 +44,11 @@ const CompareBarContainer = ({
 }) => {
   const range = ranges[selectedProp.filter];
 
-  const values = useMemo(() => {
+  /* const values = useMemo(() => {
     return selectedCitiesData
       .map((city) => city.data[selectedProp.filter])
       .filter((value) => typeof value === "number");
-  }, [selectedCitiesData, selectedProp.filter]);
+  }, [selectedCitiesData, selectedProp.filter]); */
   //const maxValue = Math.max(...values);
   return (
     <div className="flex flex-col justify-start items-start gap-2 mt-2 w-auto">

@@ -17,7 +17,14 @@ activeDot={{r: 8, stroke: "var(--color-surface-base)"}} --color-amber-700
 stroke="var(--color-chart-2)" --color-green-500
 */
 
-const ChartDaysArea = ({chartData, isAnimationActive = true}) => {
+/**
+ * ChartDaysArea component for displaying temperature data over multiple days using an area chart.
+ *
+ * @param {Object} props - The component props.
+ * @param {Object} props.chartData - The data for the chart, including an array of temperature readings.
+ * @param {boolean} [props.isAnimationActive=true] - Whether the chart animation is active.
+ */
+const ChartDaysArea = ({ chartData, isAnimationActive = true }) => {
   const areaChartData = chartData?.data;
   console.log("ChartDaysArea: areaChartData", areaChartData);
   return (
@@ -48,7 +55,7 @@ const ChartDaysArea = ({chartData, isAnimationActive = true}) => {
       <XAxis
         dataKey="date"
         stroke="var(--color-slate-400)"
-        padding={{left: 30, right: 30, top: 10}}
+        padding={{ left: 30, right: 30, top: 10 }}
       />
       <YAxis width="auto" stroke="var(--color-slate-400)" unit="°" />
       <Area
@@ -56,7 +63,7 @@ const ChartDaysArea = ({chartData, isAnimationActive = true}) => {
         dot={{
           fill: "var(--color-amber-700)",
         }}
-        activeDot={{r: 4, stroke: "var(--color-amber-700)", unit: "°"}}
+        activeDot={{ r: 4, stroke: "var(--color-amber-700)", unit: "°" }}
         label={{
           position: "bottom",
           fill: "var(--color-amber-200)",

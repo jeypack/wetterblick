@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/dashboard/WindDirection.jsx</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/dashboard/WindDirection.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, { useEffect } from "react";
+
+/**
+ * WindDirection component for displaying wind direction with an arrow and compass.
+ * 
+ * @param {Object} props - The component props.
+ * @param {number} props.angle - The wind direction angle in degrees.
+ * @param {number} [props.size=60] - The size of the compass SVG.
+ * @param {string} [props.className="w-auto"] - The CSS class for the container.
+ * @returns {JSX.Element} The rendered wind direction component.
+ */
+export default function WindDirection({ angle, size = 60, className = "w-auto" }) {
+  //console.log("WindDirection: angle", angle);
+  const arrowRef = React.useRef(null);
+  const directions = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"];
+  const roundedAngle = Math.round(angle / 45) % 8;
+  const direction = directions[roundedAngle];
+  const startPos = { x: 35, y: 35, dif: 12 };
+  //console.log("WindDirection: angle", angle, "roundedAngle", roundedAngle, "direction", direction);
+  /*
+          N
+     NW       NE
+
+  W                E
+
+     SW       SE
+          S
+  */
+  useEffect(() => {
+    //console.log("WindDirection: angle", angle);
+    if (arrowRef.current) {
+      arrowRef.current.style.transform = `rotate(${angle}deg)`;
+    }
+  }, [angle]);
+
+  return (
+    &lt;div className={`flex justify-center items-center rounded-md ${className}`}>
+      &lt;svg
+        width={size}
+        height={size}
+        viewBox={"0 0 70 70"}
+        style={{ textRendering: "geometricPrecision" }}
+      >
+        {directions.map((dir, i) => {
+          const angle = i * 45 - 90; // Adjusting angle to start from North (-90)
+          const isHighlighted = i === roundedAngle;
+          //console.log("angle", angle, "isHighlighted", isHighlighted, "roundedAngle", roundedAngle);
+          return (
+            &lt;React.Fragment key={i}>
+              &lt;line
+                stroke="rgb(168, 173, 186)"
+                strokeWidth="1"
+                x1={startPos.x + startPos.dif * Math.cos((angle * Math.PI) / 180)}
+                x2={startPos.x + 1.5 * startPos.dif * Math.cos((angle * Math.PI) / 180)}
+                y1={startPos.y + startPos.dif * Math.sin((angle * Math.PI) / 180)}
+                y2={startPos.y + 1.5 * startPos.dif * Math.sin((angle * Math.PI) / 180)}
+                /* transform={`rotate(${angle} 30 30)`} */
+              />
+              {i % 2 === 0 &amp;&amp; (
+                &lt;text
+                  fill={isHighlighted ? "rgb(65, 67, 73)" : "rgb(101, 107, 122)"}
+                  fontSize="10"
+                  textAnchor="middle"
+                  textLength="2"
+                  alignmentBaseline="middle"
+                  x={startPos.x + 2.2 * startPos.dif * Math.cos((angle * Math.PI) / 180)}
+                  y={startPos.y + 2.2 * startPos.dif * Math.sin((angle * Math.PI) / 180)}
+                >
+                  {directions[i]}
+                &lt;/text>
+              )}
+            &lt;/React.Fragment>
+          );
+        })}
+      &lt;/svg>
+      &lt;div
+        ref={arrowRef}
+        data-testid="wind-direction-svg"
+        className="absolute box transform rotate-0 transition duration-600 delay-150 ease-in-out"
+      >
+        &lt;svg width="30" height="40" viewBox="0 0 30 40">
+          &lt;polygon points="14,6 8,28 14,22 20,28" fill="rgb(114, 115, 118)" />
+        &lt;/svg>
+      &lt;/div>
+    &lt;/div>
+  );
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#App">App</a></li><li><a href="global.html#AutofillCombo">AutofillCombo</a></li><li><a href="global.html#ChartDaysArea">ChartDaysArea</a></li><li><a href="global.html#CityCard">CityCard</a></li><li><a href="global.html#CityDetail">CityDetail</a></li><li><a href="global.html#CityFavoriteCard">CityFavoriteCard</a></li><li><a href="global.html#CityPanel">CityPanel</a></li><li><a href="global.html#CitySearch">CitySearch</a></li><li><a href="global.html#CityWeather">CityWeather</a></li><li><a href="global.html#CompareBar">CompareBar</a></li><li><a href="global.html#CompareBarContainer">CompareBarContainer</a></li><li><a href="global.html#CompareFilter">CompareFilter</a></li><li><a href="global.html#ComparePanel">ComparePanel</a></li><li><a href="global.html#DailyChart">DailyChart</a></li><li><a href="global.html#Dashboard">Dashboard</a></li><li><a href="global.html#EditCityDialog">EditCityDialog</a></li><li><a href="global.html#FavoriteForm">FavoriteForm</a></li><li><a href="global.html#Favorites">Favorites</a></li><li><a href="global.html#Footer">Footer</a></li><li><a href="global.html#Header">Header</a></li><li><a href="global.html#HourlyCard">HourlyCard</a></li><li><a href="global.html#ListBox">ListBox</a></li><li><a href="global.html#OverlayProvider">OverlayProvider</a></li><li><a href="global.html#RecentLocations">RecentLocations</a></li><li><a href="global.html#Settings">Settings</a></li><li><a href="global.html#The">The</a></li><li><a href="global.html#ThemeMenu">ThemeMenu</a></li><li><a href="global.html#ThemeProvider">ThemeProvider</a></li><li><a href="global.html#Toast">Toast</a></li><li><a href="global.html#UserDataProvider">UserDataProvider</a></li><li><a href="global.html#WeatherDataProvider">WeatherDataProvider</a></li><li><a href="global.html#WeatherIcon">WeatherIcon</a></li><li><a href="global.html#getGeocoding">getGeocoding</a></li><li><a href="global.html#getGeocodingData">getGeocodingData</a></li><li><a href="global.html#getMappedWeatherDataForecast">getMappedWeatherDataForecast</a></li><li><a href="global.html#getUserDocument">getUserDocument</a></li><li><a href="global.html#getWeather">getWeather</a></li><li><a href="global.html#getWeatherDataForecast">getWeatherDataForecast</a></li><li><a href="global.html#getWeatherDataListCurrent">getWeatherDataListCurrent</a></li><li><a href="global.html#getWeatherForecast">getWeatherForecast</a></li><li><a href="global.html#getWeatherListCurrent">getWeatherListCurrent</a></li><li><a href="global.html#getWeatherModel">getWeatherModel</a></li><li><a href="global.html#metrics">metrics</a></li><li><a href="global.html#ranges">ranges</a></li><li><a href="global.html#styles">styles</a></li><li><a href="global.html#useAuth">useAuth</a></li><li><a href="global.html#useOverlay">useOverlay</a></li><li><a href="global.html#useTheme">useTheme</a></li><li><a href="global.html#useUserData">useUserData</a></li><li><a href="global.html#useWeather">useWeather</a></li><li><a href="global.html#useWeatherData">useWeatherData</a></li><li><a href="global.html#weatherCodes">weatherCodes</a></li><li><a href="global.html#weatherModels">weatherModels</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Sat Oct 03 2026 13:57:17 GMT+0200 (Central European Summer Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

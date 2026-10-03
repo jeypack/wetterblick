@@ -28,6 +28,14 @@ const dialogDataEdit = {
   cancelText: "Abbrechen",
 };
 
+/**
+ * Favorites page component.
+ * Displays the user's favorite cities and allows for comparison and editing of these cities.
+ * Integrates various components like CityFavoriteCard, ComparePanel, AddCityDialog, and EditCityDialog.
+ * Manages the state and behavior of the favorites list, comparison mode, and dialogs.
+ *
+ * @returns {JSX.Element} The favorites page component.
+ */
 const Favorites = () => {
   const { favoriteList } = useWeather();
   const { updateFavorites, isComparing, setIsComparing } = useUserData();

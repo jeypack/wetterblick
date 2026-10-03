@@ -18,6 +18,15 @@ const dialogData = {
   cancelText: "Abbrechen",
 };
 
+/**
+ * CityPanel component for displaying the most recent city's weather information and actions.
+ *
+ * @param {Object} props - The component props.
+ * @param {boolean} props.hasDetail - Whether to show the detail view.
+ * @see {@link ../../hooks/useWeather useWeather} for more information on the custom hook used to manage weather data.
+ * @see {@link ../../hooks/useUserData useUserData} for more information on the custom hook used to manage user data.
+ * @see {@link ../../hooks/useOverlay useOverlay} for more information on the custom hook used to manage overlay messages.
+ */
 const CityPanel = ({ hasDetail = true }) => {
   const [isOpen, setIsOpen] = useState(false);
   const { recentList } = useWeather();

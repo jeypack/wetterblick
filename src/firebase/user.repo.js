@@ -1,19 +1,21 @@
 import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { db } from "./config";
 
-/* 
-users (Collection)
-│
-├── Document ID: user1
-│   ├── email: "user@example.com"
-│   ├── favorites: [...]
-│   └── recentLocations: [...]
-│
-└── Document ID: user2
-    ├── email: "other@example.com"
-    ├── favorites: [...]
-    └── recentLocations: [...]
-*/
+/**
+ * Firestore structure for the "users" collection.
+ *
+ * users (Collection)
+ * │
+ * ├── Document ID: user1
+ * │   ├── email: "user@gmail.com"
+ * │   ├── favorites: [...]
+ * │   └── recentLocations: [...]
+ * │
+ * └── Document ID: user2
+ *     ├── email: "other@gmail.com"
+ *     ├── favorites: [...]
+ *     └── recentLocations: [...]
+ */
 
 // Document des Users
 function getUserDocument(uid) {

@@ -6,6 +6,17 @@ import { MapPinPen } from "lucide-react";
 import FavoriteForm from "../FavoriteForm";
 import CitySearch from "./CitySearch";
 
+/**
+ * Component for adding a new city to the user's favorites.
+ *
+ * @param {Object} props - The component props.
+ * @param {Object} props.data - The data for the dialog, including title, description, form title, and text.
+ * @param {boolean} props.isOpen - Whether the dialog is open or not.
+ * @param {Function} props.setIsOpen - Function to set the open state of the dialog.
+ * @param {Function} props.onConfirm - Function to call when the user confirms adding a city.
+ * @see {@link ../../hooks/useWeather useWeather} for more information on the custom hook used to manage weather data.
+ * @see {@link ../../hooks/useOverlay useOverlay} for more information on the custom hook used to manage overlay and toast messages.
+ */
 export default function AddCityDialog({ data, isOpen, setIsOpen, onConfirm }) {
   const { model, searchLocations } = useWeather();
   const { setToastMessage } = useOverlay();
@@ -37,7 +48,10 @@ export default function AddCityDialog({ data, isOpen, setIsOpen, onConfirm }) {
                 searchLocations={searchLocations}
               />
               {cityError && (
-                <p className="mt-2 text-xs text-red-500 dark:text-red-400" aria-live="polite">
+                <p
+                  className="mt-2 text-xs text-red-500 dark:text-red-400"
+                  aria-live="polite"
+                >
                   {cityError}
                 </p>
               )}
@@ -51,7 +65,7 @@ export default function AddCityDialog({ data, isOpen, setIsOpen, onConfirm }) {
                 }
 
                 setCityError("");
-                const id = currentLocation.latitude + "-" + currentLocation.longitude; 
+                const id = currentLocation.latitude + "-" + currentLocation.longitude;
                 onConfirm({ id, title, note, location: currentLocation });
                 setToastMessage("✓ Erfolgreich hinzugefügt");
                 return true;

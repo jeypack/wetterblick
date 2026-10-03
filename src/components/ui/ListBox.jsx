@@ -1,7 +1,24 @@
 import { useState } from "react";
-import { Field, Label, Listbox, ListboxButton, ListboxOption, ListboxOptions } from "@headlessui/react";
+import {
+  Field,
+  Label,
+  Listbox,
+  ListboxButton,
+  ListboxOption,
+  ListboxOptions,
+} from "@headlessui/react";
 import { CheckIcon } from "@heroicons/react/20/solid";
 
+/**
+ * ListBox component for rendering a customizable dropdown list with selectable options.
+ *
+ * @param {string} className - Additional CSS classes for the ListBox button.
+ * @param {string} label - Label for the ListBox.
+ * @param {Array} options - Array of option objects with `name` properties.
+ * @param {function} onChange - Callback function to be called when the selected option changes.
+ * @param {object} selectedModel - The initially selected option object.
+ * @returns JSX.Element
+ */
 const ListBox = ({ className, label, options, onChange, selectedModel }) => {
   const [selectedValue, setSelectedValue] = useState(selectedModel || options[0]);
   const handleChange = (value) => {

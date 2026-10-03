@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: context/UserDataContext.jsx</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: context/UserDataContext.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>// src/context/UserDataContext.jsx
+import { createContext, useEffect, useRef, useState } from "react";
+import { getUserData, saveRecentLocations, saveFavorites } from "../firebase/user.repo";
+import { useAuth } from "../hooks/useAuth";
+
+const UserDataContext = createContext(null);
+
+export { UserDataContext };
+
+const getFavoriteId = (favorite) => {
+  if (!favorite) {
+    return null;
+  }
+
+  if (typeof favorite === "string") {
+    return favorite;
+  }
+
+  if (favorite.id) {
+    return String(favorite.id);
+  }
+
+  if (favorite.location) {
+    const { latitude, longitude } = favorite.location;
+    if (latitude != null &amp;&amp; longitude != null) {
+      return `${latitude}-${longitude}`;
+    }
+  }
+
+  return null;
+};
+
+const getLocationKey = (location) => {
+  if (!location) {
+    return null;
+  }
+
+  if (location.id) {
+    return String(location.id);
+  }
+
+  if (location.latitude != null &amp;&amp; location.longitude != null) {
+    return `${location.latitude}-${location.longitude}`;
+  }
+
+  return null;
+};
+
+/**
+ * UserDataProvider component that provides user-related data and actions
+ * such as recent locations and favorites to the rest of the application.
+ *
+ * @param {Object} props - The component props.
+ * @param {React.ReactNode} props.children - The child components that will have access to the user data context.
+ * @returns {JSX.Element} The context provider wrapping the child components.
+ */
+const UserDataProvider = ({ children }) => {
+  const { user } = useAuth();
+  const previousUserRef = useRef(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [recentLocations, setRecentLocations] = useState([]);
+  const [favorites, setFavorites] = useState([]);
+  const [isComparing, setIsComparing] = useState(false);
+
+  const persistFavorites = async (nextFavorites) => {
+    try {
+      setFavorites(nextFavorites);
+
+      if (user) {
+        await saveFavorites(user.uid, nextFavorites);
+      }
+    } catch (error) {
+      console.error("Favorites persist failed:", error);
+      // optional: vorherigen State wiederherstellen
+      // setFavorites(previousFavorites);
+    }
+  };
+
+  const isFavorite = (location) => {
+    return favorites.some((fav) => getFavoriteId(fav) === getFavoriteId({ location }));
+  };
+
+  const updateRecentLocations = async (location) => {
+    // Firestore aktualisieren
+    const existingLocation = recentLocations.find((item) => item.id === location.id);
+    let updatedLocations;
+    if (existingLocation) {
+      // Move the existing location to the front of the list
+      updatedLocations = [
+        existingLocation,
+        ...recentLocations.filter((item) => item.id !== location.id),
+      ];
+    } else {
+      updatedLocations = [location, ...recentLocations].slice(0, 20); // Keep only the last 20 locations
+    }
+    try {
+      setRecentLocations(updatedLocations);
+      // Update Firestore
+      if (user) {
+        await saveRecentLocations(user.uid, updatedLocations);
+      }
+    } catch (error) {
+      // ggf. State zurücksetzen / Toast anzeigen
+    }
+  };
+
+  const updateFavorites = async (favoriteObj) => {
+    const safeFavorite = { ...favoriteObj };
+    const favoriteId = getFavoriteId(safeFavorite);
+
+    if (!favoriteId) {
+      return;
+    }
+
+    safeFavorite.id = favoriteId;
+
+    const updatedFavorites = favorites.some((item) => getFavoriteId(item) === favoriteId)
+      ? favorites.map((item) =>
+          getFavoriteId(item) === favoriteId ? { ...item, ...safeFavorite } : item,
+        )
+      : [...favorites, safeFavorite];
+
+    await persistFavorites(updatedFavorites);
+  };
+
+  const deleteFavorite = async (favorite) => {
+    const favoriteId = getFavoriteId(favorite);
+
+    if (!favoriteId) {
+      return;
+    }
+
+    const updatedFavorites = favorites.filter(
+      (item) => getFavoriteId(item) !== favoriteId,
+    );
+
+    await persistFavorites(updatedFavorites);
+  };
+
+  // useEffect to fetch user data when the user changes
+  useEffect(() => {
+    async function fetchUserData() {
+      const previousUser = previousUserRef.current;
+
+      if (!user) {
+        if (previousUser) {
+          setRecentLocations([]);
+          setFavorites([]);
+        }
+        previousUserRef.current = null;
+        setIsLoading(false);
+        return;
+      }
+
+      setIsLoading(true);
+      const userData = await getUserData(user.uid);
+      const persistedRecentLocations = userData?.recentLocations || [];
+      const mergedRecentLocations = [
+        ...recentLocations.filter(
+          (location) =>
+            !persistedRecentLocations.some(
+              (item) => getLocationKey(item) === getLocationKey(location),
+            ),
+        ),
+        ...persistedRecentLocations,
+      ];
+
+      const persistedFavorites = userData?.favorites || [];
+      const mergedFavorites = [
+        ...favorites.filter(
+          (favorite) =>
+            !persistedFavorites.some(
+              (item) => getFavoriteId(item) === getFavoriteId(favorite),
+            ),
+        ),
+        ...persistedFavorites,
+      ];
+
+      setRecentLocations(mergedRecentLocations);
+      setFavorites(mergedFavorites);
+
+      if (JSON.stringify(mergedFavorites) !== JSON.stringify(persistedFavorites)) {
+        await saveFavorites(user.uid, mergedFavorites);
+      }
+
+      setIsLoading(false);
+      previousUserRef.current = user;
+    }
+
+    fetchUserData();
+  }, [user]);
+
+  return (
+    &lt;UserDataContext.Provider
+      value={{
+        user,
+        isFavorite,
+        isLoading,
+        recentLocations,
+        favorites,
+        updateRecentLocations,
+        updateFavorites,
+        deleteFavorite,
+        isComparing,
+        setIsComparing,
+      }}
+    >
+      {children}
+    &lt;/UserDataContext.Provider>
+  );
+};
+
+export default UserDataProvider;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#App">App</a></li><li><a href="global.html#AutofillCombo">AutofillCombo</a></li><li><a href="global.html#ChartDaysArea">ChartDaysArea</a></li><li><a href="global.html#CityCard">CityCard</a></li><li><a href="global.html#CityDetail">CityDetail</a></li><li><a href="global.html#CityFavoriteCard">CityFavoriteCard</a></li><li><a href="global.html#CityPanel">CityPanel</a></li><li><a href="global.html#CitySearch">CitySearch</a></li><li><a href="global.html#CityWeather">CityWeather</a></li><li><a href="global.html#CompareBar">CompareBar</a></li><li><a href="global.html#CompareBarContainer">CompareBarContainer</a></li><li><a href="global.html#CompareFilter">CompareFilter</a></li><li><a href="global.html#ComparePanel">ComparePanel</a></li><li><a href="global.html#DailyChart">DailyChart</a></li><li><a href="global.html#Dashboard">Dashboard</a></li><li><a href="global.html#EditCityDialog">EditCityDialog</a></li><li><a href="global.html#FavoriteForm">FavoriteForm</a></li><li><a href="global.html#Favorites">Favorites</a></li><li><a href="global.html#Footer">Footer</a></li><li><a href="global.html#Header">Header</a></li><li><a href="global.html#HourlyCard">HourlyCard</a></li><li><a href="global.html#ListBox">ListBox</a></li><li><a href="global.html#OverlayProvider">OverlayProvider</a></li><li><a href="global.html#RecentLocations">RecentLocations</a></li><li><a href="global.html#Settings">Settings</a></li><li><a href="global.html#The">The</a></li><li><a href="global.html#ThemeMenu">ThemeMenu</a></li><li><a href="global.html#ThemeProvider">ThemeProvider</a></li><li><a href="global.html#Toast">Toast</a></li><li><a href="global.html#UserDataProvider">UserDataProvider</a></li><li><a href="global.html#WeatherDataProvider">WeatherDataProvider</a></li><li><a href="global.html#WeatherIcon">WeatherIcon</a></li><li><a href="global.html#getGeocoding">getGeocoding</a></li><li><a href="global.html#getGeocodingData">getGeocodingData</a></li><li><a href="global.html#getMappedWeatherDataForecast">getMappedWeatherDataForecast</a></li><li><a href="global.html#getUserDocument">getUserDocument</a></li><li><a href="global.html#getWeather">getWeather</a></li><li><a href="global.html#getWeatherDataForecast">getWeatherDataForecast</a></li><li><a href="global.html#getWeatherDataListCurrent">getWeatherDataListCurrent</a></li><li><a href="global.html#getWeatherForecast">getWeatherForecast</a></li><li><a href="global.html#getWeatherListCurrent">getWeatherListCurrent</a></li><li><a href="global.html#getWeatherModel">getWeatherModel</a></li><li><a href="global.html#metrics">metrics</a></li><li><a href="global.html#ranges">ranges</a></li><li><a href="global.html#styles">styles</a></li><li><a href="global.html#useAuth">useAuth</a></li><li><a href="global.html#useOverlay">useOverlay</a></li><li><a href="global.html#useTheme">useTheme</a></li><li><a href="global.html#useUserData">useUserData</a></li><li><a href="global.html#useWeather">useWeather</a></li><li><a href="global.html#useWeatherData">useWeatherData</a></li><li><a href="global.html#weatherCodes">weatherCodes</a></li><li><a href="global.html#weatherModels">weatherModels</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Sat Oct 03 2026 13:57:17 GMT+0200 (Central European Summer Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

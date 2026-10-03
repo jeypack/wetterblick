@@ -9,6 +9,16 @@ import { Link } from "react-router-dom";
 import styles from "../Styles";
 import { useAuth } from "../hooks/useAuth";
 
+/**
+ * Dashboard page component.
+ * Displays the main dashboard for weather search and user interactions.
+ * Allows users to search for cities, view recent locations, and see detailed weather information.
+ * Provides a personalized experience based on user authentication status.
+ * Integrates various components like CitySearch, RecentLocations, and CityPanel to create a cohesive user interface.
+ * Handles both authenticated and unauthenticated user states.
+ * Manages the state and behavior of the dashboard components.
+ * Provides a responsive layout for different screen sizes.
+ */
 const Dashboard = () => {
   const { user } = useAuth();
   const { getCity, model, recentList, searchLocations } = useWeather();

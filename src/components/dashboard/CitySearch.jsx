@@ -5,6 +5,15 @@ import ListBox from "../ui/ListBox";
 import { weatherModels } from "../../data/api";
 import AutofillCombo from "./AutofillCombo";
 
+/**
+ * CitySearch component for searching and selecting cities with weather model options.
+ *
+ * @param {Object} props - The component props.
+ * @param {string} props.btnLabel - The label for the submit button.
+ * @param {Function} props.onSubmit - Callback function when the form is submitted.
+ * @param {string} props.model - The initial weather model.
+ * @param {Function} props.searchLocations - Function to search for locations based on input.
+ */
 const CitySearch = ({
   btnLabel = "Wetter anzeigen",
   onSubmit,

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/RegisterForm.jsx</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/RegisterForm.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { useEffect, useState } from "react";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { createUserData } from "../firebase/user.repo";
+import { auth } from "../firebase/config";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { schemaRegister } from "../schemas/user";
+import { useUserData } from "../hooks/useUserData";
+import styles from "../Styles";
+import InputField from "./InputField";
+import Button from "./ui/Button";
+
+/**
+ * RegisterForm component for rendering a controlled registration form with username, email, and password fields.
+ *
+ * @param {*} onSwitch Callback function to be called when the user wants to switch to the login form.
+ * @returns JSX.Element
+ */
+export default function RegisterForm({ onSwitch }) {
+  const [error, setError] = useState("");
+  const { favorites } = useUserData();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    setFocus,
+    formState: { errors, isSubmitting },
+  } = useForm({
+    mode: "onSubmit",
+    resolver: yupResolver(schemaRegister),
+  });
+
+  useEffect(() => {
+    // Autofocus on the first input field when the component mounts
+    setFocus("username");
+  }, []);
+
+  async function onSubmit(data) {
+    const { email, password, username } = data;
+    console.log("email:", email);
+    console.log("password:", password);
+    console.log("username:", username);
+    try {
+      await createUserWithEmailAndPassword(auth, email, password);
+      console.log("Registrierung erfolgreich!");
+      await updateProfile(auth.currentUser, { displayName: username });
+      // Preserve any favorites that already exist locally before the first Firestore sync.
+      await createUserData(auth.currentUser.uid, favorites, []);
+    } catch (err) {
+      setError("Registrierung fehlgeschlagen");
+    }
+  }
+
+  return (
+    &lt;form
+      className="flex flex-col justify-center items-center gap-4 w-sm  border-2 border-olive-600 p-4 rounded-md"
+      onSubmit={handleSubmit(onSubmit)}
+    >
+      &lt;p className="text-md font-bold text-neutral-500 dark:text-olive-300">
+        Registrierung
+      &lt;/p>
+      &lt;InputField label="" registration={register("username")} placeholder="User Name*" />
+      &lt;InputField label="" registration={register("email")} placeholder="User Email*" />
+      &lt;InputField
+        label=""
+        registration={register("password")}
+        type="password"
+        placeholder="User Password*"
+      />
+      {errors.email &amp;&amp; &lt;p className="text-red-500 text-sm">{errors.email.message}&lt;/p>}
+      {errors.username &amp;&amp; (
+        &lt;p className="text-red-500 text-sm">{errors.username.message}&lt;/p>
+      )}
+      {errors.password &amp;&amp; (
+        &lt;p className="text-red-500 text-sm">{errors.password.message}&lt;/p>
+      )}
+      &lt;Button
+        type="submit"
+        className={styles.btn + " focus:outline-none overflow-hidden rounded-full"}
+        ffx="ripple"
+        ffxMs={500}
+        ffxClass="bg-olive-200"
+      >
+        Registrieren
+      &lt;/Button>
+      &lt;Button
+        type="button"
+        className={styles.navlink + " focus:outline-none overflow-hidden"}
+        onClick={onSwitch}
+      >
+        Zur Anmeldung
+      &lt;/Button>
+    &lt;/form>
+  );
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#App">App</a></li><li><a href="global.html#AutofillCombo">AutofillCombo</a></li><li><a href="global.html#ChartDaysArea">ChartDaysArea</a></li><li><a href="global.html#CityCard">CityCard</a></li><li><a href="global.html#CityDetail">CityDetail</a></li><li><a href="global.html#CityFavoriteCard">CityFavoriteCard</a></li><li><a href="global.html#CityPanel">CityPanel</a></li><li><a href="global.html#CitySearch">CitySearch</a></li><li><a href="global.html#CityWeather">CityWeather</a></li><li><a href="global.html#CompareBar">CompareBar</a></li><li><a href="global.html#CompareBarContainer">CompareBarContainer</a></li><li><a href="global.html#CompareFilter">CompareFilter</a></li><li><a href="global.html#ComparePanel">ComparePanel</a></li><li><a href="global.html#DailyChart">DailyChart</a></li><li><a href="global.html#Dashboard">Dashboard</a></li><li><a href="global.html#EditCityDialog">EditCityDialog</a></li><li><a href="global.html#FavoriteForm">FavoriteForm</a></li><li><a href="global.html#Favorites">Favorites</a></li><li><a href="global.html#Footer">Footer</a></li><li><a href="global.html#Header">Header</a></li><li><a href="global.html#HourlyCard">HourlyCard</a></li><li><a href="global.html#ListBox">ListBox</a></li><li><a href="global.html#OverlayProvider">OverlayProvider</a></li><li><a href="global.html#RecentLocations">RecentLocations</a></li><li><a href="global.html#Settings">Settings</a></li><li><a href="global.html#The">The</a></li><li><a href="global.html#ThemeMenu">ThemeMenu</a></li><li><a href="global.html#ThemeProvider">ThemeProvider</a></li><li><a href="global.html#Toast">Toast</a></li><li><a href="global.html#UserDataProvider">UserDataProvider</a></li><li><a href="global.html#WeatherDataProvider">WeatherDataProvider</a></li><li><a href="global.html#WeatherIcon">WeatherIcon</a></li><li><a href="global.html#getGeocoding">getGeocoding</a></li><li><a href="global.html#getGeocodingData">getGeocodingData</a></li><li><a href="global.html#getMappedWeatherDataForecast">getMappedWeatherDataForecast</a></li><li><a href="global.html#getUserDocument">getUserDocument</a></li><li><a href="global.html#getWeather">getWeather</a></li><li><a href="global.html#getWeatherDataForecast">getWeatherDataForecast</a></li><li><a href="global.html#getWeatherDataListCurrent">getWeatherDataListCurrent</a></li><li><a href="global.html#getWeatherForecast">getWeatherForecast</a></li><li><a href="global.html#getWeatherListCurrent">getWeatherListCurrent</a></li><li><a href="global.html#getWeatherModel">getWeatherModel</a></li><li><a href="global.html#metrics">metrics</a></li><li><a href="global.html#ranges">ranges</a></li><li><a href="global.html#styles">styles</a></li><li><a href="global.html#useAuth">useAuth</a></li><li><a href="global.html#useOverlay">useOverlay</a></li><li><a href="global.html#useTheme">useTheme</a></li><li><a href="global.html#useUserData">useUserData</a></li><li><a href="global.html#useWeather">useWeather</a></li><li><a href="global.html#useWeatherData">useWeatherData</a></li><li><a href="global.html#weatherCodes">weatherCodes</a></li><li><a href="global.html#weatherModels">weatherModels</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Sat Oct 03 2026 13:57:17 GMT+0200 (Central European Summer Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

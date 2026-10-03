@@ -8,6 +8,9 @@ import { weatherModels } from "../../data/api";
 import { useWeather } from "../../hooks/useWeather";
 import styles from "../../Styles";
 
+/**
+ * Metrics for different weather properties used in the comparison panel.
+ */
 const metrics = [
   { id: 1, name: "Temperatur", filter: "temperature" },
   { id: 2, name: "Luftfeuchtigkeit", filter: "relativeHumidity" },
@@ -16,6 +19,14 @@ const metrics = [
   //{id: 5, name: "Wetter", filter: "weatherCode"},
 ];
 
+/**
+ * ComparePanel component for displaying the comparison panel with filters and comparison bars.
+ *
+ * @param {Object} props - The component props.
+ * @param {Array} props.selectedCitiesData - The data for the selected cities.
+ * @param {string} props.previewCityId - The ID of the city currently being previewed.
+ * @param {Function} props.setPreviewCityId - Callback function to set the preview city ID.
+ */
 const ComparePanel = ({ selectedCitiesData, previewCityId, setPreviewCityId }) => {
   const { model, refreshFavorites } = useWeather();
   const [selectedProp, setSelectedProp] = useState(metrics[0]);

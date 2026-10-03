@@ -2,6 +2,14 @@ import React from "react";
 import WeatherIcon from "./WeatherIcon";
 import styles from "../../Styles";
 
+/**
+ * HourlyCard component for displaying hourly weather information.
+ *
+ * @param {Object} props - The component props.
+ * @param {boolean} props.active - Flag indicating if the card is active.
+ * @param {Object} props.weather - The weather data for the hour.
+ * @returns {JSX.Element} The rendered hourly card component.
+ */
 const HourlyCard = ({ active, weather }) => {
   const { apparent, date, relativeHumidity, temperature, time, weatherCode, windSpeed } =
     weather ?? {};

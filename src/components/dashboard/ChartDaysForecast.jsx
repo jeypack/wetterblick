@@ -1,12 +1,4 @@
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-} from "recharts";
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from "recharts";
 
 /* 
 var(--color-surface-raised) --color-amber-500
@@ -15,7 +7,15 @@ activeDot={{r: 8, stroke: "var(--color-surface-base)"}} --color-amber-700
 stroke="var(--color-chart-2)" --color-green-500
 */
 
-export default function ChartDaysForecast({chartData}) {
+/**
+ * ChartDaysForecast component for displaying temperature forecast data over multiple days using a line chart.
+ *
+ * @param {Object} props - The component props.
+ * @param {Object} props.chartData - The data for the chart, including an array of temperature readings.
+ * @see {@link ../../Styles Styles} for more information on the styling classes used in this component.
+ * @see {@link ../../hooks/useWeather useWeather} for more information on the custom hook used to manage weather data.
+ */
+export default function ChartDaysForecast({ chartData }) {
   const lineChartData = chartData?.data;
   console.log("ChartDaysForecast: lineChartData", lineChartData);
   return (
@@ -41,13 +41,9 @@ export default function ChartDaysForecast({chartData}) {
       <XAxis
         dataKey="date"
         stroke="var(--color-slate-400)"
-        padding={{left: 30, right: 30, top: 10}}
+        padding={{ left: 30, right: 30, top: 10 }}
       />
-      <YAxis
-        width="auto"
-        stroke="var(--color-slate-400)"
-        unit="°"
-      />
+      <YAxis width="auto" stroke="var(--color-slate-400)" unit="°" />
       <Tooltip
         cursor={{
           stroke: "var(--color-slate-200)",
@@ -65,7 +61,7 @@ export default function ChartDaysForecast({chartData}) {
         dot={{
           fill: "var(--color-amber-700)",
         }}
-        activeDot={{r: 7, stroke: "var(--color-amber-700)", unit: "°"}}
+        activeDot={{ r: 7, stroke: "var(--color-amber-700)", unit: "°" }}
         label={{
           position: "bottom",
           fill: "var(--color-amber-200)",
@@ -80,7 +76,7 @@ export default function ChartDaysForecast({chartData}) {
         dot={{
           fill: "var(--color-amber-700)",
         }}
-        activeDot={{r: 6, stroke: "var(--color-amber-700)", unit: "°"}}
+        activeDot={{ r: 6, stroke: "var(--color-amber-700)", unit: "°" }}
         label={{
           position: "top",
           fill: "var(--color-sky-200)",

@@ -6,6 +6,18 @@ import {
 } from "@headlessui/react";
 import { useState } from "react";
 
+/**
+ * AutofillCombo component for selecting locations with autocomplete functionality.
+ *
+ * @param {Object} props - The component props.
+ * @param {Array} props.options - The list of options to display in the combobox.
+ * @param {Function} props.onInput - Function to call when the input value changes.
+ * @param {Function} props.onChange - Function to call when an option is selected.
+ * @param {Function} props.onFocus - Function to call when the input is focused.
+ * @param {boolean} [props.filterOptions=true] - Whether to filter options based on the input query.
+ * @see {@link https://headlessui.dev/react/combobox Combobox} for more information on the Combobox component.
+ * @see {@link ../../hooks/useWeather useWeather} for more information on the custom hook used to manage weather data.
+ */
 const AutofillCombo = ({ options, onInput, onChange, onFocus, filterOptions = true }) => {
   const [selectedLocation, setSelectedLocation] = useState(null);
   const [query, setQuery] = useState("");

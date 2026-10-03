@@ -3,7 +3,10 @@ import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import { visualizer } from "rollup-plugin-visualizer";
 
-// https://vite.dev/config/
+/**
+ * Vite configuration for the Wetterblick project.
+ * @see {@link https://vite.dev/config/ Vite Configuration Documentation} for more information on available options.
+ */
 export default defineConfig({
   plugins: [
     react(),

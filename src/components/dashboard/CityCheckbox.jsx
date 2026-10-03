@@ -1,6 +1,17 @@
 import { Checkbox, Field, Label, Button } from "@headlessui/react";
 import RippleFX from "../ui/RippleFX";
 
+/**
+ * CityCheckbox component for displaying a checkbox for a specific city.
+ *
+ * @param {Object} props - The component props.
+ * @param {string} props.id - The unique identifier for the city.
+ * @param {Object} props.location - The location data for the city.
+ * @param {Set} props.selectedCities - The set of selected city IDs.
+ * @param {Function} props.onChange - Callback function when the checkbox state changes.
+ * @see {@link https://headlessui.dev/react/checkbox Checkbox} for more information on the Checkbox component.
+ * @see {@link https://headlessui.dev/react/button Button} for more information on the Button component.
+ */
 export default function CityCheckbox({ id, location, selectedCities, onChange }) {
   const handleChange = (checked, type) => {
     //console.log("CityCheckbox: id", id, "checked", checked, "type", type);

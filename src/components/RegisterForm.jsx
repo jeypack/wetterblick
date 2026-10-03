@@ -11,7 +11,9 @@ import InputField from "./InputField";
 import Button from "./ui/Button";
 
 /**
- * Controlled component for a registration form.
+ * RegisterForm component for rendering a controlled registration form with username, email, and password fields.
+ *
+ * @param {*} onSwitch Callback function to be called when the user wants to switch to the login form.
  * @returns JSX.Element
  */
 export default function RegisterForm({ onSwitch }) {

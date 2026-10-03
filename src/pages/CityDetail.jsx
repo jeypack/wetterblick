@@ -7,6 +7,14 @@ import DailyChart from "../components/dashboard/DailyChart";
 import HourlyCard from "../components/dashboard/HourlyCard";
 import styles from "../Styles";
 
+/**
+ * CityDetail page component.
+ * Displays detailed weather information for a specific city.
+ * Fetches city details from the weather API if not already available in the results, recent list, or favorite list.
+ * Handles loading state and displays appropriate messages if the city is not found.
+ *
+ * @returns {JSX.Element} The city detail page component.
+ */
 const CityDetail = () => {
   const { id } = useParams();
   const { model, results, favoriteList, recentList, getCity } = useWeather();

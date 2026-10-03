@@ -18,6 +18,15 @@ const directionsFull = [
 ];
 const directions = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"];
 
+/**
+ * CityWeather component for displaying the current weather information of a city.
+ *
+ * @param {Object} props - The component props.
+ * @param {string} props.previewCityId - The ID of the city currently being previewed.
+ * @param {Object} props.weather - The weather data for the city.
+ * @param {Function} props.setPreviewCityId - Callback function to set the previewed city ID.
+ * @see {@link ../../hooks/useUserData useUserData} for more information on the custom hook used to manage user data.
+ */
 const CityWeather = ({ previewCityId, weather, setPreviewCityId }) => {
   const {
     time,

@@ -4,6 +4,16 @@ import { useWeather } from "../../hooks/useWeather";
 import styles from "../../Styles";
 import { Moon, Eclipse } from "lucide-react";
 
+/**
+ * CityCard component for displaying weather information for a specific city.
+ *
+ * @param {Object} props - The component props.
+ * @param {boolean} props.active - Whether the city card is active.
+ * @param {Object} props.weather - The weather data for the city.
+ * @param {Function} props.onSelect - Callback function when the city is selected.
+ * @see {@link ../../Styles Styles} for more information on the styling classes used in this component.
+ * @see {@link ../../hooks/useWeather useWeather} for more information on the custom hook used to manage weather data.
+ */
 const CityCard = ({ active, weather, onSelect }) => {
   const { location, temperature, weatherCode, isDay } = weather ?? {};
   const { getCity } = useWeather();

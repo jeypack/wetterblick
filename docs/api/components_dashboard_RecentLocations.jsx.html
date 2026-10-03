@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/dashboard/RecentLocations.jsx</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/dashboard/RecentLocations.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, { useEffect, useState } from "react";
+import CityCard from "./CityCard";
+import { RefreshCw } from "lucide-react";
+import Tooltip from "../ui/Tooltip";
+
+const DEFAULT_PAGE_SIZE = 8;
+
+/**
+ * RecentLocations component for displaying a list of recently viewed locations.
+ *
+ * @param {Object} props - The component props.
+ * @param {Array} props.recentList - The list of recent locations.
+ * @param {Function} props.onUpdate - Callback function to update a location.
+ * @param {number} [props.pageSize=DEFAULT_PAGE_SIZE] - The number of items to display per page.
+ * @see {@link https://reactjs.org/docs/hooks-effect.html useEffect} for more information on the useEffect hook.
+ * @returns {JSX.Element} The rendered recent locations component.
+ */
+const RecentLocations = ({ recentList, onUpdate, pageSize = DEFAULT_PAGE_SIZE }) => {
+  const [startIndex, setStartIndex] = useState(0);
+  const safePageSize = Math.max(1, Number(pageSize) || DEFAULT_PAGE_SIZE);
+  const maxStartIndex = Math.max(0, recentList.length - safePageSize);
+
+  useEffect(() => {
+    setStartIndex((current) => Math.min(current, maxStartIndex));
+  }, [maxStartIndex]);
+
+  if (recentList.length === 0) {
+    return null;
+  }
+
+  const visibleList = recentList.slice(startIndex, startIndex + safePageSize);
+  const time = recentList[0].time;
+  const hasPrevious = startIndex > 0;
+  const hasNext = startIndex &lt; maxStartIndex;
+
+  return (
+    &lt;section className="flex flex-col justify-center items-end gap-3 mx-auto p-3 container w-full">
+      &lt;div className="flex justify-center items-center w-full text-neutral-400 text-xs gap-0">
+        {new Date(time).toLocaleString("de-DE", {
+          dateStyle: "short",
+          timeStyle: "short",
+        })}
+        &lt;div className="flex items-center gap-2 ml-auto">
+          &lt;button
+            type="button"
+            onClick={() => setStartIndex(0)}
+            disabled={!hasPrevious}
+            className="cursor-pointer font-bold hover:underline px-1 py-1 disabled:opacity-40 disabled:cursor-not-allowed"
+          >
+            &lt;svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="size-6"
+            >
+              &lt;path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="m18.75 4.5-7.5 7.5 7.5 7.5m-6-15L5.25 12l7.5 7.5"
+              />
+            &lt;/svg>
+          &lt;/button>
+          &lt;button
+            type="button"
+            onClick={() => setStartIndex((current) => Math.max(0, current - 1))}
+            disabled={!hasPrevious}
+            className="cursor-pointer font-bold hover:underline px-1 py-1 disabled:opacity-40 disabled:cursor-not-allowed"
+          >
+            Zurück
+          &lt;/button>
+          &lt;button
+            type="button"
+            onClick={() =>
+              setStartIndex((current) => Math.min(maxStartIndex, current + 1))
+            }
+            disabled={!hasNext}
+            className="cursor-pointer font-bold hover:underline px-1 py-1 disabled:opacity-40 disabled:cursor-not-allowed"
+          >
+            Weiter
+          &lt;/button>
+          &lt;button
+            type="button"
+            onClick={() =>
+              onUpdate(recentList[startIndex]?.location || recentList[0].location)
+            }
+            className="cursor-pointer hover:underline flex justify-center items-center"
+          >
+            &lt;RefreshCw size={16} />
+            &lt;span className="font-bold p-1">Update&lt;/span>
+          &lt;/button>
+        &lt;/div>
+      &lt;/div>
+      &lt;div className="flex flex-col justify-center items-center gap-3 w-full ">
+        {visibleList.map((result, index) => {
+          return (
+            &lt;Tooltip key={result.id} desc={&lt;RefreshCw size={12} />}>
+              &lt;CityCard
+                active={index === 0}
+                weather={result}
+                onSelect={() => {
+                  setStartIndex(0);
+                  onUpdate(result.location);
+                }}
+              />
+            &lt;/Tooltip>
+          );
+        })}
+      &lt;/div>
+      &lt;div className="flex justify-between items-center w-full text-neutral-400 text-xs px-2">
+        &lt;span>
+          {startIndex + 1} - {Math.min(startIndex + safePageSize, recentList.length)} von{" "}
+          {recentList.length}
+        &lt;/span>
+        &lt;div className="flex items-center gap-2 ml-auto ">
+          &lt;button
+            type="button"
+            onClick={() => setStartIndex(0)}
+            disabled={!hasPrevious}
+            className="cursor-pointer font-bold hover:underline px-1 py-1 disabled:opacity-40 disabled:cursor-not-allowed"
+          >
+            &lt;svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="size-6"
+            >
+              &lt;path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="m18.75 4.5-7.5 7.5 7.5 7.5m-6-15L5.25 12l7.5 7.5"
+              />
+            &lt;/svg>
+          &lt;/button>
+          &lt;button
+            type="button"
+            onClick={() => setStartIndex((current) => Math.max(0, current - 1))}
+            disabled={!hasPrevious}
+            className="cursor-pointer font-bold hover:underline px-1 py-1 disabled:opacity-40 disabled:cursor-not-allowed"
+          >
+            Zurück
+          &lt;/button>
+          &lt;button
+            type="button"
+            onClick={() =>
+              setStartIndex((current) => Math.min(maxStartIndex, current + 1))
+            }
+            disabled={!hasNext}
+            className="cursor-pointer font-bold hover:underline px-1 py-1 disabled:opacity-40 disabled:cursor-not-allowed"
+          >
+            Weiter
+          &lt;/button>
+          &lt;button
+            type="button"
+            onClick={() =>
+              onUpdate(recentList[startIndex]?.location || recentList[0].location)
+            }
+            className="cursor-pointer hover:underline flex justify-center items-center"
+          >
+            &lt;RefreshCw size={16} />
+            &lt;span className="font-bold p-1">Update&lt;/span>
+          &lt;/button>
+        &lt;/div>
+      &lt;/div>
+    &lt;/section>
+  );
+};
+
+export default React.memo(RecentLocations);
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#App">App</a></li><li><a href="global.html#AutofillCombo">AutofillCombo</a></li><li><a href="global.html#ChartDaysArea">ChartDaysArea</a></li><li><a href="global.html#CityCard">CityCard</a></li><li><a href="global.html#CityDetail">CityDetail</a></li><li><a href="global.html#CityFavoriteCard">CityFavoriteCard</a></li><li><a href="global.html#CityPanel">CityPanel</a></li><li><a href="global.html#CitySearch">CitySearch</a></li><li><a href="global.html#CityWeather">CityWeather</a></li><li><a href="global.html#CompareBar">CompareBar</a></li><li><a href="global.html#CompareBarContainer">CompareBarContainer</a></li><li><a href="global.html#CompareFilter">CompareFilter</a></li><li><a href="global.html#ComparePanel">ComparePanel</a></li><li><a href="global.html#DailyChart">DailyChart</a></li><li><a href="global.html#Dashboard">Dashboard</a></li><li><a href="global.html#EditCityDialog">EditCityDialog</a></li><li><a href="global.html#FavoriteForm">FavoriteForm</a></li><li><a href="global.html#Favorites">Favorites</a></li><li><a href="global.html#Footer">Footer</a></li><li><a href="global.html#Header">Header</a></li><li><a href="global.html#HourlyCard">HourlyCard</a></li><li><a href="global.html#ListBox">ListBox</a></li><li><a href="global.html#OverlayProvider">OverlayProvider</a></li><li><a href="global.html#RecentLocations">RecentLocations</a></li><li><a href="global.html#Settings">Settings</a></li><li><a href="global.html#The">The</a></li><li><a href="global.html#ThemeMenu">ThemeMenu</a></li><li><a href="global.html#ThemeProvider">ThemeProvider</a></li><li><a href="global.html#Toast">Toast</a></li><li><a href="global.html#UserDataProvider">UserDataProvider</a></li><li><a href="global.html#WeatherDataProvider">WeatherDataProvider</a></li><li><a href="global.html#WeatherIcon">WeatherIcon</a></li><li><a href="global.html#getGeocoding">getGeocoding</a></li><li><a href="global.html#getGeocodingData">getGeocodingData</a></li><li><a href="global.html#getMappedWeatherDataForecast">getMappedWeatherDataForecast</a></li><li><a href="global.html#getUserDocument">getUserDocument</a></li><li><a href="global.html#getWeather">getWeather</a></li><li><a href="global.html#getWeatherDataForecast">getWeatherDataForecast</a></li><li><a href="global.html#getWeatherDataListCurrent">getWeatherDataListCurrent</a></li><li><a href="global.html#getWeatherForecast">getWeatherForecast</a></li><li><a href="global.html#getWeatherListCurrent">getWeatherListCurrent</a></li><li><a href="global.html#getWeatherModel">getWeatherModel</a></li><li><a href="global.html#metrics">metrics</a></li><li><a href="global.html#ranges">ranges</a></li><li><a href="global.html#styles">styles</a></li><li><a href="global.html#useAuth">useAuth</a></li><li><a href="global.html#useOverlay">useOverlay</a></li><li><a href="global.html#useTheme">useTheme</a></li><li><a href="global.html#useUserData">useUserData</a></li><li><a href="global.html#useWeather">useWeather</a></li><li><a href="global.html#useWeatherData">useWeatherData</a></li><li><a href="global.html#weatherCodes">weatherCodes</a></li><li><a href="global.html#weatherModels">weatherModels</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Sat Oct 03 2026 13:57:17 GMT+0200 (Central European Summer Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

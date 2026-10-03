@@ -7,15 +7,15 @@ import {
   CartesianGrid,
   Tooltip,
   Legend,
-  DefaultTooltipContent,
+  //DefaultTooltipContent,
   DefaultLegendContent,
   Area,
 } from "recharts";
 
-const renderTooltipWithoutTemp = ({ payload, content, ...rest }) => {
+/* const renderTooltipWithoutTemp = ({ payload, content, ...rest }) => {
   const newPayload = payload.filter((x) => x.dataKey !== "temperature");
   return <DefaultTooltipContent payload={newPayload} {...rest} />;
-};
+}; */
 
 const renderLegendWithoutTemp = ({ payload, ...rest }) => {
   const newPayload = payload?.filter((x) => x.dataKey !== "temperature");
@@ -40,6 +40,14 @@ const renderCompactTooltip = ({ label, payload }) => {
   );
 };
 
+/**
+ * The DailyChart component for displaying a daily weather chart.
+ * @param {Object} param0
+ * @param {Array} param0.chartData - The data for the daily chart.
+ * @param {boolean} [param0.isAnimationActive=true] - Flag indicating if animation is active.
+ * @returns {JSX.Element} The rendered daily chart component.
+ * @see {@link https://recharts.org/en-US/api/ComposedChart ComposedChart} for more information on the ComposedChart component.
+ */
 const DailyChart = ({ chartData, isAnimationActive = true }) => {
   //console.log("DailyChart: chartData", chartData);
   if (!chartData || chartData.length === 0) {

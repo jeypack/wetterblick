@@ -14,6 +14,15 @@ import {
   WiFog,
 } from "react-icons/wi";
 
+/**
+ * WeatherIcon component for displaying weather icons based on weather codes.
+ *
+ * @param {Object} props - The component props.
+ * @param {number} props.code - The weather code.
+ * @param {string} props.className - The CSS class for the icon.
+ * @param {number} props.size - The size of the icon.
+ * @returns {JSX.Element} The rendered weather icon component.
+ */
 const WeatherIcon = ({ code, className, size }) => {
   switch (code) {
     case 0:

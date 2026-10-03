@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/dashboard/CityFavoriteCard.jsx</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/dashboard/CityFavoriteCard.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Switch } from "@headlessui/react";
+import { WiWindDeg } from "react-icons/wi";
+import { Droplets, CalendarRange, Wind, Thermometer } from "lucide-react";
+import WindDirection from "./WindDirection";
+import { useUserData } from "../../hooks/useUserData";
+import WeatherIcon from "./WeatherIcon";
+import { Button } from "@headlessui/react";
+import RemoveCityDialog from "./RemoveCityDialog";
+import styles from "../../Styles";
+import { useOverlay } from "../../hooks/useOverlay";
+
+const dialogData = {
+  title: "Stadt entfernen",
+  description:
+    "Dies wird diese Stadt dauerhaft aus deiner Liste löschen. Diese Aktion kann nicht rückgängig gemacht werden.",
+  text: "Bist du sicher, dass du diese Stadt aus deiner Liste löschen möchtest? Alle deine Daten werden dauerhaft entfernt.",
+  confirmText: "Löschen",
+  cancelText: "Abbrechen",
+};
+
+const directions = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"];
+
+/**
+ * CityFavoriteCard component for displaying a favorite city with weather information and actions.
+ *
+ * @param {Object} props - The component props.
+ * @param {boolean} props.active - Whether the city card is active.
+ * @param {string} props.mode - The display mode of the card.
+ * @param {Object} props.favorite - The favorite city data.
+ * @param {Function} props.onChange - Callback function when the favorite city is changed.
+ * @param {Function} props.onEdit - Callback function when the favorite city is edited.
+ * @see {@link ../../hooks/useUserData useUserData} for more information on the custom hook used to manage user data.
+ * @see {@link ../../hooks/useOverlay useOverlay} for more information on the custom hook used to manage overlay messages.
+ */
+const CityFavoriteCard = ({ active, mode, favorite, onChange, onEdit }) => {
+  const { setToastMessage } = useOverlay();
+  const {
+    id,
+    time,
+    temperature,
+    relativeHumidity,
+    windSpeed,
+    windDirection: angle,
+    weatherCode,
+    location,
+  } = favorite ?? {};
+  const navigate = useNavigate();
+  const { deleteFavorite } = useUserData();
+  const [isOpen, setIsOpen] = useState(false);
+  //console.log("CityFavoriteCard: favorite", favorite);
+
+  const handleFavoriteClick = () => {
+    console.log("CityFavoriteCard: handleFavoriteClick: favorite.id", id);
+    dialogData.title = "Ort " + location.name + " entfernen?";
+    setIsOpen(true);
+  };
+
+  const handleEditClick = () => {
+    console.log("CityFavoriteCard: handleEditClick: favorite", favorite);
+    dialogData.title = "Ort " + location.name + " bearbeiten?";
+    //setIsOpen(true);
+    if (onEdit) {
+      onEdit(favorite);
+    }
+  };
+
+  const handleConfirm = () => {
+    setIsOpen(false);
+    console.log("CityFavoriteCard: handleConfirm: favorite", favorite);
+    deleteFavorite(favorite);
+    setToastMessage("✓ " + favorite.location.name +" erfolgreich entfernt!");
+  };
+
+  const classNameLocation = active
+    ? "text-neutral-700 dark:text-olive-50"
+    : "text-neutral-600 dark:text-neutral-200";
+
+  //const model = getWeatherModel(favorite.model);
+  const direction = directions[Math.round(angle / 45) % 8];
+  const dateSplit = new Date(time)
+    .toLocaleString("de-DE", {
+      dateStyle: "long",
+      timeStyle: "short",
+    })
+    .split("um");
+  const date = dateSplit[0]; // Extract date from the formatted date string
+  const timeStr = dateSplit[1]; // Extract time from the formatted date string
+
+  const handleDetailClick = () => {
+    // route to city detail page with lastCityData.location
+    console.log("CityFavoriteCard: handleDetailClick: id", id);
+    navigate(`/city/${encodeURIComponent(id)}`);
+  };
+
+  return (
+    &lt;div
+      className={`${styles.container} max-w-sm ${active ? styles.containerActive : ""}`}
+    >
+      &lt;div className="w-full">
+        &lt;div
+          className={
+            "flex justify-between items-start w-full text-neutral-500 dark:text-olive-300"
+          }
+          onClick={handleDetailClick}
+        >
+          &lt;h3
+            className={`content-center font-semibold max-w-42 text-xl truncate uppercase ${classNameLocation}`}
+          >
+            {location.name}
+          &lt;/h3>
+          &lt;div className="cursor-pointer" onClick={handleDetailClick}>
+            {/* &lt;MapPin size={32} className={"text-neutral-400 dark:text-neutral-200"} /> */}
+            &lt;div className="cursor-pointer text-neutral-400 dark:text-neutral-100 hover:scale-105 transition-transform duration-200 ease-in-out relative">
+              &lt;svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="size-12"
+              >
+                &lt;path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+                />
+              &lt;/svg>
+            &lt;/div>
+          &lt;/div>
+        &lt;/div>
+        &lt;p className="text-sm text-neutral-400">Aktuelles Wetter&lt;/p>
+        &lt;div
+          className="flex flex-row justify-start items-center gap-3 mt-3"
+          onClick={handleDetailClick}
+        >
+          &lt;WeatherIcon
+            code={weatherCode}
+            className="text-neutral-400 dark:text-neutral-200"
+            size={48}
+          />
+          &lt;div className="flex flex-row justify-around items-start gap-1 text-neutral-400 dark:text-neutral-200 text-nowrap">
+            &lt;Thermometer className="self-center" size={26} color="#ffffff" />
+            &lt;span className="text-3xl ">{temperature}&lt;/span>°
+            &lt;span className="text-xl">C&lt;/span>
+          &lt;/div>
+        &lt;/div>
+      &lt;/div>
+
+      &lt;div
+        className="flex flex-row justify-between items-center gap-3 w-full"
+        onClick={handleDetailClick}
+      >
+        &lt;p className="text-xs text-center text-neutral-400 dark:text-neutral-400">
+          &lt;Droplets className="text-4xl text-neutral-400 dark:text-neutral-400" />
+          {relativeHumidity}%
+        &lt;/p>
+        &lt;p className="text-xs text-center text-neutral-400 dark:text-neutral-400">
+          &lt;Wind className="text-4xl text-neutral-400 dark:text-neutral-400" />
+          {windSpeed}
+        &lt;/p>
+        &lt;p className="text-xs text-center text-neutral-400 dark:text-neutral-400">
+          &lt;WiWindDeg className="text-2xl text-neutral-400 dark:text-neutral-400" />
+          {direction}
+        &lt;/p>
+        &lt;WindDirection angle={angle} size={60} />
+      &lt;/div>
+      &lt;div
+        className="flex flex-row justify-start items-baseline gap-2 text-neutral-500 dark:text-neutral-200 text-nowrap text-sm"
+        onClick={handleDetailClick}
+      >
+        &lt;CalendarRange size={15} />
+        &lt;span>{date}&lt;/span>
+        &lt;span className="font-bold">{timeStr}&lt;/span>
+      &lt;/div>
+      &lt;div className="text-neutral-500 dark:text-neutral-300 text-xs">
+        {favorite.model.name}
+      &lt;/div>
+      &lt;hr className="mb-2 mt-2 w-full border-neutral-500 dark:border-neutral-300/70" />
+      &lt;div className="flex flex-row justify-between items-center gap-3 mt-2 w-full">
+        &lt;Button onClick={handleEditClick} className={styles.btnSimple + " text-sm"}>
+          Bearbeiten
+        &lt;/Button>
+        &lt;Button onClick={handleFavoriteClick} className={styles.btnSimple + " text-sm"}>
+          Löschen
+        &lt;/Button>
+        &lt;Switch
+          checked={active}
+          onChange={(checked) => {
+            onChange(checked, favorite);
+          }}
+          className={
+            "group inline-flex h-6 w-11 items-center rounded-full bg-neutral-100 dark:bg-neutral-800 border-2 border-neutral-400 transition data-checked:bg-neutral-200 dark:data-checked:bg-neutral-800" +
+            (mode === "compare" ? "" : " invisible")
+          }
+        >
+          &lt;span className="size-4 translate-x-1 rounded-full bg-neutral-400 dark:bg-neutral-500 group-data-checked:bg-neutral-500 dark:group-data-checked:bg-neutral-300 transition group-data-checked:translate-x-5.75" />
+        &lt;/Switch>
+      &lt;/div>
+      &lt;RemoveCityDialog
+        data={dialogData}
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        onConfirm={handleConfirm}
+      />
+    &lt;/div>
+  );
+};
+
+export default React.memo(CityFavoriteCard);
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#App">App</a></li><li><a href="global.html#AutofillCombo">AutofillCombo</a></li><li><a href="global.html#ChartDaysArea">ChartDaysArea</a></li><li><a href="global.html#CityCard">CityCard</a></li><li><a href="global.html#CityDetail">CityDetail</a></li><li><a href="global.html#CityFavoriteCard">CityFavoriteCard</a></li><li><a href="global.html#CityPanel">CityPanel</a></li><li><a href="global.html#CitySearch">CitySearch</a></li><li><a href="global.html#CityWeather">CityWeather</a></li><li><a href="global.html#CompareBar">CompareBar</a></li><li><a href="global.html#CompareBarContainer">CompareBarContainer</a></li><li><a href="global.html#CompareFilter">CompareFilter</a></li><li><a href="global.html#ComparePanel">ComparePanel</a></li><li><a href="global.html#DailyChart">DailyChart</a></li><li><a href="global.html#Dashboard">Dashboard</a></li><li><a href="global.html#EditCityDialog">EditCityDialog</a></li><li><a href="global.html#FavoriteForm">FavoriteForm</a></li><li><a href="global.html#Favorites">Favorites</a></li><li><a href="global.html#Footer">Footer</a></li><li><a href="global.html#Header">Header</a></li><li><a href="global.html#HourlyCard">HourlyCard</a></li><li><a href="global.html#ListBox">ListBox</a></li><li><a href="global.html#OverlayProvider">OverlayProvider</a></li><li><a href="global.html#RecentLocations">RecentLocations</a></li><li><a href="global.html#Settings">Settings</a></li><li><a href="global.html#The">The</a></li><li><a href="global.html#ThemeMenu">ThemeMenu</a></li><li><a href="global.html#ThemeProvider">ThemeProvider</a></li><li><a href="global.html#Toast">Toast</a></li><li><a href="global.html#UserDataProvider">UserDataProvider</a></li><li><a href="global.html#WeatherDataProvider">WeatherDataProvider</a></li><li><a href="global.html#WeatherIcon">WeatherIcon</a></li><li><a href="global.html#getGeocoding">getGeocoding</a></li><li><a href="global.html#getGeocodingData">getGeocodingData</a></li><li><a href="global.html#getMappedWeatherDataForecast">getMappedWeatherDataForecast</a></li><li><a href="global.html#getUserDocument">getUserDocument</a></li><li><a href="global.html#getWeather">getWeather</a></li><li><a href="global.html#getWeatherDataForecast">getWeatherDataForecast</a></li><li><a href="global.html#getWeatherDataListCurrent">getWeatherDataListCurrent</a></li><li><a href="global.html#getWeatherForecast">getWeatherForecast</a></li><li><a href="global.html#getWeatherListCurrent">getWeatherListCurrent</a></li><li><a href="global.html#getWeatherModel">getWeatherModel</a></li><li><a href="global.html#metrics">metrics</a></li><li><a href="global.html#ranges">ranges</a></li><li><a href="global.html#styles">styles</a></li><li><a href="global.html#useAuth">useAuth</a></li><li><a href="global.html#useOverlay">useOverlay</a></li><li><a href="global.html#useTheme">useTheme</a></li><li><a href="global.html#useUserData">useUserData</a></li><li><a href="global.html#useWeather">useWeather</a></li><li><a href="global.html#useWeatherData">useWeatherData</a></li><li><a href="global.html#weatherCodes">weatherCodes</a></li><li><a href="global.html#weatherModels">weatherModels</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Sat Oct 03 2026 13:57:17 GMT+0200 (Central European Summer Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

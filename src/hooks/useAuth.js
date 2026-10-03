@@ -1,10 +1,14 @@
-import {useContext} from "react";
-import {AuthContext} from "../context/AuthContext";
+import { useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
 
 /**
  * Custom hook to access the authentication context.
- * @returns {{user: object|null, isLoading: boolean}} The current user and loading state.
- * @example const { user, isLoading } = useAuth();
+ * @returns {{
+ *   user: object|null,
+ *   isLoading: boolean
+ * }} The current user and loading state.
+ * @example
+ * const { user, isLoading } = useAuth();
  */
 export function useAuth() {
   const context = useContext(AuthContext);

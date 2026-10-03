@@ -9,7 +9,7 @@ import InputField from "./InputField";
 import Button from "./ui/Button";
 
 /**
- * Controlled component for a sign-in form.
+ * LoginForm component for rendering a controlled sign-in form with email and password fields.
  *
  * @param {*} onSwitch Callback function to be called when the user wants to switch to the registration form.
  * @returns JSX.Element

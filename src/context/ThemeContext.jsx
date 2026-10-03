@@ -1,4 +1,4 @@
-import {createContext, useState, useEffect} from "react";
+import { createContext, useState, useEffect } from "react";
 
 export const THEMES = {
   LIGHT: "light",
@@ -7,7 +7,15 @@ export const THEMES = {
 
 export const ThemeContext = createContext();
 
-export const ThemeProvider = ({children}) => {
+/**
+ * ThemeProvider component that provides theme-related data and actions
+ * to the rest of the application via the ThemeContext.
+ *
+ * @param {Object} props - The component props.
+ * @param {React.ReactNode} props.children - The child components that will have access to the theme context.
+ * @returns {JSX.Element} The context provider wrapping the child components.
+ */
+export const ThemeProvider = ({ children }) => {
   const [theme, setTheme] = useState(() => ({
     mode: window.matchMedia("(prefers-color-scheme: dark)").matches
       ? THEMES.DARK

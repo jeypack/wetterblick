@@ -10,12 +10,6 @@
  * U updateItem  — updateDoc (Feld bought)
  * D deleteItem  — deleteDoc
  */
-
-/*
-item.repo.js folgt dem Repository Pattern — einer Konvention, bei der alle Datenzugriffs-Funktionen einer Entität 
-(hier: 'items') in einer Datei gesammelt werden. Das .repo im Namen ist nur eine Konvention, 
-um das visuell klarzumachen, keine feste Regel von JavaScript.*/
-
 import {
   collection,
   addDoc,

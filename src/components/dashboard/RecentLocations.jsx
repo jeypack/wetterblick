@@ -5,6 +5,16 @@ import Tooltip from "../ui/Tooltip";
 
 const DEFAULT_PAGE_SIZE = 8;
 
+/**
+ * RecentLocations component for displaying a list of recently viewed locations.
+ *
+ * @param {Object} props - The component props.
+ * @param {Array} props.recentList - The list of recent locations.
+ * @param {Function} props.onUpdate - Callback function to update a location.
+ * @param {number} [props.pageSize=DEFAULT_PAGE_SIZE] - The number of items to display per page.
+ * @see {@link https://reactjs.org/docs/hooks-effect.html useEffect} for more information on the useEffect hook.
+ * @returns {JSX.Element} The rendered recent locations component.
+ */
 const RecentLocations = ({ recentList, onUpdate, pageSize = DEFAULT_PAGE_SIZE }) => {
   const [startIndex, setStartIndex] = useState(0);
   const safePageSize = Math.max(1, Number(pageSize) || DEFAULT_PAGE_SIZE);

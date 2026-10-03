@@ -2,13 +2,24 @@ import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import { Moon, Sun, Eclipse } from "lucide-react";
 import { useTheme } from "../hooks/useTheme";
 
+/**
+ * ThemeMenu component for rendering a theme selection menu with light, dark, and system options.
+ *
+ * @returns JSX.Element
+ */
 const ThemeMenu = () => {
   const { theme, setTheme, updateTheme } = useTheme();
 
   return (
     <Menu>
       <MenuButton className="cursor-pointer hover:bg-neutral-200 dark:hover:bg-olive-700 p-1.5 rounded-lg">
-        {theme.mode === "light" ? <Sun /> : theme.mode === "dark" ? <Moon /> : <Eclipse />}
+        {theme.mode === "light" ? (
+          <Sun />
+        ) : theme.mode === "dark" ? (
+          <Moon />
+        ) : (
+          <Eclipse />
+        )}
       </MenuButton>
       <MenuItems
         anchor="bottom start"

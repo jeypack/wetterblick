@@ -1,4 +1,5 @@
 // autofill hack: https://stackoverflow.com/questions/60616796/tailwind-css-autofill-input-styling
+
 const inputClassName =
   "bg-neutral-100 dark:bg-olive-900 text-neutral-800 dark:text-white px-3 py-1 w-full border border-olive-700 rounded focus:outline-none focus:ring-2 focus:ring-olive-500 autofill:shadow-[inset_0_0_0_1000px_var(--color-olive-800)] autofill:[-webkit-text-fill-color:var(--color-olive-50)]";
 
@@ -58,6 +59,15 @@ const compareBarGlassTopClassName =
 const compareBarGlassBottomClassName =
   "absolute inset-x-0 bottom-1 z-2 h-2 bg-[linear-gradient(0deg,rgba(255,255,255,0.0)_0%,rgba(255,255,255,0.2)_50%,rgba(255,255,255,0.2)_60%,rgba(255,255,255,0.01)_100%)]";
 
+/**
+ * Object containing all the class names used for styling various components.
+ * This allows for consistent styling and easy updates across the application.
+ * @constant {Object} styles - The object containing all the class names for styling components.
+ * 
+ * @example
+ * import styles from './Styles';
+ * <div className={styles.input}></div>
+ */
 const styles = {
   input: inputClassName,
   checkbox: checkboxClassName,

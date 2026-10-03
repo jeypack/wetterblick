@@ -1,3 +1,9 @@
+/**
+ * NotFound page component.
+ * Displays a 404 error message when the requested page does not exist.
+ *
+ * @returns {JSX.Element} The not found page component.
+ */
 export default function NotFound() {
   return (
     <div className="flex flex-col justify-center items-center gap-4 mb-8">

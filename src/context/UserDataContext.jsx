@@ -46,6 +46,14 @@ const getLocationKey = (location) => {
   return null;
 };
 
+/**
+ * UserDataProvider component that provides user-related data and actions
+ * such as recent locations and favorites to the rest of the application.
+ *
+ * @param {Object} props - The component props.
+ * @param {React.ReactNode} props.children - The child components that will have access to the user data context.
+ * @returns {JSX.Element} The context provider wrapping the child components.
+ */
 const UserDataProvider = ({ children }) => {
   const { user } = useAuth();
   const previousUserRef = useRef(null);

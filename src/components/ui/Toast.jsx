@@ -2,6 +2,11 @@ import { useState, useEffect } from "react";
 import { useOverlay } from "../../hooks/useOverlay";
 import { Transition } from "@headlessui/react";
 
+/**
+ * Toast component for rendering a temporary notification message.
+ *
+ * @returns JSX.Element
+ */
 function Toast() {
   const { toastMessage } = useOverlay();
   const [isOpen, setIsOpen] = useState(false);

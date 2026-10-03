@@ -9,6 +9,13 @@ import { getAuth, signOut } from "firebase/auth";
 import styles from "../Styles";
 import { useOverlay } from "../hooks/useOverlay";
 
+/**
+ * Settings page component.
+ * Displays user settings and account information.
+ * Allows the user to view and manage their profile and account details.
+ *
+ * @returns {JSX.Element} The settings page component.
+ */
 const Settings = () => {
   const { user } = useAuth();
   const { setToastMessage } = useOverlay();

@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: hooks/useWeatherData.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: hooks/useWeatherData.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { useState, useEffect } from "react";
+import {
+  getGeocodingData,
+  getWeatherForecast,
+  getWeather,
+  getWeatherListCurrent,
+} from "../data/api";
+import { useUserData } from "../hooks/useUserData";
+
+/**
+ * Custom hook to manage weather data and user interactions.
+ * Used in the WeatherDataContext to provide weather data and functions to components.
+ * Do not use this hook directly in components; instead, use the WeatherDataContext useWeather hook.
+ * @returns {object} - An object containing weather data and functions to manage it.
+ */
+export function useWeatherData() {
+  const [model, setModel] = useState("knmi_seamless");
+  const [previewCityId, setPreviewCityId] = useState(null);
+  const [results, setResults] = useState([]);
+  const [favoriteList, setFavoriteList] = useState([]);
+  const [recentList, setRecentList] = useState([]);
+  //const [selectedCities, setSelectedCities] = useState(new Set());
+  const {
+    user,
+    updateRecentLocations,
+    favorites,
+    recentLocations,
+    isLoading: isUserDataLoading,
+  } = useUserData();
+
+  const update = (modelToUse, weatherData) => {
+    setModel(modelToUse);
+    /* setSelectedCities((prev) => {
+      if (prev.has(weatherData.id)) return prev;
+
+      const next = new Set(prev);
+      next.add(weatherData.id);
+      return next;
+    }); */
+
+    setResults((prev) => {
+      const index = prev.findIndex((city) => city.location === weatherData.location);
+
+      if (index !== -1) {
+        const next = [...prev];
+        next[index] = weatherData;
+        return next;
+      }
+
+      return [...prev, weatherData];
+    });
+
+    setPreviewCityId(weatherData.id);
+  };
+
+  const getWeatherList = async (locations, modelOverride = model) => {
+    console.log("getWeatherList: locations", locations);
+    setModel(modelOverride);
+    const geoCodings = locations.map((location) => ({
+      latitude: location.latitude,
+      longitude: location.longitude,
+      name: location.name,
+      country: location.country,
+      state: location.state || "",
+      id: location.id,
+    }));
+    const weatherDataList = await getWeatherListCurrent(geoCodings, modelOverride);
+    console.log("getWeatherList: weatherDataList", weatherDataList);
+    return weatherDataList;
+  };
+
+  const getCityWeather = async (location, modelParam) => {
+    const modelToUse = modelParam || model;
+    console.log("getCityWeather location", location);
+    const weatherData =
+      typeof location === "string"
+        ? await getWeatherForecast(location, modelToUse)
+        : await getWeather(location, modelToUse);
+    update(modelToUse, weatherData);
+    return weatherData;
+  };
+
+  const getCity = async (location, modelParam) => {
+    const modelToUse = modelParam || model;
+    //console.log("getCity location", location);
+    const weatherData = await getCityWeather(location, modelToUse);
+    //console.log("getCity weatherData", weatherData);
+    await updateRecentLocations(location);
+  };
+
+  /* const removeCity = (id) => {
+    setResults((prev) => prev.filter((city) => city.id !== id));
+
+    setSelectedCities((prev) => {
+      const next = new Set(prev);
+      next.delete(id);
+      return next;
+    });
+
+    const lastSelectedCityId = Array.from(selectedCities).pop();
+    if (lastSelectedCityId === id) {
+      setPreviewCityId(lastSelectedCityId || null);
+    }
+  };
+
+  const toggleCity = (id) => {
+    //console.log("toggleCity id", id);
+    setSelectedCities((prevSelected) => {
+      const newSelected = new Set(prevSelected);
+      if (newSelected.has(id)) {
+        newSelected.delete(id);
+      } else {
+        newSelected.add(id);
+      }
+      return newSelected;
+    });
+  };
+
+  const updateCities = (id) => {
+    // Implement the updateCity logic here
+  };
+
+  const toggleCities = (checked) => {
+    if (checked) {
+      const allCityIds = results.map((city) => city.id);
+      setSelectedCities(new Set(allCityIds));
+    } else {
+      setSelectedCities(new Set());
+    }
+  }; */
+
+  const searchLocations = async (location) => {
+    return await getGeocodingData(location);
+  };
+
+  const refreshFavorites = async (favoriteItems, modelOverride = model) => {
+    //console.log("refreshFavorites: favoriteItems", favoriteItems, "modelOverride", modelOverride);
+    if (!favoriteItems?.length) return;
+    setModel(modelOverride);
+    const refreshed = await getWeatherList(
+      favoriteItems.map((item) => item.location),
+      modelOverride,
+    );
+
+    setFavoriteList((prev) =>
+      prev.map((city) => {
+        const match = refreshed.find((item) => item.id === city.id);
+        return match ? { ...city, ...match } : city;
+      }),
+    );
+  };
+
+  useEffect(() => {
+    if (isUserDataLoading) {
+      return;
+    }
+    console.log("useWeatherData: recentList", recentList);
+    if (recentLocations.length === 0) {
+      setRecentList([]);
+      return;
+    }
+
+    const fetchData = async () => {
+      const weatherDataList = await getWeatherList(recentLocations);
+      console.log("useWeatherData: weatherDataList", weatherDataList);
+      setRecentList(weatherDataList);
+    };
+    fetchData();
+  }, [isUserDataLoading, recentLocations]);
+
+  useEffect(() => {
+    if (isUserDataLoading) {
+      return;
+    }
+
+    if (favorites.length === 0) {
+      setFavoriteList([]);
+      return;
+    }
+    console.log("useWeatherData: favorites", favorites);
+    const fetchData = async () => {
+      const favoriteLocations = favorites.map((fav) => fav.location);
+      const favoriteData = await getWeatherList(favoriteLocations, model);
+      // hier müssen wir die Titel und Notizen aus den Favoriten hinzufügen
+      const favoriteDataWithNotes = favoriteData.map((data) => {
+        const fav = favorites.find((f) => {
+          const location = f.location;
+          const id = location.latitude + "-" + location.longitude;
+          return id === data.id;
+        });
+        //console.log("useWeatherData: fetchData: fav", fav);
+        return {
+          ...data,
+          title: fav?.title || "",
+          note: fav?.note || "",
+        };
+      });
+      setFavoriteList(favoriteDataWithNotes);
+    };
+    fetchData();
+  }, [isUserDataLoading, favorites, model]);
+
+  return {
+    getCity,
+    model,
+    results,
+    previewCityId,
+    recentList,
+    favoriteList,
+    searchLocations,
+    setPreviewCityId,
+    refreshFavorites,
+  };
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#App">App</a></li><li><a href="global.html#AutofillCombo">AutofillCombo</a></li><li><a href="global.html#ChartDaysArea">ChartDaysArea</a></li><li><a href="global.html#CityCard">CityCard</a></li><li><a href="global.html#CityDetail">CityDetail</a></li><li><a href="global.html#CityFavoriteCard">CityFavoriteCard</a></li><li><a href="global.html#CityPanel">CityPanel</a></li><li><a href="global.html#CitySearch">CitySearch</a></li><li><a href="global.html#CityWeather">CityWeather</a></li><li><a href="global.html#CompareBar">CompareBar</a></li><li><a href="global.html#CompareBarContainer">CompareBarContainer</a></li><li><a href="global.html#CompareFilter">CompareFilter</a></li><li><a href="global.html#ComparePanel">ComparePanel</a></li><li><a href="global.html#DailyChart">DailyChart</a></li><li><a href="global.html#Dashboard">Dashboard</a></li><li><a href="global.html#EditCityDialog">EditCityDialog</a></li><li><a href="global.html#FavoriteForm">FavoriteForm</a></li><li><a href="global.html#Favorites">Favorites</a></li><li><a href="global.html#Footer">Footer</a></li><li><a href="global.html#Header">Header</a></li><li><a href="global.html#HourlyCard">HourlyCard</a></li><li><a href="global.html#ListBox">ListBox</a></li><li><a href="global.html#OverlayProvider">OverlayProvider</a></li><li><a href="global.html#RecentLocations">RecentLocations</a></li><li><a href="global.html#Settings">Settings</a></li><li><a href="global.html#The">The</a></li><li><a href="global.html#ThemeMenu">ThemeMenu</a></li><li><a href="global.html#ThemeProvider">ThemeProvider</a></li><li><a href="global.html#Toast">Toast</a></li><li><a href="global.html#UserDataProvider">UserDataProvider</a></li><li><a href="global.html#WeatherDataProvider">WeatherDataProvider</a></li><li><a href="global.html#WeatherIcon">WeatherIcon</a></li><li><a href="global.html#getGeocoding">getGeocoding</a></li><li><a href="global.html#getGeocodingData">getGeocodingData</a></li><li><a href="global.html#getMappedWeatherDataForecast">getMappedWeatherDataForecast</a></li><li><a href="global.html#getUserDocument">getUserDocument</a></li><li><a href="global.html#getWeather">getWeather</a></li><li><a href="global.html#getWeatherDataForecast">getWeatherDataForecast</a></li><li><a href="global.html#getWeatherDataListCurrent">getWeatherDataListCurrent</a></li><li><a href="global.html#getWeatherForecast">getWeatherForecast</a></li><li><a href="global.html#getWeatherListCurrent">getWeatherListCurrent</a></li><li><a href="global.html#getWeatherModel">getWeatherModel</a></li><li><a href="global.html#metrics">metrics</a></li><li><a href="global.html#ranges">ranges</a></li><li><a href="global.html#styles">styles</a></li><li><a href="global.html#useAuth">useAuth</a></li><li><a href="global.html#useOverlay">useOverlay</a></li><li><a href="global.html#useTheme">useTheme</a></li><li><a href="global.html#useUserData">useUserData</a></li><li><a href="global.html#useWeather">useWeather</a></li><li><a href="global.html#useWeatherData">useWeatherData</a></li><li><a href="global.html#weatherCodes">weatherCodes</a></li><li><a href="global.html#weatherModels">weatherModels</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Sat Oct 03 2026 13:57:17 GMT+0200 (Central European Summer Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

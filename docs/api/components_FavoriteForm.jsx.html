@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/FavoriteForm.jsx</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/FavoriteForm.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, { useState } from "react";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { schemaFavorite } from "../schemas/favorite";
+import styles from "../Styles";
+import InputField from "./InputField";
+import Button from "./ui/Button";
+import ThemeButton from "./ui/ThemeButton";
+
+/**
+ * FavoriteForm component for adding or editing favorite locations with a title and note.
+ *
+ * @param {Object} props - The component props.
+ * @param {Object} [props.btnLabels={ confirm: "Hinzufügen", cancel: "Abbrechen" }] - The labels for the confirm and cancel buttons.
+ * @param {Function} props.onConfirm - The function to call when the form is confirmed.
+ * @param {Function} props.onCancel - The function to call when the form is canceled.
+ * @param {string} props.formTitle - The title of the form.
+ * @param {Object} [props.formLocation] - The location associated with the form.
+ * @param {Object} [props.defaultValues={ title: "", note: "" }] - The default values for the form fields.
+ * @returns {JSX.Element} The rendered favorite form component.
+ */
+const FavoriteForm = ({
+  btnLabels = { confirm: "Hinzufügen", cancel: "Abbrechen" },
+  onConfirm,
+  onCancel,
+  formTitle,
+  formLocation,
+  defaultValues = { title: "", note: "" },
+}) => {
+  const [error, setError] = useState("");
+  const {
+    register,
+    handleSubmit,
+    reset,
+    //setFocus,
+    formState: { errors, isSubmitting },
+  } = useForm({
+    mode: "onSubmit",
+    resolver: yupResolver(schemaFavorite),
+    defaultValues,
+  });
+
+  async function onSubmit(data) {
+    const { title, note } = data;
+    try {
+      const confirmed = await onConfirm({ title, note });
+      if (confirmed === false) {
+        return;
+      }
+      //reset();
+    } catch (err) {
+      setError("Favorite form submission failed");
+    }
+  }
+
+  return (
+    &lt;form
+      className="flex flex-col justify-center items-center gap-4 w-full p-4 rounded-md"
+      onSubmit={handleSubmit(onSubmit)}
+    >
+      &lt;p className="text-md font-bold text-neutral-500 dark:text-olive-300">
+        {formTitle +
+          (formLocation ? ` von ${formLocation.name}, ${formLocation.country}` : "")}
+      &lt;/p>
+      &lt;InputField
+        defaultValue={defaultValues.title}
+        label=""
+        registration={register("title")}
+        placeholder="Titel"
+      />
+      &lt;textarea
+        className={"w-full " + styles.input}
+        placeholder="Erstelle eine Notiz zu deinem Ort"
+        rows={4}
+        {...register("note")}
+        defaultValue={defaultValues.note}
+      />
+      {errors.title &amp;&amp; &lt;p className="text-red-500 text-sm">{errors.title.message}&lt;/p>}
+      {errors.note &amp;&amp; &lt;p className="text-red-500 text-sm">{errors.note.message}&lt;/p>}
+      &lt;Button
+        type="button"
+        className={styles.navlink + " focus:outline-none overflow-hidden"}
+        onClick={() => reset()}
+      >
+        Formular leeren
+      &lt;/Button>
+      &lt;div className="flex gap-4">
+        &lt;ThemeButton type="submit" disabled={isSubmitting}>
+          {btnLabels.confirm}
+        &lt;/ThemeButton>
+        &lt;ThemeButton onClick={onCancel} type="button">
+          {btnLabels.cancel}
+        &lt;/ThemeButton>
+      &lt;/div>
+    &lt;/form>
+  );
+};
+
+export default React.memo(FavoriteForm);
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#App">App</a></li><li><a href="global.html#AutofillCombo">AutofillCombo</a></li><li><a href="global.html#ChartDaysArea">ChartDaysArea</a></li><li><a href="global.html#CityCard">CityCard</a></li><li><a href="global.html#CityDetail">CityDetail</a></li><li><a href="global.html#CityFavoriteCard">CityFavoriteCard</a></li><li><a href="global.html#CityPanel">CityPanel</a></li><li><a href="global.html#CitySearch">CitySearch</a></li><li><a href="global.html#CityWeather">CityWeather</a></li><li><a href="global.html#CompareBar">CompareBar</a></li><li><a href="global.html#CompareBarContainer">CompareBarContainer</a></li><li><a href="global.html#CompareFilter">CompareFilter</a></li><li><a href="global.html#ComparePanel">ComparePanel</a></li><li><a href="global.html#DailyChart">DailyChart</a></li><li><a href="global.html#Dashboard">Dashboard</a></li><li><a href="global.html#EditCityDialog">EditCityDialog</a></li><li><a href="global.html#FavoriteForm">FavoriteForm</a></li><li><a href="global.html#Favorites">Favorites</a></li><li><a href="global.html#Footer">Footer</a></li><li><a href="global.html#Header">Header</a></li><li><a href="global.html#HourlyCard">HourlyCard</a></li><li><a href="global.html#ListBox">ListBox</a></li><li><a href="global.html#OverlayProvider">OverlayProvider</a></li><li><a href="global.html#RecentLocations">RecentLocations</a></li><li><a href="global.html#Settings">Settings</a></li><li><a href="global.html#The">The</a></li><li><a href="global.html#ThemeMenu">ThemeMenu</a></li><li><a href="global.html#ThemeProvider">ThemeProvider</a></li><li><a href="global.html#Toast">Toast</a></li><li><a href="global.html#UserDataProvider">UserDataProvider</a></li><li><a href="global.html#WeatherDataProvider">WeatherDataProvider</a></li><li><a href="global.html#WeatherIcon">WeatherIcon</a></li><li><a href="global.html#getGeocoding">getGeocoding</a></li><li><a href="global.html#getGeocodingData">getGeocodingData</a></li><li><a href="global.html#getMappedWeatherDataForecast">getMappedWeatherDataForecast</a></li><li><a href="global.html#getUserDocument">getUserDocument</a></li><li><a href="global.html#getWeather">getWeather</a></li><li><a href="global.html#getWeatherDataForecast">getWeatherDataForecast</a></li><li><a href="global.html#getWeatherDataListCurrent">getWeatherDataListCurrent</a></li><li><a href="global.html#getWeatherForecast">getWeatherForecast</a></li><li><a href="global.html#getWeatherListCurrent">getWeatherListCurrent</a></li><li><a href="global.html#getWeatherModel">getWeatherModel</a></li><li><a href="global.html#metrics">metrics</a></li><li><a href="global.html#ranges">ranges</a></li><li><a href="global.html#styles">styles</a></li><li><a href="global.html#useAuth">useAuth</a></li><li><a href="global.html#useOverlay">useOverlay</a></li><li><a href="global.html#useTheme">useTheme</a></li><li><a href="global.html#useUserData">useUserData</a></li><li><a href="global.html#useWeather">useWeather</a></li><li><a href="global.html#useWeatherData">useWeatherData</a></li><li><a href="global.html#weatherCodes">weatherCodes</a></li><li><a href="global.html#weatherModels">weatherModels</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Sat Oct 03 2026 13:57:17 GMT+0200 (Central European Summer Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

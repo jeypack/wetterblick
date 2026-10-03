@@ -1,8 +1,13 @@
+/**
+ * ScrollTop component for rendering a button that scrolls the page to the top when clicked.
+ *
+ * @returns JSX.Element
+ */
 export default function ScrollTop() {
   return (
     <div
       className="flex cursor-pointer items-center justify-center rounded-full bg-secondary-850 p-2 text-secondary-400 transition-colors duration-200 hover:bg-secondary-800 hover:text-secondary-300"
-      onClick={() => window.scrollTo({top: 0, behavior: "smooth"})}
+      onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"

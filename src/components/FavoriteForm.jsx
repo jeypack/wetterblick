@@ -7,6 +7,18 @@ import InputField from "./InputField";
 import Button from "./ui/Button";
 import ThemeButton from "./ui/ThemeButton";
 
+/**
+ * FavoriteForm component for adding or editing favorite locations with a title and note.
+ *
+ * @param {Object} props - The component props.
+ * @param {Object} [props.btnLabels={ confirm: "Hinzufügen", cancel: "Abbrechen" }] - The labels for the confirm and cancel buttons.
+ * @param {Function} props.onConfirm - The function to call when the form is confirmed.
+ * @param {Function} props.onCancel - The function to call when the form is canceled.
+ * @param {string} props.formTitle - The title of the form.
+ * @param {Object} [props.formLocation] - The location associated with the form.
+ * @param {Object} [props.defaultValues={ title: "", note: "" }] - The default values for the form fields.
+ * @returns {JSX.Element} The rendered favorite form component.
+ */
 const FavoriteForm = ({
   btnLabels = { confirm: "Hinzufügen", cancel: "Abbrechen" },
   onConfirm,

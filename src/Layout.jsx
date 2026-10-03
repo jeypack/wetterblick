@@ -1,6 +1,14 @@
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 
+/**
+ * Layout component that wraps the main content with a header and footer.
+ * Provides a consistent layout structure for all pages.
+ *
+ * @param {Object} props - The component props.
+ * @param {React.ReactNode} props.children - The main content to be displayed within the layout.
+ * @returns {JSX.Element} The layout component with header, footer, and main content.
+ */
 export default function Layout({ children }) {
   return (
     <div className="relative bg-neutral-50 dark:bg-neutral-900 flex flex-col justify-start items-start gap-0 w-full min-h-screen text-neutral-100 dark:text-neutral-100">

@@ -22,6 +22,11 @@ const navData = [
   },
 ];
 
+/**
+ * Header component for displaying the navigation and theme menu.
+ *
+ * @returns {JSX.Element} The rendered header component.
+ */
 const Header = () => {
   const { user } = useAuth();
   const { setToastMessage } = useOverlay();

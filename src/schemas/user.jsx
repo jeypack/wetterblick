@@ -14,6 +14,12 @@ import { object, string } from "yup";
       "Benutzername muss zwischen 3 und 20 Zeichen lang sein und darf nur Buchstaben, Zahlen und Unterstriche enthalten.",
     ),
 }); */
+
+/**
+ * Schema for validating user registration data.
+ * Ensures that the username, password, and email fields meet specific requirements.
+ *
+ */
 const schemaRegister = object({
   username: string()
     .required("Bitte einen gültigen Benutzernamen eingeben.")
@@ -34,6 +40,12 @@ const schemaRegister = object({
 
 export { schemaRegister };
 
+/**
+ * Schema for validating user login data.
+ * Ensures that the password and email fields meet specific requirements.
+ *
+ * @var {Object} The validation schema for user login.
+ */
 const schema = object({
   password: string()
     .required("Bitte ein gültiges Passwort eingeben.")

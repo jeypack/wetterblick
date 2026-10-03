@@ -6,6 +6,14 @@ import RegisterForm from "../components/RegisterForm";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { Button } from "@headlessui/react";
 
+/**
+ * Login page component.
+ * Handles both login and registration views based on the URL parameter.
+ * Utilizes the useAuth hook to determine the current authentication status.
+ * Redirects authenticated users to the main dashboard.
+ *
+ * @returns {JSX.Element} The login page component.
+ */
 export default function Login() {
   const { type } = useParams();
   const navigate = useNavigate();

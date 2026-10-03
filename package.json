@@ -11,7 +11,8 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest --run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "docs": "jsdoc --configure jsdoc.json"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.10",
@@ -47,6 +48,7 @@
     "eslint-plugin-react-hooks": "^7.1.1",
     "eslint-plugin-react-refresh": "^0.5.3",
     "globals": "^17.7.0",
+    "jsdoc": "^4.0.5",
     "jsdom": "^29.1.1",
     "prettier": "^3.9.5",
     "rollup-plugin-visualizer": "^7.1.1",
