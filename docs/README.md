@@ -8,19 +8,19 @@ Die Anwendung wurde als Abschlussprojekt im **Modul 3** entwickelt und verbindet
 
 ### Dashboard
 
-![Wetterblick Dashboard](docs/images/screenshot-weather.jpg)
+![Wetterblick Dashboard](images/screenshot-weather.jpg)
 
 Das Dashboard bietet eine Orts-Suche mit Autovervollständigung und Suchergebnissen. Zuletzt aufgerufene Orte werden in der Seitenleiste angezeigt und können direkt erneut ausgewählt werden.
 
 ### Wetterdetails
 
-![Wetterdetails](docs/images/screenshot-weather-2.jpg)
+![Wetterdetails](images/screenshot-weather-2.jpg)
 
 Die Detailseite zeigt die Wetterentwicklung für einen ausgewählten Ort. Neben einer stündlichen Übersicht werden die Vorhersagen für die kommenden Tage dargestellt. Über das geöffnete Menü im Header können weitere Orte direkt ausgewählt werden.
 
 ### Favoriten
 
-![Favoritenvergleich](docs/images/screenshot-weather-3.jpg)
+![Favoritenvergleich](images/screenshot-weather-3.jpg)
 
 Auf der Favoritenseite können gespeicherte Orte miteinander verglichen werden.
 
